@@ -4,6 +4,9 @@
     <Filter Include="Zital">
       <UniqueIdentifier>{A92B970E-1540-BFBF-DEC1-621F4A95BBF0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Zital\Events">
+      <UniqueIdentifier>{6DFF63B0-5962-F354-02E8-2B0BEE29BFD7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Zital.h" />
@@ -15,6 +18,18 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\EntryPoint.h">
       <Filter>Zital</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Events\ApplicationEvent.h">
+      <Filter>Zital\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Events\Event.h">
+      <Filter>Zital\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Events\KeyEvent.h">
+      <Filter>Zital\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Events\MouseEvent.h">
+      <Filter>Zital\Events</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Log.h">
       <Filter>Zital</Filter>
