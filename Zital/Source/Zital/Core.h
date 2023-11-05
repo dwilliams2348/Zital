@@ -9,3 +9,5 @@
 #else
 	#error Zital only supports Windows as of now.
 #endif
+
+#define BIT(x)(1 << x)
