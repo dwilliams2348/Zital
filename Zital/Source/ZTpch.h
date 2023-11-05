@@ -13,6 +13,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
+//logging
+#include "Zital/Log.h"
+
 #ifdef ZT_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif

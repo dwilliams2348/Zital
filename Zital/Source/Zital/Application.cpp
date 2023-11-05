@@ -9,7 +9,7 @@ namespace Zital
 
 	Application::Application()
 	{
-
+		mWindow = std::unique_ptr<Window>(Window::Create());
 	}
 
 	Application::~Application()
@@ -19,10 +19,10 @@ namespace Zital
 
 	void Application::Run()
 	{
-		WindowResizeEvent e(1280, 720);
-		ZT_TRACE(e);
-
-		while (true);
+		while (mRunning)
+		{
+			mWindow->OnUpdate();
+		}
 	}
 
 }

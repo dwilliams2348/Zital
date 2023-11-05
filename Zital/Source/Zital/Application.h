@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Events/Event.h"
+#include "Window.h"
 
 namespace Zital 
 {
@@ -13,6 +14,10 @@ namespace Zital
 		virtual ~Application();
 
 		void Run();
+
+	private:
+		std::unique_ptr<Window> mWindow;
+		bool mRunning = true;
 	};
 
 	//to be defined in client

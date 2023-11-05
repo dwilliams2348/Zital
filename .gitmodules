@@ -1,3 +1,6 @@
 [submodule "Zital/Vendor/spdlog"]
 	path = Zital/Vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Zital/Vendor/GLFW"]
+	path = Zital/Vendor/GLFW
+	url = https://github.com/TheCherno/GLFW

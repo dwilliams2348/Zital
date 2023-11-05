@@ -10,6 +10,12 @@ workspace "Zital"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+--Include Directories relative to root folder
+IncludeDir = {}
+IncludeDir["GLFW"] = "Zital/Vendor/GLFW/include"
+
+include "Zital/Vendor/GLFW"
+
 project "Zital"
 	location "Zital"
 	kind "SharedLib"
@@ -30,7 +36,14 @@ project "Zital"
 	includedirs
 	{
 		"%{prj.name}/Source",
-		"%{prj.name}/Vendor/spdlog/include"
+		"%{prj.name}/Vendor/spdlog/include",
+		"%{IncludeDir.GLFW}"
+	}
+
+	links
+	{
+		"GLFW",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

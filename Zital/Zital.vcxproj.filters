@@ -7,6 +7,12 @@
     <Filter Include="Zital\Events">
       <UniqueIdentifier>{6DFF63B0-5962-F354-02E8-2B0BEE29BFD7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Zital\Platform">
+      <UniqueIdentifier>{1D967F75-0964-737B-F2F7-E3A1DE644FE0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Zital\Platform\Windows">
+      <UniqueIdentifier>{570DDC26-4307-0579-2C74-9B89180D6BE5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ZTpch.h" />
@@ -35,6 +41,12 @@
     <ClInclude Include="Source\Zital\Log.h">
       <Filter>Zital</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Platform\Windows\WindowsWindow.h">
+      <Filter>Zital\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Window.h">
+      <Filter>Zital</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\ZTpch.cpp" />
@@ -43,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="Source\Zital\Log.cpp">
       <Filter>Zital</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Zital\Platform\Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
