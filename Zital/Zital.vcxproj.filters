@@ -9,6 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Application.h">
       <Filter>Zital</Filter>
@@ -36,6 +37,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ZTpch.cpp" />
     <ClCompile Include="Source\Zital\Application.cpp">
       <Filter>Zital</Filter>
     </ClCompile>

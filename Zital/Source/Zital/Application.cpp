@@ -1,3 +1,4 @@
+#include "ZTpch.h"
 #include "Application.h"
 
 #include "Zital/Events/ApplicationEvent.h"

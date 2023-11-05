@@ -3,9 +3,6 @@
 
 #include "Zital/Core.h"
 
-#include<string>
-#include<functional>
-
 namespace Zital
 {
 	/*

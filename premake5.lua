@@ -18,6 +18,9 @@ project "Zital"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	pchheader "ZTpch.h"
+	pchsource "Zital/Source/ZTpch.cpp"
+
 	files
 	{
 		"%{prj.name}/Source/**.h",
