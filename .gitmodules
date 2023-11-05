@@ -1,0 +1,3 @@
+[submodule "Zital/Vendor/spdlog"]
+	path = Zital/Vendor/spdlog
+	url = https://github.com/gabime/spdlog

@@ -2,6 +2,7 @@
 
 namespace Zital
 {
+
 	Application::Application()
 	{
 

@@ -4,6 +4,7 @@
 
 namespace Zital 
 {
+
 	class ZITAL_API Application
 	{
 	public:
