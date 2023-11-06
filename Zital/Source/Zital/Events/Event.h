@@ -49,6 +49,8 @@ namespace Zital
 		friend class EventDispatcher;
 
 	public:
+		bool Handled = false;
+
 		virtual EEventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
 		virtual int GetCategoryFlags() const = 0;
@@ -58,9 +60,6 @@ namespace Zital
 		{
 			return GetCategoryFlags() & _category;
 		}
-
-	protected:
-		bool mHandled = false;
 	};
 
 	class EventDispatcher
@@ -80,7 +79,7 @@ namespace Zital
 		{
 			if (mEvent.GetEventType() == T::GetStaticType())
 			{
-				mEvent.mHandled = func(*(T*)&mEvent);
+				mEvent.Handled = func(*(T*)&mEvent);
 				return true;
 			}
 

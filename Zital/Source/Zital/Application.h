@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Core.h"
-#include "Events/Event.h"
-#include "Zital/Events/ApplicationEvent.h"
 
 #include "Window.h"
+#include "Zital/LayerStack.h"
+#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
 
 namespace Zital 
 {
@@ -19,11 +20,15 @@ namespace Zital
 
 		void OnEvent(Event& e);
 
+		void PushLayer(Layer* _layer);
+		void PushOverlay(Layer* _overlay);
+
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> mWindow;
 		bool mRunning = true;
+		LayerStack mLayerStack;
 	};
 
 	//to be defined in client

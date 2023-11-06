@@ -19,18 +19,38 @@ namespace Zital
 
 	}
 
+	void Application::PushLayer(Layer* _layer)
+	{
+		mLayerStack.PushLayer(_layer);
+	}
+
+	void Application::PushOverlay(Layer* _overlay)
+	{
+		mLayerStack.PushOverlay(_overlay);
+	}
+
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
 
 		ZT_CORE_TRACE("{0}", e);
+
+		for (auto it = mLayerStack.end(); it != mLayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
 	}
 
 	void Application::Run()
 	{
 		while (mRunning)
 		{
+			for (Layer* layer : mLayerStack)
+				layer->OnUpdate();
+
 			mWindow->OnUpdate();
 		}
 	}
