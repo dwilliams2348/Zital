@@ -1,10 +1,7 @@
 #pragma once
 
-
+#include "ZTpch.h"
 #include "Zital/Core.h"
-
-#include<string>
-#include<functional>
 
 namespace Zital
 {

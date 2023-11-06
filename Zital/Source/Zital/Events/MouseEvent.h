@@ -3,8 +3,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Zital
 {
 
@@ -96,6 +94,8 @@ namespace Zital
 			ss << "MouseButtonReleasedEvent: " << mButton;
 			return ss.str();
 		}
+
+		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
 
 }
