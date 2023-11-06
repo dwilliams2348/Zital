@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Zital">
       <UniqueIdentifier>{A92B970E-1540-BFBF-DEC1-621F4A95BBF0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Zital\Events">
       <UniqueIdentifier>{6DFF63B0-5962-F354-02E8-2B0BEE29BFD7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Zital\Platform">
-      <UniqueIdentifier>{1D967F75-0964-737B-F2F7-E3A1DE644FE0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Zital\Platform\Windows">
-      <UniqueIdentifier>{570DDC26-4307-0579-2C74-9B89180D6BE5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Application.h">
@@ -38,26 +41,35 @@
     <ClInclude Include="Source\Zital\Events\MouseEvent.h">
       <Filter>Zital\Events</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Log.h">
+    <ClInclude Include="Source\Zital\Layer.h">
       <Filter>Zital</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Platform\Windows\WindowsWindow.h">
-      <Filter>Zital\Platform\Windows</Filter>
+    <ClInclude Include="Source\Zital\LayerStack.h">
+      <Filter>Zital</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Log.h">
+      <Filter>Zital</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Window.h">
       <Filter>Zital</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ZTpch.cpp" />
     <ClCompile Include="Source\Zital\Application.cpp">
       <Filter>Zital</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Log.cpp">
+    <ClCompile Include="Source\Zital\Layer.cpp">
       <Filter>Zital</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Zital\Platform\Windows</Filter>
+    <ClCompile Include="Source\Zital\LayerStack.cpp">
+      <Filter>Zital</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Log.cpp">
+      <Filter>Zital</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
