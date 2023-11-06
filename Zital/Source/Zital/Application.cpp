@@ -34,8 +34,6 @@ namespace Zital
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
 
-		ZT_CORE_TRACE("{0}", e);
-
 		for (auto it = mLayerStack.end(); it != mLayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
