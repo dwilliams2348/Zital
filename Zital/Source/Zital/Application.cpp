@@ -1,20 +1,30 @@
 #include "ZTpch.h"
 #include "Application.h"
 
-#include "Zital/Events/ApplicationEvent.h"
 #include "Zital/Log.h"
 
 namespace Zital
 {
 
+#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
 	Application::Application()
 	{
 		mWindow = std::unique_ptr<Window>(Window::Create());
+		mWindow->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 	}
 
 	Application::~Application()
 	{
 
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
+
+		ZT_CORE_TRACE("{0}", e);
 	}
 
 	void Application::Run()
@@ -23,6 +33,13 @@ namespace Zital
 		{
 			mWindow->OnUpdate();
 		}
+	}
+
+	bool Application::OnWindowClosed(WindowCloseEvent& e)
+	{
+		mRunning = false;
+
+		return true;
 	}
 
 }
