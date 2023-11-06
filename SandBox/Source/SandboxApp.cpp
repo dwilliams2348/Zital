@@ -27,6 +27,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Zital::ImGuiLayer());
 	}
 
 	~Sandbox()
