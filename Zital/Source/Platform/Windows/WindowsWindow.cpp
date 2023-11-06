@@ -5,6 +5,8 @@
 #include "Zital/Events/KeyEvent.h"
 #include "Zital/Events/MouseEvent.h"
 
+#include <glad/glad.h>
+
 namespace Zital
 {
 	static bool sGLFWInitialized = false;
@@ -49,6 +51,8 @@ namespace Zital
 
 		mWindow = glfwCreateWindow((int)_props.Width, (int)_props.Height, mData.Title.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(mWindow);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		ZT_CORE_ASSERT(status, "Failed to initialize Glad.");
 		glfwSetWindowUserPointer(mWindow, &mData);
 		SetVSync(true);
 

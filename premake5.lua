@@ -13,8 +13,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 --Include Directories relative to root folder
 IncludeDir = {}
 IncludeDir["GLFW"] = "Zital/Vendor/GLFW/include"
+IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 
 include "Zital/Vendor/GLFW"
+include "Zital/Vendor/Glad"
 
 project "Zital"
 	location "Zital"
@@ -37,12 +39,14 @@ project "Zital"
 	{
 		"%{prj.name}/Source",
 		"%{prj.name}/Vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -55,6 +59,7 @@ project "Zital"
 		{
 			"ZT_PLATFORM_WINDOWS",
 			"ZT_BUILD_DLL",
+			"GLFW_INCLUDE_NONE",
 			"_WINDLL"
 		}
 
