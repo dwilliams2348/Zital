@@ -23,12 +23,17 @@ namespace Zital
 		void PushLayer(Layer* _layer);
 		void PushOverlay(Layer* _overlay);
 
+		inline static Application& Get() { return *sInstance; }
+		inline Window& GetWindow() { return* mWindow; }
+
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> mWindow;
 		bool mRunning = true;
 		LayerStack mLayerStack;
+
+		static Application* sInstance;
 	};
 
 	//to be defined in client

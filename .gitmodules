@@ -4,3 +4,6 @@
 [submodule "Zital/Vendor/GLFW"]
 	path = Zital/Vendor/GLFW
 	url = https://github.com/TheCherno/GLFW
+[submodule "Zital/Vendor/imgui"]
+	path = Zital/Vendor/imgui
+	url = https://github.com/TheCherno/imgui

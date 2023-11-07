@@ -5,6 +5,8 @@
 #include "Zital/Layer.h"
 #include "Zital/Log.h"
 
+#include "Zital/ImGui/ImGuiLayer.h"
+
 //----------Entry Point----------
 #include "Zital/EntryPoint.h"
 //-------------------------------

@@ -56,4 +56,20 @@ namespace Zital
 
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	class ZITAL_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int _keycode)
+			: KeyEvent(_keycode) {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << mKeyCode ;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped)
+	};
 }
