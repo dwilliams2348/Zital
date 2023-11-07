@@ -3,6 +3,8 @@
 
 #include "Zital/Log.h"
 
+#include <glad/glad.h>
+
 namespace Zital
 {
 
@@ -53,6 +55,8 @@ namespace Zital
 	{
 		while (mRunning)
 		{
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();
 

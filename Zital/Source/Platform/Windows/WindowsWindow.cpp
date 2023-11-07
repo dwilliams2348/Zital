@@ -102,6 +102,14 @@ namespace Zital
 				}
 			});
 
+		glfwSetCharCallback(mWindow, [](GLFWwindow* _window, unsigned _keycode)
+			{
+				SWindowData& data = *(SWindowData*)glfwGetWindowUserPointer(_window);
+
+				KeyTypedEvent event(_keycode);
+				data.EventCallback(event);
+			});
+
 		glfwSetMouseButtonCallback(mWindow, [](GLFWwindow* _window, int _button, int _action, int _mods)
 			{
 				SWindowData& data = *(SWindowData*)glfwGetWindowUserPointer(_window);
