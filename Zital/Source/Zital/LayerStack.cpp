@@ -7,7 +7,6 @@ namespace Zital
 
 	LayerStack::LayerStack()
 	{
-		mLayerInsert = mLayers.begin();
 	}
 
 	LayerStack::~LayerStack()
@@ -18,7 +17,8 @@ namespace Zital
 
 	void LayerStack::PushLayer(Layer* _layer)
 	{
-		mLayerInsert = mLayers.emplace(mLayerInsert, _layer);
+		mLayers.emplace(mLayers.begin() + mLayerInsertIndex, _layer);
+		mLayerInsertIndex++;
 	}
 
 	void LayerStack::PushOverlay(Layer* _overlay)
@@ -32,7 +32,7 @@ namespace Zital
 		if (it != mLayers.end())
 		{
 			mLayers.erase(it);
-			mLayerInsert--;
+			mLayerInsertIndex--;
 		}
 	}
 

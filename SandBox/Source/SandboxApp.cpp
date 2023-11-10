@@ -1,5 +1,7 @@
 #include <Zital.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Zital::Layer
 {
 public:
@@ -26,6 +28,13 @@ public:
 		}
 	}
 
+	virtual void OnImGuiRender()
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello world");
+		ImGui::End();
+	}
+
 };
 
 class Sandbox : public Zital::Application
@@ -34,7 +43,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Zital::ImGuiLayer());
 	}
 
 	~Sandbox()

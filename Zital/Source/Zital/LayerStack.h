@@ -24,7 +24,7 @@ namespace Zital
 
 	private:
 		std::vector<Layer*> mLayers;
-		std::vector<Layer*>::iterator mLayerInsert;
+		unsigned mLayerInsertIndex = 0;
 	};
 
 }

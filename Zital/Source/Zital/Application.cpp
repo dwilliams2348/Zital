@@ -21,6 +21,9 @@ namespace Zital
 
 		mWindow = std::unique_ptr<Window>(Window::Create());
 		mWindow->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
+		mImGuiLayer = new ImGuiLayer();
+		PushOverlay(mImGuiLayer);
 	}
 
 	Application::~Application()
@@ -62,8 +65,10 @@ namespace Zital
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();
 
-			auto [x, y] = Input::GetMousePosition();
-			//ZT_CORE_TRACE("{0}, {1}", x, y);
+			mImGuiLayer->Begin();
+			for (Layer* layer : mLayerStack)
+				layer->OnImGuiRender();
+			mImGuiLayer->End();
 
 			mWindow->OnUpdate();
 		}

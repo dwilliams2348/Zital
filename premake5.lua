@@ -112,6 +112,7 @@ project "Sandbox"
 	{
 		"Zital/Vendor/spdlog/include",
 		"Zital/Source",
+		"Zital/Vendor",
 		"%{IncludeDir.glm}"
 	}
 
