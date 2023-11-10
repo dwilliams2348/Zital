@@ -22,6 +22,8 @@ namespace Zital
 		void SetVSync(bool _enable) override;
 		bool IsVSync() const override;
 
+		inline virtual void* GetNativeWindow() const { return mWindow; }
+
 	private:
 		virtual void Init(const SWindowProps& _props);
 		virtual void Shutdown();

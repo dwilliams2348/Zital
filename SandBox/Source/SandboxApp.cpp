@@ -1,5 +1,7 @@
 #include <Zital.h>
 
+#include "imgui/imgui.h"
+
 class ExampleLayer : public Zital::Layer
 {
 public:
@@ -11,12 +13,26 @@ public:
 
 	void OnUpdate() override
 	{
-		ZT_INFO("ExampleLayer::Update");
+		//ZT_INFO("ExampleLayer::Update");
+
+		if (Zital::Input::IsKeyPressed(ZT_KEY_TAB))
+			ZT_TRACE("The tab key was pressed.");
 	}
 
 	void OnEvent(Zital::Event& _event) override
 	{
-		ZT_TRACE("{0}", _event);
+		if (_event.GetEventType() == Zital::EEventType::KeyPressed)
+		{
+			Zital::KeyPressedEvent& e = (Zital::KeyPressedEvent&)_event;
+			ZT_TRACE("{0}", (char)e.GetKeyCode());
+		}
+	}
+
+	virtual void OnImGuiRender()
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello world");
+		ImGui::End();
 	}
 
 };
@@ -27,7 +43,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Zital::ImGuiLayer());
 	}
 
 	~Sandbox()

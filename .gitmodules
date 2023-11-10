@@ -7,3 +7,6 @@
 [submodule "Zital/Vendor/imgui"]
 	path = Zital/Vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "Zital/Vendor/glm"]
+	path = Zital/Vendor/glm
+	url = https://github.com/g-truc/glm

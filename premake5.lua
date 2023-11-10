@@ -8,6 +8,8 @@ workspace "Zital"
 		"Dist"
 	}
 
+	startproject "Sandbox"
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 --Include Directories relative to root folder
@@ -15,6 +17,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Zital/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Zital/Vendor/imgui"
+IncludeDir["glm"] = "Zital/Vendor/glm"
 
 include "Zital/Vendor/GLFW"
 include "Zital/Vendor/Glad"
@@ -24,6 +27,7 @@ project "Zital"
 	location "Zital"
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -34,7 +38,9 @@ project "Zital"
 	files
 	{
 		"%{prj.name}/Source/**.h",
-		"%{prj.name}/Source/**.cpp"
+		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/Vendor/glm/**.hpp",
+		"%{prj.name}/Vendor/glm/**.inl"
 	}
 
 	includedirs
@@ -43,7 +49,8 @@ project "Zital"
 		"%{prj.name}/Vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -56,7 +63,6 @@ project "Zital"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -74,23 +80,24 @@ project "Zital"
 
 	filter "configurations:Debug"
 		defines "ZT_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "ZT_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ZT_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 project "Sandbox"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -104,7 +111,9 @@ project "Sandbox"
 	includedirs
 	{
 		"Zital/Vendor/spdlog/include",
-		"Zital/Source"
+		"Zital/Source",
+		"Zital/Vendor",
+		"%{IncludeDir.glm}"
 	}
 
 	links 
@@ -114,7 +123,6 @@ project "Sandbox"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
 		systemversion "latest"
 
 		defines
@@ -124,15 +132,15 @@ project "Sandbox"
 
 	filter "configurations:Debug"
 		defines "ZT_DEBUG"
-		buildoptions "/MDd"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "ZT_RELEASE"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "ZT_DIST"
-		buildoptions "/MD"
+		runtime "Release"
 		optimize "On"

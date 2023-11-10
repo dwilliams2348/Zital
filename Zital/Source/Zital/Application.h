@@ -7,6 +7,8 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 
+#include "ImGui/ImGuiLayer.h"
+
 namespace Zital 
 {
 
@@ -30,6 +32,7 @@ namespace Zital
 		bool OnWindowClosed(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> mWindow;
+		ImGuiLayer* mImGuiLayer;
 		bool mRunning = true;
 		LayerStack mLayerStack;
 
