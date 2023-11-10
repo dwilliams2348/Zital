@@ -17,6 +17,7 @@ IncludeDir = {}
 IncludeDir["GLFW"] = "Zital/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Zital/Vendor/imgui"
+IncludeDir["glm"] = "Zital/Vendor/glm"
 
 include "Zital/Vendor/GLFW"
 include "Zital/Vendor/Glad"
@@ -37,7 +38,9 @@ project "Zital"
 	files
 	{
 		"%{prj.name}/Source/**.h",
-		"%{prj.name}/Source/**.cpp"
+		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/Vendor/glm/**.hpp",
+		"%{prj.name}/Vendor/glm/**.inl"
 	}
 
 	includedirs
@@ -46,7 +49,8 @@ project "Zital"
 		"%{prj.name}/Vendor/spdlog/include",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
-		"%{IncludeDir.ImGui}"
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
@@ -107,7 +111,8 @@ project "Sandbox"
 	includedirs
 	{
 		"Zital/Vendor/spdlog/include",
-		"Zital/Source"
+		"Zital/Source",
+		"%{IncludeDir.glm}"
 	}
 
 	links 
