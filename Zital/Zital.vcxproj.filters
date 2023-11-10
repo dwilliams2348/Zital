@@ -24,6 +24,9 @@
     <ClInclude Include="Source\Platform\OpenGL\ImGuiOpenGLRenderer.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -53,6 +56,9 @@
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h">
       <Filter>Zital\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Input.h">
+      <Filter>Zital</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Zital\Layer.h">
       <Filter>Zital</Filter>
     </ClInclude>
@@ -65,12 +71,13 @@
     <ClInclude Include="Source\Zital\Window.h">
       <Filter>Zital</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Input.h" />
-    <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
       <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
@@ -91,6 +98,5 @@
     <ClCompile Include="Source\Zital\Log.cpp">
       <Filter>Zital</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
