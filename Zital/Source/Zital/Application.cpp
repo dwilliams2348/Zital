@@ -5,6 +5,8 @@
 
 #include <glad/glad.h>
 
+#include "Input.h"
+
 namespace Zital
 {
 
@@ -59,6 +61,9 @@ namespace Zital
 
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();
+
+			auto [x, y] = Input::GetMousePosition();
+			ZT_CORE_TRACE("{0}, {1}", x, y);
 
 			mWindow->OnUpdate();
 		}

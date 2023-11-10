@@ -65,6 +65,8 @@
     <ClInclude Include="Source\Zital\Window.h">
       <Filter>Zital</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Input.h" />
+    <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
@@ -89,5 +91,6 @@
     <ClCompile Include="Source\Zital\Log.cpp">
       <Filter>Zital</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
   </ItemGroup>
 </Project>
