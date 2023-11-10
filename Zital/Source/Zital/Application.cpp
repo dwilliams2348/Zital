@@ -63,7 +63,7 @@ namespace Zital
 				layer->OnUpdate();
 
 			auto [x, y] = Input::GetMousePosition();
-			ZT_CORE_TRACE("{0}, {1}", x, y);
+			//ZT_CORE_TRACE("{0}, {1}", x, y);
 
 			mWindow->OnUpdate();
 		}

@@ -71,6 +71,8 @@
     <ClInclude Include="Source\Zital\Window.h">
       <Filter>Zital</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\KeyCodes.h" />
+    <ClInclude Include="Source\Zital\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">

@@ -11,12 +11,19 @@ public:
 
 	void OnUpdate() override
 	{
-		ZT_INFO("ExampleLayer::Update");
+		//ZT_INFO("ExampleLayer::Update");
+
+		if (Zital::Input::IsKeyPressed(ZT_KEY_TAB))
+			ZT_TRACE("The tab key was pressed.");
 	}
 
 	void OnEvent(Zital::Event& _event) override
 	{
-		ZT_TRACE("{0}", _event);
+		if (_event.GetEventType() == Zital::EEventType::KeyPressed)
+		{
+			Zital::KeyPressedEvent& e = (Zital::KeyPressedEvent&)_event;
+			ZT_TRACE("{0}", (char)e.GetKeyCode());
+		}
 	}
 
 };
