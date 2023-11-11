@@ -5,7 +5,7 @@
 #include "Zital/Events/KeyEvent.h"
 #include "Zital/Events/MouseEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Zital
 {
@@ -50,9 +50,10 @@ namespace Zital
 		}
 
 		mWindow = glfwCreateWindow((int)_props.Width, (int)_props.Height, mData.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(mWindow);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		ZT_CORE_ASSERT(status, "Failed to initialize Glad.");
+
+		mContext = new OpenGLContext(mWindow);
+		mContext->Init();
+
 		glfwSetWindowUserPointer(mWindow, &mData);
 		SetVSync(true);
 
@@ -156,7 +157,7 @@ namespace Zital
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(mWindow);
+		mContext->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool _enabled)

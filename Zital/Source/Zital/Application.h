@@ -36,6 +36,8 @@ namespace Zital
 		bool mRunning = true;
 		LayerStack mLayerStack;
 
+		unsigned mVertexArray, mVertexBuffer, mIndexBuffer;
+
 		static Application* sInstance;
 	};
 

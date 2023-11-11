@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Zital/Window.h"
+#include "Zital/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
+
 
 namespace Zital
 {
@@ -30,6 +32,7 @@ namespace Zital
 
 	private:
 		GLFWwindow* mWindow;
+		GraphicsContext* mContext;
 
 		struct SWindowData
 		{

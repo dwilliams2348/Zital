@@ -1347,6 +1347,8 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp">
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp">
@@ -1376,5 +1378,6 @@
     <ClCompile Include="Source\Zital\Log.cpp">
       <Filter>Source\Zital</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
 </Project>
