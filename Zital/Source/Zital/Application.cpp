@@ -28,9 +28,6 @@ namespace Zital
 		glGenVertexArrays(1, &mVertexArray);
 		glBindVertexArray(mVertexArray);
 
-		glGenBuffers(1, &mVertexBuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
-
 		float vertices[3 * 3] =
 		{
 			-0.5f, -0.5f, 0.f,
@@ -38,16 +35,15 @@ namespace Zital
 			0.f, 0.5f, 0.f
 		};
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		mVertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		mVertexBuffer->Bind();
 		
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, nullptr);
 
-		glGenBuffers(1, &mIndexBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-
-		unsigned indices[3] = { 0, 1, 2 };
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+		uint32_t indices[3] = { 0, 1, 2 };
+		mIndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		mIndexBuffer->Bind();
 
 		//the "()" lets you write strings across multiple lines without having to put double quotes on each line to start and end the string and without
 		//using the \n character.
@@ -120,7 +116,7 @@ namespace Zital
 
 			mShader->Bind();
 			glBindVertexArray(mVertexArray);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, mIndexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();
