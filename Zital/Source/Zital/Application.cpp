@@ -49,7 +49,36 @@ namespace Zital
 		unsigned indices[3] = { 0, 1, 2 };
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+		//the "()" lets you write strings across multiple lines without having to put double quotes on each line to start and end the string and without
+		//using the \n character.
+		std::string vertexSource = R"(
+			#version 330 core
 
+			layout(location = 0) in vec3 aPosition;
+
+			out vec3 vPosition;
+
+			void main()
+			{
+				vPosition = aPosition;
+				gl_Position = vec4(aPosition, 1.0);
+			}
+		)";
+
+		std::string fragmentSource = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec3 vPosition;
+
+			void main()
+			{
+				color = vec4(vPosition + 0.5, 1.0);
+			}
+		)";
+
+		mShader.reset(new Shader(vertexSource, fragmentSource));
 	}
 
 	Application::~Application()
@@ -89,6 +118,7 @@ namespace Zital
 			glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			mShader->Bind();
 			glBindVertexArray(mVertexArray);
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 

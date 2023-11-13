@@ -9,6 +9,8 @@
 
 #include "ImGui/ImGuiLayer.h"
 
+#include "Renderer/Shader.h"
+
 namespace Zital 
 {
 
@@ -37,6 +39,7 @@ namespace Zital
 		LayerStack mLayerStack;
 
 		unsigned mVertexArray, mVertexBuffer, mIndexBuffer;
+		std::unique_ptr<Shader> mShader;
 
 		static Application* sInstance;
 	};
