@@ -14,6 +14,27 @@ namespace Zital
 
 	Application* Application::sInstance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType _type)
+	{
+		switch (_type)
+		{
+			case Zital::ShaderDataType::Float:		return GL_FLOAT;
+			case Zital::ShaderDataType::Float2:		return GL_FLOAT;
+			case Zital::ShaderDataType::Float3:		return GL_FLOAT;
+			case Zital::ShaderDataType::Float4:		return GL_FLOAT;
+			case Zital::ShaderDataType::Mat3:		return GL_FLOAT;
+			case Zital::ShaderDataType::Mat4:		return GL_FLOAT;
+			case Zital::ShaderDataType::Int:		return GL_INT;
+			case Zital::ShaderDataType::Int2:		return GL_INT;
+			case Zital::ShaderDataType::Int3:		return GL_INT;
+			case Zital::ShaderDataType::Int4:		return GL_INT;
+			case Zital::ShaderDataType::Bool:		return GL_BOOL;
+		}
+
+		ZT_CORE_ASSERT(false, "Unknown shader data type.");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
@@ -28,22 +49,41 @@ namespace Zital
 		glGenVertexArrays(1, &mVertexArray);
 		glBindVertexArray(mVertexArray);
 
-		float vertices[3 * 3] =
+		float vertices[3 * 7] =
 		{
-			-0.5f, -0.5f, 0.f,
-			0.5f, -0.5f, 0.f,
-			0.f, 0.5f, 0.f
+			-0.5f, -0.5f, 0.f, 0.8f, 0.2f, 0.8f, 1.f,
+			0.5f, -0.5f, 0.f, 0.2f, 0.2f, 0.8f, 1.f,
+			0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f
 		};
 
 		mVertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-		mVertexBuffer->Bind();
+		{
+			BufferLayout layout =
+			{
+				{ShaderDataType::Float3, "aPosition"},
+				{ShaderDataType::Float4, "aColor"}
+			};
+
+			mVertexBuffer->SetLayout(layout);
+		}
+
+		uint32_t index = 0;
+		const auto& layout = mVertexBuffer->GetLayout();
+		for (const auto& element : layout)
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, 
+				element.GetComponentCount(), 
+				ShaderDataTypeToOpenGLBaseType(element.Type), 
+				element.Normalized ? GL_TRUE : GL_FALSE, 
+				layout.GetStride() , 
+				(const void*)element.Offset);
+			index++;
+		}
 		
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(float) * 3, nullptr);
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		mIndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-		mIndexBuffer->Bind();
 
 		//the "()" lets you write strings across multiple lines without having to put double quotes on each line to start and end the string and without
 		//using the \n character.
@@ -51,12 +91,15 @@ namespace Zital
 			#version 330 core
 
 			layout(location = 0) in vec3 aPosition;
+			layout(location = 1) in vec4 aColor;
 
 			out vec3 vPosition;
+			out vec4 vColor;
 
 			void main()
 			{
 				vPosition = aPosition;
+				vColor = aColor;
 				gl_Position = vec4(aPosition, 1.0);
 			}
 		)";
@@ -67,10 +110,12 @@ namespace Zital
 			layout(location = 0) out vec4 color;
 
 			in vec3 vPosition;
+			in vec4 vColor;
 
 			void main()
 			{
 				color = vec4(vPosition + 0.5, 1.0);
+				color = vColor;
 			}
 		)";
 
