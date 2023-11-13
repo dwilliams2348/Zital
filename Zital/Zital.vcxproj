@@ -140,10 +140,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
+    <ClInclude Include="Source\Zital\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Zital\Renderer\Shader.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Application.h" />
@@ -579,9 +583,13 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Shader.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

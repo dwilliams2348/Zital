@@ -1349,6 +1349,10 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="Source\Zital\Renderer\Shader.h" />
+    <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="Source\Zital\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp">
@@ -1379,5 +1383,9 @@
       <Filter>Source\Zital</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Shader.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>

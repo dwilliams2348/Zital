@@ -9,6 +9,9 @@
 
 #include "ImGui/ImGuiLayer.h"
 
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
+
 namespace Zital 
 {
 
@@ -36,7 +39,10 @@ namespace Zital
 		bool mRunning = true;
 		LayerStack mLayerStack;
 
-		unsigned mVertexArray, mVertexBuffer, mIndexBuffer;
+		unsigned mVertexArray;
+		std::unique_ptr<Shader> mShader;
+		std::unique_ptr<VertexBuffer> mVertexBuffer;
+		std::unique_ptr<IndexBuffer> mIndexBuffer;
 
 		static Application* sInstance;
 	};
