@@ -14,27 +14,6 @@ namespace Zital
 
 	Application* Application::sInstance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType _type)
-	{
-		switch (_type)
-		{
-			case Zital::ShaderDataType::Float:		return GL_FLOAT;
-			case Zital::ShaderDataType::Float2:		return GL_FLOAT;
-			case Zital::ShaderDataType::Float3:		return GL_FLOAT;
-			case Zital::ShaderDataType::Float4:		return GL_FLOAT;
-			case Zital::ShaderDataType::Mat3:		return GL_FLOAT;
-			case Zital::ShaderDataType::Mat4:		return GL_FLOAT;
-			case Zital::ShaderDataType::Int:		return GL_INT;
-			case Zital::ShaderDataType::Int2:		return GL_INT;
-			case Zital::ShaderDataType::Int3:		return GL_INT;
-			case Zital::ShaderDataType::Int4:		return GL_INT;
-			case Zital::ShaderDataType::Bool:		return GL_BOOL;
-		}
-
-		ZT_CORE_ASSERT(false, "Unknown shader data type.");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
@@ -46,8 +25,7 @@ namespace Zital
 		mImGuiLayer = new ImGuiLayer();
 		PushOverlay(mImGuiLayer);
 
-		glGenVertexArrays(1, &mVertexArray);
-		glBindVertexArray(mVertexArray);
+		mVertexArray.reset(VertexArray::Create());
 
 		float vertices[3 * 7] =
 		{
@@ -56,34 +34,47 @@ namespace Zital
 			0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f
 		};
 
-		mVertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-		{
-			BufferLayout layout =
-			{
-				{ShaderDataType::Float3, "aPosition"},
-				{ShaderDataType::Float4, "aColor"}
-			};
-
-			mVertexBuffer->SetLayout(layout);
-		}
-
-		uint32_t index = 0;
-		const auto& layout = mVertexBuffer->GetLayout();
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 
-				element.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.Type), 
-				element.Normalized ? GL_TRUE : GL_FALSE, 
-				layout.GetStride() , 
-				(const void*)element.Offset);
-			index++;
-		}
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		
+		BufferLayout layout =
+		{
+			{ShaderDataType::Float3, "aPosition"},
+			{ShaderDataType::Float4, "aColor"}
+		};
+		vertexBuffer->SetLayout(layout);
+
+		mVertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		mIndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+
+		mVertexArray->SetIndexBuffer(indexBuffer);
+
+		//rendering square to screen with mutliple arrays
+		mSquareVA.reset(VertexArray::Create());
+
+		float squareVertices[3 * 4] =
+		{
+			-0.75f, -0.75f, 0.f,
+			0.75f, -0.75f, 0.f,
+			0.75f, 0.75f, 0.f,
+			-0.75f, 0.75f, 0.f
+		};
+
+		std::shared_ptr<VertexBuffer> SquareVB;
+		SquareVB.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		
+		SquareVB->SetLayout({ {ShaderDataType::Float3, "aPosition"} });
+
+		mSquareVA->AddVertexBuffer(SquareVB);
+
+		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIB;
+		squareIB.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+
+		mSquareVA->SetIndexBuffer(squareIB);
 
 		//the "()" lets you write strings across multiple lines without having to put double quotes on each line to start and end the string and without
 		//using the \n character.
@@ -120,6 +111,35 @@ namespace Zital
 		)";
 
 		mShader.reset(new Shader(vertexSource, fragmentSource));
+
+		std::string blueVertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 aPosition;
+
+			out vec3 vPosition;
+
+			void main()
+			{
+				vPosition = aPosition;
+				gl_Position = vec4(aPosition, 1.0);
+			}
+		)";
+
+		std::string blueFragmentSource = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec3 vPosition;
+
+			void main()
+			{
+				color = vec4(0.2, 0.3, 0.8, 1);
+			}
+		)";
+
+		mBlueSquareShader.reset(new Shader(blueVertexSource, blueFragmentSource));
 	}
 
 	Application::~Application()
@@ -159,9 +179,13 @@ namespace Zital
 			glClearColor(0.1f, 0.1f, 0.1f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			mBlueSquareShader->Bind();
+			mSquareVA->Bind();
+			glDrawElements(GL_TRIANGLES, mSquareVA->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+
 			mShader->Bind();
-			glBindVertexArray(mVertexArray);
-			glDrawElements(GL_TRIANGLES, mIndexBuffer->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+			mVertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, mVertexArray->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();

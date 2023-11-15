@@ -11,6 +11,7 @@
 
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
 
 namespace Zital 
 {
@@ -39,11 +40,13 @@ namespace Zital
 		bool mRunning = true;
 		LayerStack mLayerStack;
 
-		unsigned mVertexArray;
-		std::unique_ptr<Shader> mShader;
-		std::unique_ptr<VertexBuffer> mVertexBuffer;
-		std::unique_ptr<IndexBuffer> mIndexBuffer;
+		std::shared_ptr<Shader> mShader;
+		std::shared_ptr<VertexArray> mVertexArray;
 
+		std::shared_ptr<Shader> mBlueSquareShader;
+		std::shared_ptr<VertexArray> mSquareVA;
+
+	private:
 		static Application* sInstance;
 	};
 
