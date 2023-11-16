@@ -1,22 +1,19 @@
 #pragma once
 
+#include "RenderCommand.h"
 
 namespace Zital
 {
 
-	enum class RendererAPI
-	{
-		None = 0, //headless or when rendering not needed
-		OpenGL 
-	};
-
-
 	class Renderer
 	{
 	public:
-		inline static RendererAPI GetAPI() { return sRendererAPI; }
-	private:
-		static RendererAPI sRendererAPI;
+		static void BeginScene();
+		static void EndScene();
+
+		static void Submit(const std::shared_ptr<VertexArray>& _vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 
 }

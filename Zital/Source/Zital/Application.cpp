@@ -3,7 +3,7 @@
 
 #include "Zital/Log.h"
 
-#include <glad/glad.h>
+#include "Zital/Renderer/Renderer.h"
 
 #include "Input.h"
 
@@ -176,16 +176,22 @@ namespace Zital
 	{
 		while (mRunning)
 		{
-			glClearColor(0.1f, 0.1f, 0.1f, 1.f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+			RenderCommand::Clear();
 
+			Renderer::BeginScene();
+
+			//add meshes/geometry
 			mBlueSquareShader->Bind();
-			mSquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, mSquareVA->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(mSquareVA);
 
 			mShader->Bind();
-			mVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, mVertexArray->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(mVertexArray);
+
+			Renderer::EndScene();
+
+			//flushing render queue
+			//Renderer::Flush();
 
 			for (Layer* layer : mLayerStack)
 				layer->OnUpdate();

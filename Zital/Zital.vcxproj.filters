@@ -1377,6 +1377,9 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp">
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\RendererAPI.h" />
+    <ClInclude Include="Source\Zital\Renderer\RenderCommand.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1427,5 +1430,8 @@
     <ClCompile Include="Source\Zital\Renderer\VertexArray.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLRendererAPI.cpp" />
   </ItemGroup>
 </Project>
