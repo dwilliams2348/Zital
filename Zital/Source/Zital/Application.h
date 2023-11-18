@@ -13,6 +13,8 @@
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
 
+#include "Zital/Renderer/OrthographicCamera.h"
+
 namespace Zital 
 {
 
@@ -45,6 +47,8 @@ namespace Zital
 
 		std::shared_ptr<Shader> mBlueSquareShader;
 		std::shared_ptr<VertexArray> mSquareVA;
+
+		OrthographicCamera mCamera;
 
 	private:
 		static Application* sInstance;

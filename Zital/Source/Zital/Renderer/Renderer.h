@@ -2,18 +2,29 @@
 
 #include "RenderCommand.h"
 
+#include "OrthographicCamera.h"
+#include "Shader.h"
+
 namespace Zital
 {
 
 	class Renderer
 	{
 	public:
-		static void BeginScene();
+		static void BeginScene(OrthographicCamera& _camera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<VertexArray>& _vertexArray);
+		static void Submit(const std::shared_ptr<Shader>& _shader, const std::shared_ptr<VertexArray>& _vertexArray);
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+
+	private:
+		struct SceneData
+		{
+			glm::mat4 ViewProjectionMatrix;
+		};
+
+		static SceneData* mSceneData;
 	};
 
 }

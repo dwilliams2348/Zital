@@ -15,6 +15,7 @@ namespace Zital
 	Application* Application::sInstance = nullptr;
 
 	Application::Application()
+		: mCamera(-1.6f, 1.6f, -0.9f, 0.9f)
 	{
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
 		sInstance = this;
@@ -84,6 +85,8 @@ namespace Zital
 			layout(location = 0) in vec3 aPosition;
 			layout(location = 1) in vec4 aColor;
 
+			uniform mat4 uViewProjection;
+
 			out vec3 vPosition;
 			out vec4 vColor;
 
@@ -91,7 +94,7 @@ namespace Zital
 			{
 				vPosition = aPosition;
 				vColor = aColor;
-				gl_Position = vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * vec4(aPosition, 1.0);
 			}
 		)";
 
@@ -117,12 +120,14 @@ namespace Zital
 
 			layout(location = 0) in vec3 aPosition;
 
+			uniform mat4 uViewProjection;
+
 			out vec3 vPosition;
 
 			void main()
 			{
 				vPosition = aPosition;
-				gl_Position = vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * vec4(aPosition, 1.0);
 			}
 		)";
 
@@ -179,14 +184,13 @@ namespace Zital
 			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 			RenderCommand::Clear();
 
-			Renderer::BeginScene();
+			mCamera.SetRotation(45.f);
+
+			Renderer::BeginScene(mCamera);
 
 			//add meshes/geometry
-			mBlueSquareShader->Bind();
-			Renderer::Submit(mSquareVA);
-
-			mShader->Bind();
-			Renderer::Submit(mVertexArray);
+			Renderer::Submit(mBlueSquareShader, mSquareVA);
+			Renderer::Submit(mShader, mVertexArray);
 
 			Renderer::EndScene();
 

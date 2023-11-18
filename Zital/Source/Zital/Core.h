@@ -15,8 +15,8 @@
 #endif
 
 #ifdef ZT_ENABLE_ASSERTS
-	#define ZT_ASSERT(x, ...) {if(!(x))} { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define ZT_CORE_ASSERT(x, ...) {if(!(x))} { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define ZT_ASSERT(x, ...) {if(!(x)) { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define ZT_CORE_ASSERT(x, ...) {if(!(x)) { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #else
 	#define ZT_ASSERT(x, ...)
 	#define ZT_CORE_ASSERT(x, ...)

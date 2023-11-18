@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace Zital
 {
@@ -13,6 +14,8 @@ namespace Zital
 
 		void Bind() const;
 		void Unbind() const;
+
+		void UpdateUniformMat4(const std::string& _name, const glm::mat4& _matrix);
 
 	private:
 		uint32_t mRendererID;
