@@ -2,6 +2,7 @@
 #include "Shader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Zital
 {
@@ -123,6 +124,12 @@ namespace Zital
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void Shader::UpdateUniformMat4(const std::string& _name, const glm::mat4& _matrix)
+	{
+		GLint location = glGetUniformLocation(mRendererID, _name.c_str());
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(_matrix));
 	}
 
 }

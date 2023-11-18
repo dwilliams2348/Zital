@@ -7,6 +7,9 @@
     <Filter Include="Source\Platform">
       <UniqueIdentifier>{6A48A913-D6D3-16D8-DFE4-99CC4BEF72D8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Platform\OpenGL">
+      <UniqueIdentifier>{5E160775-4A10-30C7-337D-C6D71F169633}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Platform\Windows">
       <UniqueIdentifier>{A4BC056E-10F4-4D05-19FE-B12885B474FE}</UniqueIdentifier>
     </Filter>
@@ -18,6 +21,9 @@
     </Filter>
     <Filter Include="Source\Zital\ImGui">
       <UniqueIdentifier>{D3F44582-BFD8-06D8-2839-012B143CF159}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Zital\Renderer">
+      <UniqueIdentifier>{AF0EA9DE-1B7B-64D9-E46E-FC36509A8641}</UniqueIdentifier>
     </Filter>
     <Filter Include="Vendor">
       <UniqueIdentifier>{935FDCD7-7F01-07AE-68BC-1A0254FD8DFE}</UniqueIdentifier>
@@ -42,6 +48,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h">
       <Filter>Source\Platform\Windows</Filter>
     </ClInclude>
@@ -95,6 +113,27 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\MouseButtonCodes.h">
       <Filter>Source\Zital</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\Buffer.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\RenderCommand.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\Renderer.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\RendererAPI.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\Shader.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\VertexArray.h">
+      <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Window.h">
       <Filter>Source\Zital</Filter>
@@ -1347,14 +1386,21 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp">
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
-    <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h" />
-    <ClInclude Include="Source\Zital\Renderer\Shader.h" />
-    <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
-    <ClInclude Include="Source\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="Source\Zital\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp">
       <Filter>Source\Platform\Windows</Filter>
     </ClCompile>
@@ -1382,10 +1428,24 @@
     <ClCompile Include="Source\Zital\Log.cpp">
       <Filter>Source\Zital</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\Shader.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
-    <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\Renderer.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\RendererAPI.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\Shader.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\VertexArray.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

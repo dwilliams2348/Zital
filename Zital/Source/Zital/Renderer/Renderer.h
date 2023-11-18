@@ -1,22 +1,30 @@
 #pragma once
 
+#include "RenderCommand.h"
+
+#include "OrthographicCamera.h"
+#include "Shader.h"
 
 namespace Zital
 {
 
-	enum class RendererAPI
-	{
-		None = 0, //headless or when rendering not needed
-		OpenGL 
-	};
-
-
 	class Renderer
 	{
 	public:
-		inline static RendererAPI GetAPI() { return sRendererAPI; }
+		static void BeginScene(OrthographicCamera& _camera);
+		static void EndScene();
+
+		static void Submit(const std::shared_ptr<Shader>& _shader, const std::shared_ptr<VertexArray>& _vertexArray);
+
+		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+
 	private:
-		static RendererAPI sRendererAPI;
+		struct SceneData
+		{
+			glm::mat4 ViewProjectionMatrix;
+		};
+
+		static SceneData* mSceneData;
 	};
 
 }
