@@ -130,22 +130,24 @@ public:
 	}
 
 
-	void OnUpdate() override
+	void OnUpdate(Zital::TimeStep _deltaTime) override
 	{
+		//ZT_TRACE("Delta time: {0}s ({1}ms)", _deltaTime.GetSeconds(), _deltaTime.GetMilliseconds());
+
 		if (Zital::Input::IsKeyPressed(ZT_KEY_LEFT))
-			mCameraPosition.x -= mCameraMoveSpeed /** deltaTime*/;
+			mCameraPosition.x -= mCameraMoveSpeed * _deltaTime;
 		else if (Zital::Input::IsKeyPressed(ZT_KEY_RIGHT))
-			mCameraPosition.x += mCameraMoveSpeed /** deltaTime*/;
+			mCameraPosition.x += mCameraMoveSpeed * _deltaTime;
 
 		if (Zital::Input::IsKeyPressed(ZT_KEY_UP))
-			mCameraPosition.y += mCameraMoveSpeed /** deltaTime*/;
+			mCameraPosition.y += mCameraMoveSpeed * _deltaTime;
 		else if (Zital::Input::IsKeyPressed(ZT_KEY_DOWN))
-			mCameraPosition.y -= mCameraMoveSpeed /** deltaTime*/;
+			mCameraPosition.y -= mCameraMoveSpeed * _deltaTime;
 
 		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
-			mCameraRotation += mCameraRotateSpeed;
+			mCameraRotation += mCameraRotateSpeed * _deltaTime;
 		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
-			mCameraRotation -= mCameraRotateSpeed;
+			mCameraRotation -= mCameraRotateSpeed * _deltaTime;
 
 
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
@@ -184,10 +186,10 @@ private:
 
 	Zital::OrthographicCamera mCamera;
 	glm::vec3 mCameraPosition;
-	float mCameraMoveSpeed = 0.1f;
+	float mCameraMoveSpeed = 2.5f;
 
 	float mCameraRotation = 0.f;
-	float mCameraRotateSpeed = 0.75f;
+	float mCameraRotateSpeed = 90.f;
 };
 
 class Sandbox : public Zital::Application

@@ -1387,6 +1387,7 @@
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
+    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">

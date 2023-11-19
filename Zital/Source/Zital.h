@@ -6,6 +6,8 @@
 #include "Zital/Layer.h"
 #include "Zital/Log.h"
 
+#include "Zital/Core/TimeStep.h"
+
 #include "Zital/KeyCodes.h"
 #include "Zital/MouseButtonCodes.h"
 

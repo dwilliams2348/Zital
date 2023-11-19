@@ -7,6 +7,8 @@
 
 #include "Input.h"
 
+#include <GLFW/glfw3.h>
+
 namespace Zital
 {
 
@@ -60,8 +62,12 @@ namespace Zital
 	{
 		while (mRunning)
 		{
+			float time = (float)glfwGetTime(); //Platform::GetTime
+			TimeStep deltaTime = time - mLastFrameTime;
+			mLastFrameTime = time;
+
 			for (Layer* layer : mLayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(deltaTime);
 
 			mImGuiLayer->Begin();
 			for (Layer* layer : mLayerStack)
