@@ -126,6 +126,13 @@ namespace Zital
 		glUseProgram(0);
 	}
 
+	void Shader::UpdateUniformFloat4(const std::string& _name, const glm::vec4& _value)
+	{
+		GLint location = glGetUniformLocation(mRendererID, _name.c_str());
+		glUniform4f(location, _value.x, _value.y, _value.z, _value.w);
+		//glUniform4fv(location, 1, glm::value_ptr(_value));
+	}
+
 	void Shader::UpdateUniformMat4(const std::string& _name, const glm::mat4& _matrix)
 	{
 		GLint location = glGetUniformLocation(mRendererID, _name.c_str());

@@ -16,6 +16,9 @@
     <Filter Include="Source\Zital">
       <UniqueIdentifier>{E93465F3-D597-F497-7E1D-2D4E6A5FC01A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Zital\Core">
+      <UniqueIdentifier>{E1D2C049-4DE9-BEDF-9660-4A0102B68F67}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Zital\Events">
       <UniqueIdentifier>{AD2063C2-1982-40D0-A2EF-86820E50778F}</UniqueIdentifier>
     </Filter>
@@ -78,6 +81,9 @@
     <ClInclude Include="Source\Zital\Core.h">
       <Filter>Source\Zital</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Core\TimeStep.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Zital\EntryPoint.h">
       <Filter>Source\Zital</Filter>
     </ClInclude>
@@ -118,6 +124,9 @@
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\RenderCommand.h">
@@ -1386,8 +1395,6 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp">
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
-    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1432,6 +1439,9 @@
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
@@ -1447,6 +1457,5 @@
     <ClCompile Include="Source\Zital\Renderer\VertexArray.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

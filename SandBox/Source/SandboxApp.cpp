@@ -8,7 +8,7 @@ class ExampleLayer : public Zital::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f }), mSquarePosition({0.f, 0.f, 0.f})
+		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f })
 	{
 		mVertexArray.reset(Zital::VertexArray::Create());
 
@@ -100,7 +100,7 @@ public:
 
 		mShader.reset(new Zital::Shader(vertexSource, fragmentSource));
 
-		std::string blueVertexSource = R"(
+		std::string flatColorVertexSource = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 aPosition;
@@ -117,20 +117,22 @@ public:
 			}
 		)";
 
-		std::string blueFragmentSource = R"(
+		std::string flatColorFragmentSource = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
 
 			in vec3 vPosition;
 
+			uniform vec4 uColor;
+
 			void main()
 			{
-				color = vec4(0.2, 0.3, 0.8, 1);
+				color = uColor;
 			}
 		)";
 
-		mBlueSquareShader.reset(new Zital::Shader(blueVertexSource, blueFragmentSource));
+		mFlatColorShader.reset(new Zital::Shader(flatColorVertexSource, flatColorFragmentSource));
 	}
 
 
@@ -164,13 +166,23 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
+		static glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.f);
+		static glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.f);
+
 		for (int y = 0; y < 20; y++)
 		{
 			for (int x = 0; x < 20; x++)
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
-				Zital::Renderer::Submit(mBlueSquareShader, mSquareVA, transform);
+
+				//testing, should use batch rendering instead
+				if (x % 2 == 0)
+					mFlatColorShader->UpdateUniformFloat4("uColor", redColor);
+				else
+					mFlatColorShader->UpdateUniformFloat4("uColor", blueColor);
+
+				Zital::Renderer::Submit(mFlatColorShader, mSquareVA, transform);
 			}
 		}
 
@@ -196,7 +208,7 @@ private:
 	std::shared_ptr<Zital::Shader> mShader;
 	std::shared_ptr<Zital::VertexArray> mVertexArray;
 
-	std::shared_ptr<Zital::Shader> mBlueSquareShader;
+	std::shared_ptr<Zital::Shader> mFlatColorShader;
 	std::shared_ptr<Zital::VertexArray> mSquareVA;
 
 	Zital::OrthographicCamera mCamera;

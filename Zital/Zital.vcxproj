@@ -146,12 +146,11 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
-    <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Application.h" />
     <ClInclude Include="Source\Zital\Core.h" />
+    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
     <ClInclude Include="Source\Zital\EntryPoint.h" />
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h" />
     <ClInclude Include="Source\Zital\Events\Event.h" />
@@ -166,6 +165,7 @@
     <ClInclude Include="Source\Zital\MouseButtonCodes.h" />
     <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
+    <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Source\Zital\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Zital\Renderer\Renderer.h" />
     <ClInclude Include="Source\Zital\Renderer\RendererAPI.h" />
@@ -596,7 +596,6 @@
     <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -607,6 +606,7 @@
     <ClCompile Include="Source\Zital\LayerStack.cpp" />
     <ClCompile Include="Source\Zital\Log.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Renderer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RendererAPI.cpp" />

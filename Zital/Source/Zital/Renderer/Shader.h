@@ -15,6 +15,7 @@ namespace Zital
 		void Bind() const;
 		void Unbind() const;
 
+		void UpdateUniformFloat4(const std::string& _name, const glm::vec4& _value);
 		void UpdateUniformMat4(const std::string& _name, const glm::mat4& _matrix);
 
 	private:
