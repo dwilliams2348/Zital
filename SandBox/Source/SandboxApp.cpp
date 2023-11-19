@@ -2,11 +2,13 @@
 
 #include "imgui/imgui.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 class ExampleLayer : public Zital::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({0.f, 0.f, 0.f})
+		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f }), mSquarePosition({0.f, 0.f, 0.f})
 	{
 		mVertexArray.reset(Zital::VertexArray::Create());
 
@@ -40,10 +42,10 @@ public:
 
 		float squareVertices[3 * 4] =
 		{
-			-0.75f, -0.75f, 0.f,
-			0.75f, -0.75f, 0.f,
-			0.75f, 0.75f, 0.f,
-			-0.75f, 0.75f, 0.f
+			-0.5f, -0.5f, 0.f,
+			 0.5f, -0.5f, 0.f,
+			 0.5f,  0.5f, 0.f,
+			-0.5f,  0.5f, 0.f
 		};
 
 		std::shared_ptr<Zital::VertexBuffer> SquareVB;
@@ -68,6 +70,7 @@ public:
 			layout(location = 1) in vec4 aColor;
 
 			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
 
 			out vec3 vPosition;
 			out vec4 vColor;
@@ -76,7 +79,7 @@ public:
 			{
 				vPosition = aPosition;
 				vColor = aColor;
-				gl_Position = uViewProjection * vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
 			}
 		)";
 
@@ -103,13 +106,14 @@ public:
 			layout(location = 0) in vec3 aPosition;
 
 			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
 
 			out vec3 vPosition;
 
 			void main()
 			{
 				vPosition = aPosition;
-				gl_Position = uViewProjection * vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
 			}
 		)";
 
@@ -134,21 +138,21 @@ public:
 	{
 		//ZT_TRACE("Delta time: {0}s ({1}ms)", _deltaTime.GetSeconds(), _deltaTime.GetMilliseconds());
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_LEFT))
+		//camera movement + rotation
+		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
 			mCameraPosition.x -= mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_RIGHT))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
 			mCameraPosition.x += mCameraMoveSpeed * _deltaTime;
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_UP))
+		if (Zital::Input::IsKeyPressed(ZT_KEY_W))
 			mCameraPosition.y += mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_DOWN))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_S))
 			mCameraPosition.y -= mCameraMoveSpeed * _deltaTime;
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
+		if (Zital::Input::IsKeyPressed(ZT_KEY_Q))
 			mCameraRotation += mCameraRotateSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_E))
 			mCameraRotation -= mCameraRotateSpeed * _deltaTime;
-
 
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Zital::RenderCommand::Clear();
@@ -158,8 +162,19 @@ public:
 
 		Zital::Renderer::BeginScene(mCamera);
 
+		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
+				Zital::Renderer::Submit(mBlueSquareShader, mSquareVA, transform);
+			}
+		}
+
 		//add meshes/geometry
-		Zital::Renderer::Submit(mBlueSquareShader, mSquareVA);
 		Zital::Renderer::Submit(mShader, mVertexArray);
 
 		Zital::Renderer::EndScene();
