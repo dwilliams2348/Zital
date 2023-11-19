@@ -42,14 +42,6 @@ namespace Zital
 		bool mRunning = true;
 		LayerStack mLayerStack;
 
-		std::shared_ptr<Shader> mShader;
-		std::shared_ptr<VertexArray> mVertexArray;
-
-		std::shared_ptr<Shader> mBlueSquareShader;
-		std::shared_ptr<VertexArray> mSquareVA;
-
-		OrthographicCamera mCamera;
-
 	private:
 		static Application* sInstance;
 	};
