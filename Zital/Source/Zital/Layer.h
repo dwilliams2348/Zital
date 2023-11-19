@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zital/Core.h"
+#include "Zital/Core/TimeStep.h"
 #include "Zital/Events/Event.h"
 
 namespace Zital
@@ -14,7 +15,7 @@ namespace Zital
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(TimeStep _deltaTime) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& _event) {}
 

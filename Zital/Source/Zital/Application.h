@@ -7,13 +7,9 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 
+#include "Core/TimeStep.h"
+
 #include "ImGui/ImGuiLayer.h"
-
-#include "Renderer/Shader.h"
-#include "Renderer/Buffer.h"
-#include "Renderer/VertexArray.h"
-
-#include "Zital/Renderer/OrthographicCamera.h"
 
 namespace Zital 
 {
@@ -37,18 +33,13 @@ namespace Zital
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> mWindow;
 		ImGuiLayer* mImGuiLayer;
 		bool mRunning = true;
 		LayerStack mLayerStack;
+		float mLastFrameTime = 0.f;
 
-		std::shared_ptr<Shader> mShader;
-		std::shared_ptr<VertexArray> mVertexArray;
-
-		std::shared_ptr<Shader> mBlueSquareShader;
-		std::shared_ptr<VertexArray> mSquareVA;
-
-		OrthographicCamera mCamera;
 
 	private:
 		static Application* sInstance;
