@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <glm/glm.hpp>
 
 namespace Zital
 {
@@ -9,17 +8,13 @@ namespace Zital
 	class Shader
 	{
 	public:
-		Shader(const std::string& vertexSource, const std::string& fragmentSource);
-		~Shader();
+		virtual ~Shader() = default;
 
-		void Bind() const;
-		void Unbind() const;
+		virtual void Bind() const = 0;
+		virtual void Unbind() const = 0;
 
-		void UpdateUniformFloat4(const std::string& _name, const glm::vec4& _value);
-		void UpdateUniformMat4(const std::string& _name, const glm::mat4& _matrix);
+		static Shader* Create(const std::string& _vertexSource, const std::string& _fragmentSource);
 
-	private:
-		uint32_t mRendererID;
 	};
 
 }

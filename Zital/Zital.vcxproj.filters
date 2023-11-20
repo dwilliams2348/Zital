@@ -1395,6 +1395,7 @@
     <ClInclude Include="Vendor\glm\glm\vector_relational.hpp">
       <Filter>Vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1457,5 +1458,6 @@
     <ClCompile Include="Source\Zital\Renderer\VertexArray.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp" />
   </ItemGroup>
 </Project>

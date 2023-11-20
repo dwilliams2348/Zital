@@ -1,8 +1,11 @@
 #include <Zital.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Zital::Layer
 {
@@ -98,7 +101,7 @@ public:
 			}
 		)";
 
-		mShader.reset(new Zital::Shader(vertexSource, fragmentSource));
+		mShader.reset(Zital::Shader::Create(vertexSource, fragmentSource));
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -124,15 +127,15 @@ public:
 
 			in vec3 vPosition;
 
-			uniform vec4 uColor;
+			uniform vec3 uColor;
 
 			void main()
 			{
-				color = uColor;
+				color = vec4(uColor, 1.0);
 			}
 		)";
 
-		mFlatColorShader.reset(new Zital::Shader(flatColorVertexSource, flatColorFragmentSource));
+		mFlatColorShader.reset(Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
 	}
 
 
@@ -166,8 +169,8 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
-		static glm::vec4 redColor(0.8f, 0.2f, 0.3f, 1.f);
-		static glm::vec4 blueColor(0.2f, 0.3f, 0.8f, 1.f);
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mFlatColorShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mFlatColorShader)->UpdateUniformFloat3("uColor", mSquareColor);
 
 		for (int y = 0; y < 20; y++)
 		{
@@ -175,13 +178,6 @@ public:
 			{
 				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
 				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
-
-				//testing, should use batch rendering instead
-				if (x % 2 == 0)
-					mFlatColorShader->UpdateUniformFloat4("uColor", redColor);
-				else
-					mFlatColorShader->UpdateUniformFloat4("uColor", blueColor);
-
 				Zital::Renderer::Submit(mFlatColorShader, mSquareVA, transform);
 			}
 		}
@@ -197,7 +193,9 @@ public:
 
 	virtual void OnImGuiRender()
 	{
-		
+	ImGui::Begin("Settings");
+	ImGui::ColorEdit3("Square Color", glm::value_ptr(mSquareColor));
+	ImGui::End();
 	}
 
 	void OnEvent(Zital::Event& _event) override
@@ -217,6 +215,8 @@ private:
 
 	float mCameraRotation = 0.f;
 	float mCameraRotateSpeed = 90.f;
+
+	glm::vec3 mSquareColor = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public Zital::Application
