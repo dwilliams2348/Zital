@@ -17,7 +17,7 @@ namespace Zital
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& _shader, const std::shared_ptr<VertexArray>& _vertexArray, const glm::mat4& _transform)
+	void Renderer::Submit(const Ref<Shader>& _shader, const Ref<VertexArray>& _vertexArray, const glm::mat4& _transform)
 	{
 		_shader->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(_shader)->UpdateUniformMat4("uViewProjection", mSceneData->ViewProjectionMatrix);

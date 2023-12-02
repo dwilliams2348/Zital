@@ -22,7 +22,7 @@ public:
 			0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f
 		};
 
-		std::shared_ptr<Zital::VertexBuffer> vertexBuffer;
+		Zital::Ref<Zital::VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(Zital::VertexBuffer::Create(vertices, sizeof(vertices)));
 
 		Zital::BufferLayout layout =
@@ -35,7 +35,7 @@ public:
 		mVertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Zital::IndexBuffer> indexBuffer;
+		Zital::Ref<Zital::IndexBuffer> indexBuffer;
 		indexBuffer.reset(Zital::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		mVertexArray->SetIndexBuffer(indexBuffer);
@@ -51,7 +51,7 @@ public:
 			-0.5f,  0.5f, 0.f
 		};
 
-		std::shared_ptr<Zital::VertexBuffer> SquareVB;
+		Zital::Ref<Zital::VertexBuffer> SquareVB;
 		SquareVB.reset(Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 
 		SquareVB->SetLayout({ {Zital::ShaderDataType::Float3, "aPosition"} });
@@ -59,7 +59,7 @@ public:
 		mSquareVA->AddVertexBuffer(SquareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Zital::IndexBuffer> squareIB;
+		Zital::Ref<Zital::IndexBuffer> squareIB;
 		squareIB.reset(Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 
 		mSquareVA->SetIndexBuffer(squareIB);
@@ -203,11 +203,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<Zital::Shader> mShader;
-	std::shared_ptr<Zital::VertexArray> mVertexArray;
+	Zital::Ref<Zital::Shader> mShader;
+	Zital::Ref<Zital::VertexArray> mVertexArray;
 
-	std::shared_ptr<Zital::Shader> mFlatColorShader;
-	std::shared_ptr<Zital::VertexArray> mSquareVA;
+	Zital::Ref<Zital::Shader> mFlatColorShader;
+	Zital::Ref<Zital::VertexArray> mSquareVA;
 
 	Zital::OrthographicCamera mCamera;
 	glm::vec3 mCameraPosition;
