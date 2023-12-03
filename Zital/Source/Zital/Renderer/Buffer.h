@@ -113,7 +113,7 @@ namespace Zital
 	class VertexBuffer
 	{
 	public:
-		virtual ~VertexBuffer() {}
+		virtual ~VertexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
@@ -121,20 +121,20 @@ namespace Zital
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& _layout) = 0;
 
-		static VertexBuffer* Create(float* _vertices, uint32_t _size);
+		static Ref<VertexBuffer> Create(float* _vertices, uint32_t _size);
 	};
 
 	class IndexBuffer
 	{
 	public:
-		virtual ~IndexBuffer() {}
+		virtual ~IndexBuffer() = default;
 
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
 		virtual uint32_t GetIndexCount() const = 0;
 
-		static IndexBuffer* Create(uint32_t* _indices, uint32_t _count);
+		static Ref<IndexBuffer> Create(uint32_t* _indices, uint32_t _count);
 	};
 
 }

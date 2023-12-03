@@ -47,7 +47,7 @@ namespace Zital
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& _buffer)
+	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& _buffer)
 	{
 		ZT_CORE_ASSERT(_buffer->GetLayout().GetElements().size(), "Vertex buffer has no layout, cannot draw");
 		
@@ -71,7 +71,7 @@ namespace Zital
 		mVertexBuffers.push_back(_buffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& _buffer)
+	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& _buffer)
 	{
 		glBindVertexArray(mRendererID);
 		_buffer->Bind();

@@ -1,14 +1,19 @@
 #include <Zital.h>
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 #include "imgui/imgui.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class ExampleLayer : public Zital::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({0.f, 0.f, 0.f})
+		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f })
 	{
-		mVertexArray.reset(Zital::VertexArray::Create());
+		mVertexArray = Zital::VertexArray::Create();
 
 		float vertices[3 * 7] =
 		{
@@ -17,8 +22,8 @@ public:
 			0.f, 0.5f, 0.f, 0.8f, 0.8f, 0.2f, 1.f
 		};
 
-		std::shared_ptr<Zital::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Zital::VertexBuffer::Create(vertices, sizeof(vertices)));
+		Zital::Ref<Zital::VertexBuffer> vertexBuffer;
+		vertexBuffer = Zital::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		Zital::BufferLayout layout =
 		{
@@ -30,32 +35,34 @@ public:
 		mVertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		std::shared_ptr<Zital::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Zital::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		Zital::Ref<Zital::IndexBuffer> indexBuffer;
+		indexBuffer = Zital::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 
 		mVertexArray->SetIndexBuffer(indexBuffer);
 
 		//rendering square to screen with mutliple arrays
-		mSquareVA.reset(Zital::VertexArray::Create());
+		mSquareVA = (Zital::VertexArray::Create());
 
-		float squareVertices[3 * 4] =
+		float squareVertices[5 * 4] =
 		{
-			-0.75f, -0.75f, 0.f,
-			0.75f, -0.75f, 0.f,
-			0.75f, 0.75f, 0.f,
-			-0.75f, 0.75f, 0.f
+			-0.5f, -0.5f, 0.f, 0.f, 0.f,
+			 0.5f, -0.5f, 0.f, 1.f, 0.f,
+			 0.5f,  0.5f, 0.f, 1.f, 1.f,
+			-0.5f,  0.5f, 0.f, 0.f, 1.f
 		};
 
-		std::shared_ptr<Zital::VertexBuffer> SquareVB;
-		SquareVB.reset(Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		Zital::Ref<Zital::VertexBuffer> SquareVB;
+		SquareVB = Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
-		SquareVB->SetLayout({ {Zital::ShaderDataType::Float3, "aPosition"} });
+		SquareVB->SetLayout({
+			{Zital::ShaderDataType::Float3, "aPosition"},
+			{Zital::ShaderDataType::Float2, "aTexCoord"} });
 
 		mSquareVA->AddVertexBuffer(SquareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		std::shared_ptr<Zital::IndexBuffer> squareIB;
-		squareIB.reset(Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		Zital::Ref<Zital::IndexBuffer> squareIB;
+		squareIB = Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
 		mSquareVA->SetIndexBuffer(squareIB);
 
@@ -68,6 +75,7 @@ public:
 			layout(location = 1) in vec4 aColor;
 
 			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
 
 			out vec3 vPosition;
 			out vec4 vColor;
@@ -76,7 +84,7 @@ public:
 			{
 				vPosition = aPosition;
 				vColor = aColor;
-				gl_Position = uViewProjection * vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
 			}
 		)";
 
@@ -95,38 +103,81 @@ public:
 			}
 		)";
 
-		mShader.reset(new Zital::Shader(vertexSource, fragmentSource));
+		mShader = Zital::Shader::Create(vertexSource, fragmentSource);
 
-		std::string blueVertexSource = R"(
+		std::string flatColorVertexSource = R"(
 			#version 330 core
 
 			layout(location = 0) in vec3 aPosition;
 
 			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
 
 			out vec3 vPosition;
 
 			void main()
 			{
 				vPosition = aPosition;
-				gl_Position = uViewProjection * vec4(aPosition, 1.0);
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
 			}
 		)";
 
-		std::string blueFragmentSource = R"(
+		std::string flatColorFragmentSource = R"(
 			#version 330 core
 
 			layout(location = 0) out vec4 color;
 
 			in vec3 vPosition;
 
+			uniform vec3 uColor;
+
 			void main()
 			{
-				color = vec4(0.2, 0.3, 0.8, 1);
+				color = vec4(uColor, 1.0);
 			}
 		)";
 
-		mBlueSquareShader.reset(new Zital::Shader(blueVertexSource, blueFragmentSource));
+		mFlatColorShader = Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource);
+
+		std::string textureShaderVertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 aPosition;
+			layout(location = 1) in vec2 aTexCoord;
+
+			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
+
+			out vec2 vTexCoord;
+
+			void main()
+			{
+				vTexCoord = aTexCoord;
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
+			}
+		)";
+
+		std::string textureShaderFragmentSource = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec2 vTexCoord;
+
+			uniform sampler2D uTexture;
+
+			void main()
+			{
+				color = texture(uTexture, vTexCoord);
+			}
+		)";
+
+		mTextureShader = Zital::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource);
+
+		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
+
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->UpdateUniformInt("uTexture", 0);
 	}
 
 
@@ -134,21 +185,21 @@ public:
 	{
 		//ZT_TRACE("Delta time: {0}s ({1}ms)", _deltaTime.GetSeconds(), _deltaTime.GetMilliseconds());
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_LEFT))
+		//camera movement + rotation
+		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
 			mCameraPosition.x -= mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_RIGHT))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
 			mCameraPosition.x += mCameraMoveSpeed * _deltaTime;
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_UP))
+		if (Zital::Input::IsKeyPressed(ZT_KEY_W))
 			mCameraPosition.y += mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_DOWN))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_S))
 			mCameraPosition.y -= mCameraMoveSpeed * _deltaTime;
 
-		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
+		if (Zital::Input::IsKeyPressed(ZT_KEY_Q))
 			mCameraRotation += mCameraRotateSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
+		else if (Zital::Input::IsKeyPressed(ZT_KEY_E))
 			mCameraRotation -= mCameraRotateSpeed * _deltaTime;
-
 
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Zital::RenderCommand::Clear();
@@ -158,9 +209,26 @@ public:
 
 		Zital::Renderer::BeginScene(mCamera);
 
-		//add meshes/geometry
-		Zital::Renderer::Submit(mBlueSquareShader, mSquareVA);
-		Zital::Renderer::Submit(mShader, mVertexArray);
+		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
+
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mFlatColorShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mFlatColorShader)->UpdateUniformFloat3("uColor", mSquareColor);
+
+		for (int y = 0; y < 20; y++)
+		{
+			for (int x = 0; x < 20; x++)
+			{
+				glm::vec3 pos(x * 0.11f, y * 0.11f, 0.f);
+				glm::mat4 transform = glm::translate(glm::mat4(1.f), pos) * scale;
+				Zital::Renderer::Submit(mFlatColorShader, mSquareVA, transform);
+			}
+		}
+
+		mTexture->Bind();
+		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+
+		//triangle
+		//Zital::Renderer::Submit(mShader, mVertexArray);
 
 		Zital::Renderer::EndScene();
 
@@ -170,7 +238,9 @@ public:
 
 	virtual void OnImGuiRender()
 	{
-		
+	ImGui::Begin("Settings");
+	ImGui::ColorEdit3("Square Color", glm::value_ptr(mSquareColor));
+	ImGui::End();
 	}
 
 	void OnEvent(Zital::Event& _event) override
@@ -178,11 +248,13 @@ public:
 	}
 
 private:
-	std::shared_ptr<Zital::Shader> mShader;
-	std::shared_ptr<Zital::VertexArray> mVertexArray;
+	Zital::Ref<Zital::Shader> mShader;
+	Zital::Ref<Zital::VertexArray> mVertexArray;
 
-	std::shared_ptr<Zital::Shader> mBlueSquareShader;
-	std::shared_ptr<Zital::VertexArray> mSquareVA;
+	Zital::Ref<Zital::Shader> mFlatColorShader, mTextureShader;
+	Zital::Ref<Zital::VertexArray> mSquareVA;
+
+	Zital::Ref<Zital::Texture2D> mTexture;
 
 	Zital::OrthographicCamera mCamera;
 	glm::vec3 mCameraPosition;
@@ -190,6 +262,8 @@ private:
 
 	float mCameraRotation = 0.f;
 	float mCameraRotateSpeed = 90.f;
+
+	glm::vec3 mSquareColor = { 0.2f, 0.3f, 0.8f };
 };
 
 class Sandbox : public Zital::Application

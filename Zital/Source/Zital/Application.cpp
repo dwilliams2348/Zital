@@ -21,7 +21,7 @@ namespace Zital
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
 		sInstance = this;
 
-		mWindow = std::unique_ptr<Window>(Window::Create());
+		mWindow = Scope<Window>(Window::Create());
 		mWindow->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		mImGuiLayer = new ImGuiLayer();

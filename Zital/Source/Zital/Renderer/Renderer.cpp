@@ -1,6 +1,8 @@
 #include "ZTpch.h"
 #include "Renderer.h"
 
+#include "Platform/OpenGL/OpenGLShader.h"
+
 namespace Zital
 {
 
@@ -15,10 +17,11 @@ namespace Zital
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& _shader, const std::shared_ptr<VertexArray>& _vertexArray)
+	void Renderer::Submit(const Ref<Shader>& _shader, const Ref<VertexArray>& _vertexArray, const glm::mat4& _transform)
 	{
 		_shader->Bind();
-		_shader->UpdateUniformMat4("uViewProjection", mSceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(_shader)->UpdateUniformMat4("uViewProjection", mSceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(_shader)->UpdateUniformMat4("uTransform", _transform);
 
 		_vertexArray->Bind();
 		RenderCommand::DrawIndexed(_vertexArray);

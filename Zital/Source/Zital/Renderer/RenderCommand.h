@@ -18,7 +18,7 @@ namespace Zital
 			sRendererAPI->Clear();
 		}
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& _vertexArray)
+		inline static void DrawIndexed(const Ref<VertexArray>& _vertexArray)
 		{
 			sRendererAPI->DrawIndexed(_vertexArray);
 		}

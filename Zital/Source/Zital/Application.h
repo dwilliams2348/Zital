@@ -34,7 +34,7 @@ namespace Zital
 		bool OnWindowClosed(WindowCloseEvent& e);
 
 	private:
-		std::unique_ptr<Window> mWindow;
+		Scope<Window> mWindow;
 		ImGuiLayer* mImGuiLayer;
 		bool mRunning = true;
 		LayerStack mLayerStack;
