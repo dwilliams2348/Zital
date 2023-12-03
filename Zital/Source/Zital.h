@@ -19,6 +19,7 @@
 
 #include "Zital/Renderer/Shader.h"
 #include "Zital/Renderer/Buffer.h"
+#include "Zital/Renderer/Texture.h"
 #include "Zital/Renderer/VertexArray.h"
 
 #include "Zital/Renderer/OrthoGraphicCamera.h"

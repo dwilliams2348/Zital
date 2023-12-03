@@ -18,6 +18,7 @@ IncludeDir["GLFW"] = "Zital/Vendor/GLFW/include"
 IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Zital/Vendor/imgui"
 IncludeDir["glm"] = "Zital/Vendor/glm"
+IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
 
 include "Zital/Vendor/GLFW"
 include "Zital/Vendor/Glad"
@@ -40,6 +41,8 @@ project "Zital"
 	{
 		"%{prj.name}/Source/**.h",
 		"%{prj.name}/Source/**.cpp",
+		"%{prj.name}/Vendor/stb_image/**.h",
+		"%{prj.name}/Vendor/stb_image/**.cpp",
 		"%{prj.name}/Vendor/glm/**.hpp",
 		"%{prj.name}/Vendor/glm/**.inl"
 	}
@@ -57,7 +60,8 @@ project "Zital"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	links

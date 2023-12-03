@@ -13,7 +13,7 @@ public:
 	ExampleLayer()
 		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f })
 	{
-		mVertexArray.reset(Zital::VertexArray::Create());
+		mVertexArray = Zital::VertexArray::Create();
 
 		float vertices[3 * 7] =
 		{
@@ -23,7 +23,7 @@ public:
 		};
 
 		Zital::Ref<Zital::VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(Zital::VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = Zital::VertexBuffer::Create(vertices, sizeof(vertices));
 
 		Zital::BufferLayout layout =
 		{
@@ -36,31 +36,33 @@ public:
 
 		uint32_t indices[3] = { 0, 1, 2 };
 		Zital::Ref<Zital::IndexBuffer> indexBuffer;
-		indexBuffer.reset(Zital::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = Zital::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 
 		mVertexArray->SetIndexBuffer(indexBuffer);
 
 		//rendering square to screen with mutliple arrays
-		mSquareVA.reset(Zital::VertexArray::Create());
+		mSquareVA = (Zital::VertexArray::Create());
 
-		float squareVertices[3 * 4] =
+		float squareVertices[5 * 4] =
 		{
-			-0.5f, -0.5f, 0.f,
-			 0.5f, -0.5f, 0.f,
-			 0.5f,  0.5f, 0.f,
-			-0.5f,  0.5f, 0.f
+			-0.5f, -0.5f, 0.f, 0.f, 0.f,
+			 0.5f, -0.5f, 0.f, 1.f, 0.f,
+			 0.5f,  0.5f, 0.f, 1.f, 1.f,
+			-0.5f,  0.5f, 0.f, 0.f, 1.f
 		};
 
 		Zital::Ref<Zital::VertexBuffer> SquareVB;
-		SquareVB.reset(Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		SquareVB = Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
-		SquareVB->SetLayout({ {Zital::ShaderDataType::Float3, "aPosition"} });
+		SquareVB->SetLayout({
+			{Zital::ShaderDataType::Float3, "aPosition"},
+			{Zital::ShaderDataType::Float2, "aTexCoord"} });
 
 		mSquareVA->AddVertexBuffer(SquareVB);
 
 		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
 		Zital::Ref<Zital::IndexBuffer> squareIB;
-		squareIB.reset(Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIB = Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 
 		mSquareVA->SetIndexBuffer(squareIB);
 
@@ -101,7 +103,7 @@ public:
 			}
 		)";
 
-		mShader.reset(Zital::Shader::Create(vertexSource, fragmentSource));
+		mShader = Zital::Shader::Create(vertexSource, fragmentSource);
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -135,7 +137,47 @@ public:
 			}
 		)";
 
-		mFlatColorShader.reset(Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource));
+		mFlatColorShader = Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource);
+
+		std::string textureShaderVertexSource = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 aPosition;
+			layout(location = 1) in vec2 aTexCoord;
+
+			uniform mat4 uViewProjection;
+			uniform mat4 uTransform;
+
+			out vec2 vTexCoord;
+
+			void main()
+			{
+				vTexCoord = aTexCoord;
+				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
+			}
+		)";
+
+		std::string textureShaderFragmentSource = R"(
+			#version 330 core
+
+			layout(location = 0) out vec4 color;
+
+			in vec2 vTexCoord;
+
+			uniform sampler2D uTexture;
+
+			void main()
+			{
+				color = texture(uTexture, vTexCoord);
+			}
+		)";
+
+		mTextureShader = Zital::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource);
+
+		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
+
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->UpdateUniformInt("uTexture", 0);
 	}
 
 
@@ -182,8 +224,11 @@ public:
 			}
 		}
 
-		//add meshes/geometry
-		Zital::Renderer::Submit(mShader, mVertexArray);
+		mTexture->Bind();
+		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+
+		//triangle
+		//Zital::Renderer::Submit(mShader, mVertexArray);
 
 		Zital::Renderer::EndScene();
 
@@ -206,8 +251,10 @@ private:
 	Zital::Ref<Zital::Shader> mShader;
 	Zital::Ref<Zital::VertexArray> mVertexArray;
 
-	Zital::Ref<Zital::Shader> mFlatColorShader;
+	Zital::Ref<Zital::Shader> mFlatColorShader, mTextureShader;
 	Zital::Ref<Zital::VertexArray> mSquareVA;
+
+	Zital::Ref<Zital::Texture2D> mTexture;
 
 	Zital::OrthographicCamera mCamera;
 	glm::vec3 mCameraPosition;

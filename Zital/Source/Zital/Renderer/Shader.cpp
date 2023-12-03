@@ -7,12 +7,12 @@
 namespace Zital
 {
 
-	Shader* Shader::Create(const std::string& _vertexSource, const std::string& _fragmentSource)
+	Ref<Shader> Shader::Create(const std::string& _vertexSource, const std::string& _fragmentSource)
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported.");	return nullptr;
-			case RendererAPI::API::OpenGL:	return new OpenGLShader(_vertexSource, _fragmentSource);
+			case RendererAPI::API::OpenGL:	return Ref<Shader>(new OpenGLShader(_vertexSource, _fragmentSource));
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown RendererAPI.");
