@@ -175,6 +175,7 @@ public:
 		mTextureShader = Zital::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource);
 
 		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
+		mTransparentTexture = Zital::Texture2D::Create("Assets/Textures/transparentImg.png");
 
 		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->Bind();
 		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->UpdateUniformInt("uTexture", 0);
@@ -226,6 +227,8 @@ public:
 
 		mTexture->Bind();
 		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		mTransparentTexture->Bind();
+		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 
 		//triangle
 		//Zital::Renderer::Submit(mShader, mVertexArray);
@@ -254,7 +257,7 @@ private:
 	Zital::Ref<Zital::Shader> mFlatColorShader, mTextureShader;
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 
-	Zital::Ref<Zital::Texture2D> mTexture;
+	Zital::Ref<Zital::Texture2D> mTexture, mTransparentTexture;
 
 	Zital::OrthographicCamera mCamera;
 	glm::vec3 mCameraPosition;

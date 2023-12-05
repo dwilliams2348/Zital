@@ -8,6 +8,11 @@ namespace Zital
 
 	Renderer::SceneData* Renderer::mSceneData = new Renderer::SceneData;
 
+	void Renderer::Init()
+	{
+		RenderCommand::Init();
+	}
+
 	void Renderer::BeginScene(OrthographicCamera& _camera)
 	{
 		mSceneData->ViewProjectionMatrix = _camera.GetViewProjectionMatrix();

@@ -11,6 +11,8 @@ namespace Zital
 	class Renderer
 	{
 	public:
+		static void Init();
+
 		static void BeginScene(OrthographicCamera& _camera);
 		static void EndScene();
 

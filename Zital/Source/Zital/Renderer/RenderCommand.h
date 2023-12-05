@@ -8,6 +8,11 @@ namespace Zital
 	class RenderCommand
 	{
 	public:
+		inline static void Init()
+		{
+			sRendererAPI->Init();
+		}
+
 		inline static void SetClearColor(const glm::vec4& _color)
 		{
 			sRendererAPI->SetClearColor(_color);
