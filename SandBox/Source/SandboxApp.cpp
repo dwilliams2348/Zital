@@ -139,40 +139,7 @@ public:
 
 		mFlatColorShader = Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource);
 
-		std::string textureShaderVertexSource = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 aPosition;
-			layout(location = 1) in vec2 aTexCoord;
-
-			uniform mat4 uViewProjection;
-			uniform mat4 uTransform;
-
-			out vec2 vTexCoord;
-
-			void main()
-			{
-				vTexCoord = aTexCoord;
-				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSource = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec2 vTexCoord;
-
-			uniform sampler2D uTexture;
-
-			void main()
-			{
-				color = texture(uTexture, vTexCoord);
-			}
-		)";
-
-		mTextureShader = Zital::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource);
+		mTextureShader = Zital::Shader::Create("Assets/Shaders/Texture.glsl");
 
 		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 		mTransparentTexture = Zital::Texture2D::Create("Assets/Textures/transparentImg.png");
