@@ -12,7 +12,7 @@ class ExampleLayer : public Zital::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f })
+		: Layer("Example"), mCameraController(1280.f / 720.f)
 	{
 		mVertexArray = Zital::VertexArray::Create();
 
@@ -151,33 +151,16 @@ public:
 	}
 
 
-	void OnUpdate(Zital::TimeStep _deltaTime) override
+	void OnUpdate(Zital::Timestep _deltaTime) override
 	{
-		//ZT_TRACE("Delta time: {0}s ({1}ms)", _deltaTime.GetSeconds(), _deltaTime.GetMilliseconds());
+		//Update
+		mCameraController.OnUpdate(_deltaTime);
 
-		//camera movement + rotation
-		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
-			mCameraPosition.x -= mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
-			mCameraPosition.x += mCameraMoveSpeed * _deltaTime;
-
-		if (Zital::Input::IsKeyPressed(ZT_KEY_W))
-			mCameraPosition.y += mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_S))
-			mCameraPosition.y -= mCameraMoveSpeed * _deltaTime;
-
-		if (Zital::Input::IsKeyPressed(ZT_KEY_Q))
-			mCameraRotation += mCameraRotateSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_E))
-			mCameraRotation -= mCameraRotateSpeed * _deltaTime;
-
+		//Render
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Zital::RenderCommand::Clear();
 
-		mCamera.SetPosition(mCameraPosition);
-		mCamera.SetRotation(mCameraRotation);
-
-		Zital::Renderer::BeginScene(mCamera);
+		Zital::Renderer::BeginScene(mCameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
@@ -219,6 +202,7 @@ public:
 
 	void OnEvent(Zital::Event& _event) override
 	{
+		mCameraController.OnEvent(_event);
 	}
 
 private:
@@ -231,12 +215,7 @@ private:
 
 	Zital::Ref<Zital::Texture2D> mTexture, mTransparentTexture;
 
-	Zital::OrthographicCamera mCamera;
-	glm::vec3 mCameraPosition;
-	float mCameraMoveSpeed = 2.5f;
-
-	float mCameraRotation = 0.f;
-	float mCameraRotateSpeed = 90.f;
+	Zital::OrthographicCameraController mCameraController;
 
 	glm::vec3 mSquareColor = { 0.2f, 0.3f, 0.8f };
 };

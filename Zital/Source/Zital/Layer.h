@@ -15,7 +15,7 @@ namespace Zital
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate(TimeStep _deltaTime) {}
+		virtual void OnUpdate(Timestep _deltaTime) {}
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event& _event) {}
 

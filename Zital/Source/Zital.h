@@ -11,6 +11,8 @@
 #include "Zital/KeyCodes.h"
 #include "Zital/MouseButtonCodes.h"
 
+#include "Zital/OrthographicCameraController.h"
+
 #include "Zital/ImGui/ImGuiLayer.h"
 
 //----------Rendering------------

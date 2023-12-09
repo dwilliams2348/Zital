@@ -65,7 +65,7 @@ namespace Zital
 		while (mRunning)
 		{
 			float time = (float)glfwGetTime(); //Platform::GetTime
-			TimeStep deltaTime = time - mLastFrameTime;
+			Timestep deltaTime = time - mLastFrameTime;
 			mLastFrameTime = time;
 
 			for (Layer* layer : mLayerStack)

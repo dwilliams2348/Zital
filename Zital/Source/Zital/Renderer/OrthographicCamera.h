@@ -9,12 +9,14 @@ namespace Zital
 	{
 	public:
 		OrthographicCamera(float _left, float _right, float _bottom, float _top);
+		void SetProjection(float _left, float _right, float _bottom, float _top);
 
 		const glm::vec3& GetPosition() const { return mPosition; }
 		void SetPosition(const glm::vec3& _position) { mPosition = _position; RecalculateViewMatrix(); }
 
 		const float& GetRotation() const { return mRotation; }
 		void SetRotation(const float& _rotation) { mRotation = _rotation; RecalculateViewMatrix(); }
+
 
 		const glm::mat4& GetViewMatrix() const { return mViewMatrix; }
 		const glm::mat4& GetProjectionMatrix() const { return mProjectionMatrix; }

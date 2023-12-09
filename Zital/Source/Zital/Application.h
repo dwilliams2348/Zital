@@ -7,7 +7,7 @@
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
 
-#include "Core/TimeStep.h"
+#include "Core/Timestep.h"
 
 #include "ImGui/ImGuiLayer.h"
 
