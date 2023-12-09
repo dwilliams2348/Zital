@@ -14,11 +14,13 @@ namespace Zital
 	{
 	public:
 		OpenGLShader(const std::string& _filepath);
-		OpenGLShader(const std::string& _vertexSource, const std::string& _fragmentSource);
+		OpenGLShader(const std::string& _name, const std::string& _vertexSource, const std::string& _fragmentSource);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
+
+		virtual const std::string& GetName() const override { return mName; }
 
 		void UpdateUniformInt(const std::string& _name, int _value);
 
@@ -37,6 +39,7 @@ namespace Zital
 
 	private:
 		uint32_t mRendererID;
+		std::string mName;
 
 	};
 

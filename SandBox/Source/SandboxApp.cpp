@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 class ExampleLayer : public Zital::Layer
 {
 public:
@@ -103,7 +104,7 @@ public:
 			}
 		)";
 
-		mShader = Zital::Shader::Create(vertexSource, fragmentSource);
+		mShader = Zital::Shader::Create("VertexPosColor", vertexSource, fragmentSource);
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -137,15 +138,16 @@ public:
 			}
 		)";
 
-		mFlatColorShader = Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource);
+		mFlatColorShader = Zital::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource);
 
-		mTextureShader = Zital::Shader::Create("Assets/Shaders/Texture.glsl");
+		auto textureShader = mShaderLibrary.Load("Assets/Shaders/Texture.glsl");
+		//mTextureShader = Zital::Shader::Create("Assets/Shaders/Texture.glsl");
 
 		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 		mTransparentTexture = Zital::Texture2D::Create("Assets/Textures/transparentImg.png");
 
-		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->Bind();
-		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->UpdateUniformInt("uTexture", 0);
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(textureShader)->UpdateUniformInt("uTexture", 0);
 	}
 
 
@@ -192,10 +194,12 @@ public:
 			}
 		}
 
+		auto textureShader = mShaderLibrary.Get("Texture");
+
 		mTexture->Bind();
-		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		Zital::Renderer::Submit(textureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 		mTransparentTexture->Bind();
-		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		Zital::Renderer::Submit(textureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 
 		//triangle
 		//Zital::Renderer::Submit(mShader, mVertexArray);
@@ -218,10 +222,11 @@ public:
 	}
 
 private:
+	Zital::ShaderLibrary mShaderLibrary;
 	Zital::Ref<Zital::Shader> mShader;
 	Zital::Ref<Zital::VertexArray> mVertexArray;
 
-	Zital::Ref<Zital::Shader> mFlatColorShader, mTextureShader;
+	Zital::Ref<Zital::Shader> mFlatColorShader;
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 
 	Zital::Ref<Zital::Texture2D> mTexture, mTransparentTexture;

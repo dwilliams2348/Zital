@@ -21,9 +21,19 @@ namespace Zital
 		std::string shaderSource = ReadFile(_filepath);
 		auto shaderSources = PreProcess(shaderSource);
 		Compile(shaderSources);
+
+		//extracting name from filepath
+		auto lastSlash = _filepath.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+
+		auto lastDot = _filepath.rfind('.');
+		auto count = lastDot == std::string::npos ? _filepath.size() - lastSlash : lastDot - lastSlash;
+
+		mName = _filepath.substr(lastSlash, count);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& _vertexSource, const std::string& _fragmentSource)
+	OpenGLShader::OpenGLShader(const std::string& _name, const std::string& _vertexSource, const std::string& _fragmentSource)
+		: mName(_name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = _vertexSource;
@@ -39,7 +49,7 @@ namespace Zital
 	std::string OpenGLShader::ReadFile(const std::string& _filepath)
 	{
 		std::string result;
-		std::ifstream in(_filepath, std::ios::in, std::ios::binary);
+		std::ifstream in(_filepath, std::ios::in | std::ios::binary);
 
 		if (in)
 		{
@@ -85,7 +95,9 @@ namespace Zital
 	{
 		// Get a program object.
 		GLuint program = glCreateProgram();
-		std::vector<GLenum> glShaderIDs(_shaderSources.size());
+		ZT_CORE_ASSERT(_shaderSources.size() <= 2, "Only upto 2 shader types are supported at this time.");
+		std::array<GLenum, 2> glShaderIDs;
+		int glShaderIndex = 0;
 		
 		for (auto& keyVal : _shaderSources)
 		{
@@ -124,7 +136,7 @@ namespace Zital
 
 			//attach the shaders
 			glAttachShader(program, shader);
-			glShaderIDs.push_back(shader);
+			glShaderIDs[glShaderIndex++] = shader;
 		}
 
 		// Link our program
