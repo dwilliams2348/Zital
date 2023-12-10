@@ -51,6 +51,7 @@ namespace Zital
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResized));
 
 		for (auto it = mLayerStack.end(); it != mLayerStack.begin(); )
 		{
@@ -68,8 +69,11 @@ namespace Zital
 			Timestep deltaTime = time - mLastFrameTime;
 			mLastFrameTime = time;
 
-			for (Layer* layer : mLayerStack)
-				layer->OnUpdate(deltaTime);
+			if (!mMinimized)
+			{
+				for (Layer* layer : mLayerStack)
+					layer->OnUpdate(deltaTime);
+			}
 
 			mImGuiLayer->Begin();
 			for (Layer* layer : mLayerStack)
@@ -85,6 +89,21 @@ namespace Zital
 		mRunning = false;
 
 		return true;
+	}
+
+	bool Application::OnWindowResized(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			mMinimized = true;
+
+			return false;
+		}
+
+		mMinimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 
 }

@@ -11,7 +11,12 @@ namespace Zital
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	void OpenGLRendererAPI::SetClearColor(const glm::vec4& _color)
+    void OpenGLRendererAPI::SetViewport(uint32_t _x, uint32_t _y, uint32_t _width, uint32_t _height)
+    {
+		glViewport(_x, _y, _width, _height);
+    }
+
+    void OpenGLRendererAPI::SetClearColor(const glm::vec4& _color)
 	{
 		glClearColor(_color.r, _color.g, _color.b, _color.a);
 	}

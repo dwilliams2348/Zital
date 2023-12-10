@@ -13,6 +13,11 @@ namespace Zital
 		RenderCommand::Init();
 	}
 
+    void Renderer::OnWindowResize(uint32_t _width, uint32_t _height)
+    {
+		RenderCommand::SetViewport(0, 0, _width, _height);
+    }
+
 	void Renderer::BeginScene(OrthographicCamera& _camera)
 	{
 		mSceneData->ViewProjectionMatrix = _camera.GetViewProjectionMatrix();

@@ -13,6 +13,11 @@ namespace Zital
 			sRendererAPI->Init();
 		}
 
+		inline static void SetViewport(uint32_t _x, uint32_t _y, uint32_t _width, uint32_t _height)
+		{
+			sRendererAPI->SetViewport(_x, _y, _width, _height);
+		}
+
 		inline static void SetClearColor(const glm::vec4& _color)
 		{
 			sRendererAPI->SetClearColor(_color);

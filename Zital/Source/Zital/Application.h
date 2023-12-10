@@ -32,11 +32,13 @@ namespace Zital
 
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);
+		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
 		Scope<Window> mWindow;
 		ImGuiLayer* mImGuiLayer;
 		bool mRunning = true;
+		bool mMinimized = false;
 		LayerStack mLayerStack;
 		float mLastFrameTime = 0.f;
 

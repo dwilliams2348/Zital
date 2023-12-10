@@ -13,6 +13,8 @@ namespace Zital
 	public:
 		static void Init();
 
+		static void OnWindowResize(uint32_t _width, uint32_t _height);
+
 		static void BeginScene(OrthographicCamera& _camera);
 		static void EndScene();
 
