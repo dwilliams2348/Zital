@@ -53,12 +53,13 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 	Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 	Zital::RenderCommand::Clear();
 
-	Zital::Renderer::BeginScene(mCameraController.GetCamera());
+	Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-	std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->Bind();
-	std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->UpdateUniformFloat4("uColor", mSquareColor);
+	Zital::Renderer2D::DrawQuad({ 0.f, 0.f }, { 1.f, 1.f }, { 0.8f, 0.2f, 0.3f, 1.f });
 
-	Zital::Renderer::Submit(mShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+	Zital::Renderer2D::EndScene();
+	//std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->Bind();
+	//std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->UpdateUniformFloat4("uColor", mSquareColor);
 }
 
 void Sandbox2D::OnImGuiRender()

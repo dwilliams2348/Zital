@@ -45,7 +45,7 @@ public:
 		mVertexArray->SetIndexBuffer(indexBuffer);
 
 		//rendering square to screen with mutliple arrays
-		mSquareVA = (Zital::VertexArray::Create());
+		mSquareVA = Zital::VertexArray::Create();
 
 		float squareVertices[5 * 4] =
 		{

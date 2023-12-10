@@ -17,6 +17,7 @@
 
 //----------Rendering------------
 #include "Zital/Renderer/Renderer.h"
+#include "Zital/Renderer/Renderer2D.h"
 #include "Zital/Renderer/RenderCommand.h"
 
 #include "Zital/Renderer/Shader.h"
