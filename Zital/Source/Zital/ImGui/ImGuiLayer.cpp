@@ -7,7 +7,7 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
-#include "Zital/Application.h"
+#include "Zital/Core/Application.h"
 
 //Temporary
 #include <GLFW/glfw3.h>

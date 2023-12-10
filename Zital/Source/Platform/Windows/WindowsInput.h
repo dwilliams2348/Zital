@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zital/Input.h"
+#include "Zital/Core/Input.h"
 
 namespace Zital
 {

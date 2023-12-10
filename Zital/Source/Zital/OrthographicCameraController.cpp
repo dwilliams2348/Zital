@@ -1,8 +1,8 @@
 #include "ZTpch.h"
 #include "OrthographicCameraController.h"
 
-#include "Zital/Input.h"
-#include "Zital/KeyCodes.h"
+#include "Zital/Core/Input.h"
+#include "Zital/Core/KeyCodes.h"
 
 namespace Zital
 {

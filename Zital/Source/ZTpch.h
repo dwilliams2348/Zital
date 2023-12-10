@@ -15,7 +15,7 @@
 #include <unordered_set>
 
 //logging
-#include "Zital/Log.h"
+#include "Zital/Core/Log.h"
 
 #ifdef ZT_PLATFORM_WINDOWS
 	#include <Windows.h>

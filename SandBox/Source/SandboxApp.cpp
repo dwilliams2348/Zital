@@ -176,7 +176,7 @@ public:
 				Zital::Renderer::Submit(mFlatColorShader, mSquareVA, transform);
 			}
 		}
-
+		
 		auto textureShader = mShaderLibrary.Get("Texture");
 
 		mTexture->Bind();

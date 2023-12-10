@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 #include "Layer.h"
 
 #include <vector>

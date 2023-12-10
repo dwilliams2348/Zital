@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 
 namespace Zital
 {

@@ -1,11 +1,11 @@
 #include "ZTpch.h"
 #include "Application.h"
 
-#include "Zital/Log.h"
+#include "Zital/Core/Log.h"
 
 #include "Zital/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "Zital/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -52,7 +52,7 @@ namespace Zital
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResized));
-
+		
 		for (auto it = mLayerStack.end(); it != mLayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);

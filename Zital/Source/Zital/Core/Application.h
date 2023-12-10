@@ -3,13 +3,13 @@
 #include "Core.h"
 
 #include "Window.h"
-#include "Zital/LayerStack.h"
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
+#include "Zital/Core/LayerStack.h"
+#include "Zital/Events/Event.h"
+#include "Zital/Events/ApplicationEvent.h"
 
-#include "Core/Timestep.h"
+#include "Zital/Core/Timestep.h"
 
-#include "ImGui/ImGuiLayer.h"
+#include "Zital/ImGui/ImGuiLayer.h"
 
 namespace Zital 
 {

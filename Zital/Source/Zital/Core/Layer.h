@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 #include "Zital/Core/TimeStep.h"
 #include "Zital/Events/Event.h"
 

@@ -2,7 +2,7 @@
 
 #include "ZTpch.h"
 
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 #include "Zital/Events/Event.h"
 
 namespace Zital
