@@ -3,10 +3,23 @@
 
 #include <stb_image.h>
 
-#include <glad/glad.h>
-
 namespace Zital
 {
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t _width, uint32_t _height)
+		: mWidth(_width), mHeight(_height)
+	{
+		mInternalFormat = GL_RGBA8;
+		mDataFormat = GL_RGBA;
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &mRendererID);
+		glTextureStorage2D(mRendererID, 1, mInternalFormat, mWidth, mHeight);
+
+		glTextureParameteri(mRendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(mRendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(mRendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(mRendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
 
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& _filepath)
 		: mFilepath(_filepath)
@@ -32,11 +45,17 @@ namespace Zital
 
 		ZT_CORE_ASSERT(internalFormat && dataFormat, "Texture color formatting is invalid.");
 
+		mInternalFormat = internalFormat;
+		mDataFormat = dataFormat;
+
 		glCreateTextures(GL_TEXTURE_2D, 1, &mRendererID);
 		glTextureStorage2D(mRendererID, 1, internalFormat, mWidth, mHeight);
 
 		glTextureParameteri(mRendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(mRendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glTextureParameteri(mRendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(mRendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glTextureSubImage2D(mRendererID, 0, 0, 0, mWidth, mHeight, dataFormat, GL_UNSIGNED_BYTE, data);
 
@@ -46,6 +65,13 @@ namespace Zital
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
 		glDeleteTextures(1, &mRendererID);
+	}
+
+	void OpenGLTexture2D::SetData(void* _data, uint32_t _size)
+	{
+		uint32_t bytesPerPixel = mDataFormat == GL_RGBA ? 4 : 3;
+		ZT_CORE_ASSERT(_size == mWidth * mHeight * bytesPerPixel, "Data must be entire texture.");
+		glTextureSubImage2D(mRendererID, 0, 0, 0, mWidth, mHeight, mDataFormat, GL_UNSIGNED_BYTE, _data);
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t _slot) const

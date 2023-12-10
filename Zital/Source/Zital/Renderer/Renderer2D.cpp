@@ -13,8 +13,8 @@ namespace Zital
 	struct Renderer2DStorage
 	{
 		Ref<VertexArray> QuadVertexArray;
-		Ref<Shader> FlatColorShader;
 		Ref<Shader> TextureShader;
+		Ref<Texture2D> WhiteTexture;
 	};
 
 	static Renderer2DStorage* sData;
@@ -49,7 +49,10 @@ namespace Zital
 
 		sData->QuadVertexArray->SetIndexBuffer(squareIB);
 
-		sData->FlatColorShader = Shader::Create("Assets/Shaders/FlatColor.glsl");
+		sData->WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t whiteTexData = 0xFFFFFFFF;
+		sData->WhiteTexture->SetData(&whiteTexData, sizeof(whiteTexData));
+
 		sData->TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
 		sData->TextureShader->Bind();
 		sData->TextureShader->SetInt("uTexture", 0);
@@ -62,9 +65,6 @@ namespace Zital
 
 	void Renderer2D::BeginScene(const OrthographicCamera& _camera)
 	{
-		sData->FlatColorShader->Bind();
-		sData->FlatColorShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
-
 		sData->TextureShader->Bind();
 		sData->TextureShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
 	}
@@ -81,13 +81,14 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const float& _rotation, const glm::vec2& _size, const glm::vec4& _color)
 	{
-		sData->FlatColorShader->Bind();
-		sData->FlatColorShader->SetFloat4("uColor", _color);
+		sData->TextureShader->Bind();
+		sData->TextureShader->SetFloat4("uColor", _color);
+		sData->WhiteTexture->Bind();
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * /*add rotation next*/
 			glm::rotate(glm::mat4(1.f), glm::radians(_rotation), {0.f, 0.f, 1.f}) *
 			glm::scale(glm::mat4(1.f), {_size.x, _size.y, 1.f});
-		sData->FlatColorShader->SetMat4("uTransform", transform);
+		sData->TextureShader->SetMat4("uTransform", transform);
 
 		sData->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(sData->QuadVertexArray);
@@ -102,13 +103,14 @@ namespace Zital
 	{
 		sData->TextureShader->Bind();
 
+		sData->TextureShader->SetFloat4("uColor", glm::vec4(1.f));
+		_texture->Bind();
+
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * /*add rotation next*/
 			glm::rotate(glm::mat4(1.f), glm::radians(_rotation), { 0.f, 0.f, 1.f }) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
 
 		sData->TextureShader->SetMat4("uTransform", transform);
-
-		_texture->Bind();
 
 		sData->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(sData->QuadVertexArray);

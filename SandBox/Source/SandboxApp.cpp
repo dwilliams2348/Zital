@@ -144,7 +144,6 @@ public:
 		mFlatColorShader = Zital::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource);
 
 		auto textureShader = mShaderLibrary.Load("Assets/Shaders/Texture.glsl");
-		//mTextureShader = Zital::Shader::Create("Assets/Shaders/Texture.glsl");
 
 		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 		mTransparentTexture = Zital::Texture2D::Create("Assets/Textures/transparentImg.png");
