@@ -26,7 +26,3 @@
 
 #include "Zital/Renderer/OrthoGraphicCamera.h"
 //-------------------------------
-
-//----------Entry Point----------
-#include "Zital/Core/EntryPoint.h"
-//-------------------------------
