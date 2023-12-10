@@ -183,6 +183,11 @@ namespace Zital
 		glUseProgram(0);
 	}
 
+	void OpenGLShader::SetInt(const std::string& _name, int _value)
+	{
+		UploadUniformInt(_name, _value);
+	}
+
 	void OpenGLShader::SetFloat3(const std::string& _name, const glm::vec3& _value)
 	{
 		UploadUniformFloat3(_name, _value);
@@ -239,6 +244,5 @@ namespace Zital
 		GLint location = glGetUniformLocation(mRendererID, _name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(_matrix));
 	}
-
 
 }

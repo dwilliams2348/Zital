@@ -10,31 +10,8 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-	mSquareVA = (Zital::VertexArray::Create());
-
-	float squareVertices[3 * 4] =
-	{
-		-0.5f, -0.5f, 0.f,
-		 0.5f, -0.5f, 0.f,
-		 0.5f,  0.5f, 0.f,
-		-0.5f,  0.5f, 0.f
-	};
-
-	Zital::Ref<Zital::VertexBuffer> SquareVB;
-	SquareVB = Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-
-	SquareVB->SetLayout({
-		{Zital::ShaderDataType::Float3, "aPosition"} });
-
-	mSquareVA->AddVertexBuffer(SquareVB);
-
-	uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	Zital::Ref<Zital::IndexBuffer> squareIB;
-	squareIB = Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-
-	mSquareVA->SetIndexBuffer(squareIB);
-
-	mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
+	//mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
+	mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -55,6 +32,7 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 
 	Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, 50.f, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
 	Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, 0.f, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
+	Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, 0.f, { 10.f, 10.f }, mTexture);
 
 	Zital::Renderer2D::EndScene();
 }

@@ -14,6 +14,7 @@ namespace Zital
 	{
 		Ref<VertexArray> QuadVertexArray;
 		Ref<Shader> FlatColorShader;
+		Ref<Shader> TextureShader;
 	};
 
 	static Renderer2DStorage* sData;
@@ -24,19 +25,20 @@ namespace Zital
 
 		sData->QuadVertexArray = VertexArray::Create();
 
-		float squareVertices[3 * 4] =
+		float squareVertices[5 * 4] =
 		{
-			-0.5f, -0.5f, 0.f,
-			 0.5f, -0.5f, 0.f,
-			 0.5f,  0.5f, 0.f,
-			-0.5f,  0.5f, 0.f
+			-0.5f, -0.5f, 0.f, 0.f, 0.f,
+			 0.5f, -0.5f, 0.f, 1.f, 0.f,
+			 0.5f,  0.5f, 0.f, 1.f, 1.f,
+			-0.5f,  0.5f, 0.f, 0.f, 1.f
 		};
 
 		Ref<VertexBuffer> SquareVB;
 		SquareVB = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 
 		SquareVB->SetLayout({
-			{ShaderDataType::Float3, "aPosition"}
+			{ShaderDataType::Float3, "aPosition"},
+			{ShaderDataType::Float2, "aTexCoord"}
 			});
 
 		sData->QuadVertexArray->AddVertexBuffer(SquareVB);
@@ -48,6 +50,9 @@ namespace Zital
 		sData->QuadVertexArray->SetIndexBuffer(squareIB);
 
 		sData->FlatColorShader = Shader::Create("Assets/Shaders/FlatColor.glsl");
+		sData->TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
+		sData->TextureShader->Bind();
+		sData->TextureShader->SetInt("uTexture", 0);
 	}
 
 	void Renderer2D::Shutdown()
@@ -59,6 +64,9 @@ namespace Zital
 	{
 		sData->FlatColorShader->Bind();
 		sData->FlatColorShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
+
+		sData->TextureShader->Bind();
+		sData->TextureShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -80,6 +88,27 @@ namespace Zital
 			glm::rotate(glm::mat4(1.f), glm::radians(_rotation), {0.f, 0.f, 1.f}) *
 			glm::scale(glm::mat4(1.f), {_size.x, _size.y, 1.f});
 		sData->FlatColorShader->SetMat4("uTransform", transform);
+
+		sData->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(sData->QuadVertexArray);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& _position, const float& _rotation, const glm::vec2& _size, const Ref<Texture>& _texture)
+	{
+		DrawQuad({ _position.x, _position.y, 0.f }, _rotation, _size, _texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& _position, const float& _rotation, const glm::vec2& _size, const Ref<Texture>& _texture)
+	{
+		sData->TextureShader->Bind();
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * /*add rotation next*/
+			glm::rotate(glm::mat4(1.f), glm::radians(_rotation), { 0.f, 0.f, 1.f }) *
+			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
+
+		sData->TextureShader->SetMat4("uTransform", transform);
+
+		_texture->Bind();
 
 		sData->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(sData->QuadVertexArray);
