@@ -84,17 +84,38 @@
     <ClInclude Include="Source\Zital.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Application.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\Core.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\Core\TimeStep.h">
+    <ClInclude Include="Source\Zital\Core\Application.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\EntryPoint.h">
-      <Filter>Source\Zital</Filter>
+    <ClInclude Include="Source\Zital\Core\Core.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\EntryPoint.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Input.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\KeyCodes.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Layer.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\LayerStack.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Log.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Timestep.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Window.h">
+      <Filter>Source\Zital\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h">
       <Filter>Source\Zital\Events</Filter>
@@ -111,22 +132,7 @@
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h">
       <Filter>Source\Zital\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Input.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\KeyCodes.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\Layer.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\LayerStack.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\Log.h">
-      <Filter>Source\Zital</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\MouseButtonCodes.h">
+    <ClInclude Include="Source\Zital\OrthographicCameraController.h">
       <Filter>Source\Zital</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Buffer.h">
@@ -155,9 +161,6 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\VertexArray.h">
       <Filter>Source\Zital\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Zital\Window.h">
-      <Filter>Source\Zital</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\glm\glm\common.hpp">
       <Filter>Vendor\glm\glm</Filter>
@@ -1439,8 +1442,17 @@
     <ClCompile Include="Source\ZTpch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Application.cpp">
-      <Filter>Source\Zital</Filter>
+    <ClCompile Include="Source\Zital\Core\Application.cpp">
+      <Filter>Source\Zital\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Core\Layer.cpp">
+      <Filter>Source\Zital\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Core\LayerStack.cpp">
+      <Filter>Source\Zital\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Core\Log.cpp">
+      <Filter>Source\Zital\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\Zital\ImGui\ImGuiBuild.cpp">
       <Filter>Source\Zital\ImGui</Filter>
@@ -1448,13 +1460,7 @@
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp">
       <Filter>Source\Zital\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Layer.cpp">
-      <Filter>Source\Zital</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Zital\LayerStack.cpp">
-      <Filter>Source\Zital</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Zital\Log.cpp">
+    <ClCompile Include="Source\Zital\OrthographicCameraController.cpp">
       <Filter>Source\Zital</Filter>
     </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">

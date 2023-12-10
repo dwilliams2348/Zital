@@ -1,15 +1,17 @@
 #pragma once
 
 //For use in Zital applications
-#include "Zital/Application.h"
-#include "Zital/Input.h"
-#include "Zital/Layer.h"
-#include "Zital/Log.h"
+#include "Zital/Core/Application.h"
+#include "Zital/Core/Input.h"
+#include "Zital/Core/Layer.h"
+#include "Zital/Core/Log.h"
 
 #include "Zital/Core/TimeStep.h"
 
-#include "Zital/KeyCodes.h"
-#include "Zital/MouseButtonCodes.h"
+#include "Zital/Core/KeyCodes.h"
+#include "Zital/Core/MouseButtonCodes.h"
+
+#include "Zital/OrthographicCameraController.h"
 
 #include "Zital/ImGui/ImGuiLayer.h"
 
@@ -23,8 +25,4 @@
 #include "Zital/Renderer/VertexArray.h"
 
 #include "Zital/Renderer/OrthoGraphicCamera.h"
-//-------------------------------
-
-//----------Entry Point----------
-#include "Zital/EntryPoint.h"
 //-------------------------------

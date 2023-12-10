@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ZTpch.h"
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 
 namespace Zital
 {
@@ -75,11 +75,11 @@ namespace Zital
 
 		//Dispatches a fucntion for a given event, function must return a bool
 		template<typename T>
-		bool Dispatch(EventFn<T> func)
+		bool Dispatch(EventFn<T> _func)
 		{
 			if (mEvent.GetEventType() == T::GetStaticType())
 			{
-				mEvent.Handled = func(*(T*)&mEvent);
+				mEvent.Handled = _func(*(T*)&mEvent);
 				return true;
 			}
 

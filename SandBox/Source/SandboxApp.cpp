@@ -1,4 +1,5 @@
 #include <Zital.h>
+#include <Zital/Core/EntryPoint.h>
 
 #include "Platform/OpenGL/OpenGLShader.h"
 
@@ -7,11 +8,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Sandbox2D.h"
+
+
 class ExampleLayer : public Zital::Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), mCamera(-1.6f, 1.6f, -0.9f, 0.9f), mCameraPosition({ 0.f, 0.f, 0.f })
+		: Layer("Example"), mCameraController(1280.f / 720.f)
 	{
 		mVertexArray = Zital::VertexArray::Create();
 
@@ -103,7 +107,7 @@ public:
 			}
 		)";
 
-		mShader = Zital::Shader::Create(vertexSource, fragmentSource);
+		mShader = Zital::Shader::Create("VertexPosColor", vertexSource, fragmentSource);
 
 		std::string flatColorVertexSource = R"(
 			#version 330 core
@@ -137,77 +141,29 @@ public:
 			}
 		)";
 
-		mFlatColorShader = Zital::Shader::Create(flatColorVertexSource, flatColorFragmentSource);
+		mFlatColorShader = Zital::Shader::Create("FlatColor", flatColorVertexSource, flatColorFragmentSource);
 
-		std::string textureShaderVertexSource = R"(
-			#version 330 core
-
-			layout(location = 0) in vec3 aPosition;
-			layout(location = 1) in vec2 aTexCoord;
-
-			uniform mat4 uViewProjection;
-			uniform mat4 uTransform;
-
-			out vec2 vTexCoord;
-
-			void main()
-			{
-				vTexCoord = aTexCoord;
-				gl_Position = uViewProjection * uTransform * vec4(aPosition, 1.0);
-			}
-		)";
-
-		std::string textureShaderFragmentSource = R"(
-			#version 330 core
-
-			layout(location = 0) out vec4 color;
-
-			in vec2 vTexCoord;
-
-			uniform sampler2D uTexture;
-
-			void main()
-			{
-				color = texture(uTexture, vTexCoord);
-			}
-		)";
-
-		mTextureShader = Zital::Shader::Create(textureShaderVertexSource, textureShaderFragmentSource);
+		auto textureShader = mShaderLibrary.Load("Assets/Shaders/Texture.glsl");
+		//mTextureShader = Zital::Shader::Create("Assets/Shaders/Texture.glsl");
 
 		mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
+		mTransparentTexture = Zital::Texture2D::Create("Assets/Textures/transparentImg.png");
 
-		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->Bind();
-		std::dynamic_pointer_cast<Zital::OpenGLShader>(mTextureShader)->UpdateUniformInt("uTexture", 0);
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<Zital::OpenGLShader>(textureShader)->UpdateUniformInt("uTexture", 0);
 	}
 
 
-	void OnUpdate(Zital::TimeStep _deltaTime) override
+	void OnUpdate(Zital::Timestep _deltaTime) override
 	{
-		//ZT_TRACE("Delta time: {0}s ({1}ms)", _deltaTime.GetSeconds(), _deltaTime.GetMilliseconds());
+		//Update
+		mCameraController.OnUpdate(_deltaTime);
 
-		//camera movement + rotation
-		if (Zital::Input::IsKeyPressed(ZT_KEY_A))
-			mCameraPosition.x -= mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_D))
-			mCameraPosition.x += mCameraMoveSpeed * _deltaTime;
-
-		if (Zital::Input::IsKeyPressed(ZT_KEY_W))
-			mCameraPosition.y += mCameraMoveSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_S))
-			mCameraPosition.y -= mCameraMoveSpeed * _deltaTime;
-
-		if (Zital::Input::IsKeyPressed(ZT_KEY_Q))
-			mCameraRotation += mCameraRotateSpeed * _deltaTime;
-		else if (Zital::Input::IsKeyPressed(ZT_KEY_E))
-			mCameraRotation -= mCameraRotateSpeed * _deltaTime;
-
+		//Render
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Zital::RenderCommand::Clear();
 
-		mCamera.SetPosition(mCameraPosition);
-		mCamera.SetRotation(mCameraRotation);
-
-		Zital::Renderer::BeginScene(mCamera);
+		Zital::Renderer::BeginScene(mCameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.f), glm::vec3(0.1f));
 
@@ -223,9 +179,13 @@ public:
 				Zital::Renderer::Submit(mFlatColorShader, mSquareVA, transform);
 			}
 		}
+		
+		auto textureShader = mShaderLibrary.Get("Texture");
 
 		mTexture->Bind();
-		Zital::Renderer::Submit(mTextureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		Zital::Renderer::Submit(textureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		mTransparentTexture->Bind();
+		Zital::Renderer::Submit(textureShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
 
 		//triangle
 		//Zital::Renderer::Submit(mShader, mVertexArray);
@@ -245,23 +205,20 @@ public:
 
 	void OnEvent(Zital::Event& _event) override
 	{
+		mCameraController.OnEvent(_event);
 	}
 
 private:
+	Zital::ShaderLibrary mShaderLibrary;
 	Zital::Ref<Zital::Shader> mShader;
 	Zital::Ref<Zital::VertexArray> mVertexArray;
 
-	Zital::Ref<Zital::Shader> mFlatColorShader, mTextureShader;
+	Zital::Ref<Zital::Shader> mFlatColorShader;
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 
-	Zital::Ref<Zital::Texture2D> mTexture;
+	Zital::Ref<Zital::Texture2D> mTexture, mTransparentTexture;
 
-	Zital::OrthographicCamera mCamera;
-	glm::vec3 mCameraPosition;
-	float mCameraMoveSpeed = 2.5f;
-
-	float mCameraRotation = 0.f;
-	float mCameraRotateSpeed = 90.f;
+	Zital::OrthographicCameraController mCameraController;
 
 	glm::vec3 mSquareColor = { 0.2f, 0.3f, 0.8f };
 };
@@ -271,7 +228,8 @@ class Sandbox : public Zital::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		//PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()

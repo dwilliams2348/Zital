@@ -1,11 +1,11 @@
 #include "ZTpch.h"
 #include "Application.h"
 
-#include "Zital/Log.h"
+#include "Zital/Core/Log.h"
 
 #include "Zital/Renderer/Renderer.h"
 
-#include "Input.h"
+#include "Zital/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -23,6 +23,8 @@ namespace Zital
 
 		mWindow = Scope<Window>(Window::Create());
 		mWindow->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
+
+		Renderer::Init();
 
 		mImGuiLayer = new ImGuiLayer();
 		PushOverlay(mImGuiLayer);
@@ -49,7 +51,8 @@ namespace Zital
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClosed));
-
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::OnWindowResized));
+		
 		for (auto it = mLayerStack.end(); it != mLayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
@@ -63,11 +66,14 @@ namespace Zital
 		while (mRunning)
 		{
 			float time = (float)glfwGetTime(); //Platform::GetTime
-			TimeStep deltaTime = time - mLastFrameTime;
+			Timestep deltaTime = time - mLastFrameTime;
 			mLastFrameTime = time;
 
-			for (Layer* layer : mLayerStack)
-				layer->OnUpdate(deltaTime);
+			if (!mMinimized)
+			{
+				for (Layer* layer : mLayerStack)
+					layer->OnUpdate(deltaTime);
+			}
 
 			mImGuiLayer->Begin();
 			for (Layer* layer : mLayerStack)
@@ -83,6 +89,21 @@ namespace Zital
 		mRunning = false;
 
 		return true;
+	}
+
+	bool Application::OnWindowResized(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			mMinimized = true;
+
+			return false;
+		}
+
+		mMinimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 
 }

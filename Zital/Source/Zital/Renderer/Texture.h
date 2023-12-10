@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Zital/Core.h"
+#include "Zital/Core/Core.h"
 
 namespace Zital
 {

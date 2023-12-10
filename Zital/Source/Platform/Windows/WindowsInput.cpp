@@ -2,7 +2,7 @@
 #include "WindowsInput.h"
 
 #include <GLFW/glfw3.h>
-#include "Zital/Application.h"
+#include "Zital/Core/Application.h"
 
 namespace Zital
 {

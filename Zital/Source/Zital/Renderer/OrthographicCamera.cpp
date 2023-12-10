@@ -12,6 +12,12 @@ namespace Zital
 		mViewProjectionMatrix = mProjectionMatrix * mViewMatrix;
 	}
 
+	void OrthographicCamera::SetProjection(float _left, float _right, float _bottom, float _top)
+	{
+		mProjectionMatrix = glm::ortho(_left, _right, _bottom, _top, -1.f, 1.f);
+		mViewProjectionMatrix = mProjectionMatrix * mViewMatrix;
+	}
+
 	void OrthographicCamera::RecalculateViewMatrix()
 	{
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), mPosition) 

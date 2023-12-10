@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 namespace Zital
 {
@@ -13,8 +14,26 @@ namespace Zital
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
-		static Ref<Shader> Create(const std::string& _vertexSource, const std::string& _fragmentSource);
+		virtual const std::string& GetName() const = 0;
 
+		static Ref<Shader> Create(const std::string& _filepath);
+		static Ref<Shader> Create(const std::string& _name, const std::string& _vertexSource, const std::string& _fragmentSource);
+	};
+
+	class ShaderLibrary
+	{
+	public:
+		void Add(const std::string& _name, const Ref<Shader>& _shader);
+		void Add(const Ref<Shader>& _shader);
+		Ref<Shader> Load(const std::string& _filepath); //gives default name from file
+		Ref<Shader> Load(const std::string& _name, const std::string& _filepath); //user can specify name using this overload
+
+		Ref<Shader> Get(const std::string& _name);
+
+		bool Exists(const std::string& _name) const;
+
+	private:
+		std::unordered_map<std::string, Ref<Shader>> mShaders;
 	};
 
 }

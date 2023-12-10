@@ -3,10 +3,10 @@
 namespace Zital
 {
 
-	class TimeStep
+	class Timestep
 	{
 	public:
-		TimeStep(float _time = 0.f)
+		Timestep(float _time = 0.f)
 			: mTime(_time)
 		{
 		}

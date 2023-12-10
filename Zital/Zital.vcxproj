@@ -26,19 +26,19 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -82,6 +82,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +106,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +131,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,21 +153,23 @@
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
-    <ClInclude Include="Source\Zital\Application.h" />
-    <ClInclude Include="Source\Zital\Core.h" />
-    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
-    <ClInclude Include="Source\Zital\EntryPoint.h" />
+    <ClInclude Include="Source\Zital\Core\Application.h" />
+    <ClInclude Include="Source\Zital\Core\Core.h" />
+    <ClInclude Include="Source\Zital\Core\EntryPoint.h" />
+    <ClInclude Include="Source\Zital\Core\Input.h" />
+    <ClInclude Include="Source\Zital\Core\KeyCodes.h" />
+    <ClInclude Include="Source\Zital\Core\Layer.h" />
+    <ClInclude Include="Source\Zital\Core\LayerStack.h" />
+    <ClInclude Include="Source\Zital\Core\Log.h" />
+    <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h" />
+    <ClInclude Include="Source\Zital\Core\Timestep.h" />
+    <ClInclude Include="Source\Zital\Core\Window.h" />
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h" />
     <ClInclude Include="Source\Zital\Events\Event.h" />
     <ClInclude Include="Source\Zital\Events\KeyEvent.h" />
     <ClInclude Include="Source\Zital\Events\MouseEvent.h" />
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="Source\Zital\Input.h" />
-    <ClInclude Include="Source\Zital\KeyCodes.h" />
-    <ClInclude Include="Source\Zital\Layer.h" />
-    <ClInclude Include="Source\Zital\LayerStack.h" />
-    <ClInclude Include="Source\Zital\Log.h" />
-    <ClInclude Include="Source\Zital\MouseButtonCodes.h" />
+    <ClInclude Include="Source\Zital\OrthographicCameraController.h" />
     <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
@@ -174,7 +179,6 @@
     <ClInclude Include="Source\Zital\Renderer\Shader.h" />
     <ClInclude Include="Source\Zital\Renderer\Texture.h" />
     <ClInclude Include="Source\Zital\Renderer\VertexArray.h" />
-    <ClInclude Include="Source\Zital\Window.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_fixes.hpp" />
@@ -605,12 +609,13 @@
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Application.cpp" />
+    <ClCompile Include="Source\Zital\Core\Application.cpp" />
+    <ClCompile Include="Source\Zital\Core\Layer.cpp" />
+    <ClCompile Include="Source\Zital\Core\LayerStack.cpp" />
+    <ClCompile Include="Source\Zital\Core\Log.cpp" />
     <ClCompile Include="Source\Zital\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="Source\Zital\Layer.cpp" />
-    <ClCompile Include="Source\Zital\LayerStack.cpp" />
-    <ClCompile Include="Source\Zital\Log.cpp" />
+    <ClCompile Include="Source\Zital\OrthographicCameraController.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp" />
