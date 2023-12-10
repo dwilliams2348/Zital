@@ -2,8 +2,6 @@
 #include "imgui/imgui.h"
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 Sandbox2D::Sandbox2D()
 	: Layer("Sandbox2D"), mCameraController(1280.f / 720.f)
 {
@@ -55,11 +53,10 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 
 	Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-	Zital::Renderer2D::DrawQuad({ 0.f, 0.f }, { 1.f, 1.f }, { 0.8f, 0.2f, 0.3f, 1.f });
+	Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, 50.f, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
+	Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, 0.f, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
 
 	Zital::Renderer2D::EndScene();
-	//std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->Bind();
-	//std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->UpdateUniformFloat4("uColor", mSquareColor);
 }
 
 void Sandbox2D::OnImGuiRender()

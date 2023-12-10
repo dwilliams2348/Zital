@@ -5,7 +5,7 @@
 #include "Shader.h"
 #include "RenderCommand.h"
 
-#include "Platform/OpenGL/OpenGLShader.h"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Zital
 {
@@ -57,9 +57,8 @@ namespace Zital
 
 	void Renderer2D::BeginScene(const OrthographicCamera& _camera)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(sData->FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(sData->FlatColorShader)->UpdateUniformMat4("uViewProjection", _camera.GetViewProjectionMatrix());
-		std::dynamic_pointer_cast<OpenGLShader>(sData->FlatColorShader)->UpdateUniformMat4("uTransform", glm::mat4(1.f));
+		sData->FlatColorShader->Bind();
+		sData->FlatColorShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -67,15 +66,20 @@ namespace Zital
 
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const glm::vec4& _color)
+	void Renderer2D::DrawQuad(const glm::vec2& _position, const float& _rotation, const glm::vec2& _size, const glm::vec4& _color)
 	{
-		DrawQuad({ _position.x, _position.y, 0.f }, _size, _color);
+		DrawQuad({ _position.x, _position.y, 0.f }, _rotation, _size, _color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const glm::vec4& _color)
+	void Renderer2D::DrawQuad(const glm::vec3& _position, const float& _rotation, const glm::vec2& _size, const glm::vec4& _color)
 	{
-		std::dynamic_pointer_cast<OpenGLShader>(sData->FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(sData->FlatColorShader)->UpdateUniformFloat4("uColor", _color);
+		sData->FlatColorShader->Bind();
+		sData->FlatColorShader->SetFloat4("uColor", _color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * /*add rotation next*/
+			glm::rotate(glm::mat4(1.f), glm::radians(_rotation), {0.f, 0.f, 1.f}) *
+			glm::scale(glm::mat4(1.f), {_size.x, _size.y, 1.f});
+		sData->FlatColorShader->SetMat4("uTransform", transform);
 
 		sData->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(sData->QuadVertexArray);
