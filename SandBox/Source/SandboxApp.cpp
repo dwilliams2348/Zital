@@ -227,7 +227,7 @@ class Sandbox : public Zital::Application
 public:
 	Sandbox()
 	{
-		this->GetWindow().SetVSync(false);
+		//this->GetWindow().SetVSync(false);
 		//PushLayer(new ExampleLayer());
 		PushLayer(new Sandbox2D());
 		

@@ -21,6 +21,8 @@ namespace Zital
 
 	void Renderer2D::Init()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		sData = new Renderer2DStorage();
 
 		sData->QuadVertexArray = VertexArray::Create();
@@ -60,17 +62,23 @@ namespace Zital
 
 	void Renderer2D::Shutdown()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		delete sData;
 	}
 
 	void Renderer2D::BeginScene(const OrthographicCamera& _camera)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		sData->TextureShader->Bind();
 		sData->TextureShader->SetMat4("uViewProjection", _camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
 	{
+		ZT_PROFILE_FUNCTION();
+
 
 	}
 
@@ -81,6 +89,8 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const float& _rotation, const glm::vec2& _size, const glm::vec4& _color)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		sData->TextureShader->Bind();
 		sData->TextureShader->SetFloat4("uColor", _color);
 		sData->WhiteTexture->Bind();
@@ -101,6 +111,8 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const float& _rotation, const glm::vec2& _size, const Ref<Texture>& _texture)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		sData->TextureShader->Bind();
 
 		sData->TextureShader->SetFloat4("uColor", glm::vec4(1.f));

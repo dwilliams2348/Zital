@@ -23,6 +23,8 @@ namespace Zital
 
 	WindowsWindow::WindowsWindow(const SWindowProps& _props)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		Init(_props);
 	}
 
@@ -33,6 +35,8 @@ namespace Zital
 
 	void WindowsWindow::Init(const SWindowProps& _props)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		mData.Title = _props.Title;
 		mData.Width = _props.Width;
 		mData.Height = _props.Height;
@@ -151,17 +155,23 @@ namespace Zital
 
 	void WindowsWindow::Shutdown()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(mWindow);
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		mContext->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool _enabled)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		if (_enabled)
 			glfwSwapInterval(1);
 		else

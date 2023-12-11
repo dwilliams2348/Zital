@@ -18,6 +18,8 @@ namespace Zital
 
 	Application::Application()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
 		sInstance = this;
 
@@ -32,17 +34,23 @@ namespace Zital
 
 	Application::~Application()
 	{
+		ZT_PROFILE_FUNCTION();
 
+		Renderer::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* _layer)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		mLayerStack.PushLayer(_layer);
 		_layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* _overlay)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		mLayerStack.PushOverlay(_overlay);
 		_overlay->OnAttach();
 	}
@@ -63,21 +71,33 @@ namespace Zital
 
 	void Application::Run()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		while (mRunning)
 		{
+			ZT_PROFILE_SCOPE("Application Runloop");
+
 			float time = (float)glfwGetTime(); //Platform::GetTime
 			Timestep deltaTime = time - mLastFrameTime;
 			mLastFrameTime = time;
 
 			if (!mMinimized)
 			{
-				for (Layer* layer : mLayerStack)
-					layer->OnUpdate(deltaTime);
+				{
+					ZT_PROFILE_SCOPE("LayerStack OnUpdate");
+
+					for (Layer* layer : mLayerStack)
+						layer->OnUpdate(deltaTime);
+				}
 			}
 
 			mImGuiLayer->Begin();
-			for (Layer* layer : mLayerStack)
-				layer->OnImGuiRender();
+			{
+				ZT_PROFILE_SCOPE("LayerStack OnImGuiRender");
+
+				for (Layer* layer : mLayerStack)
+					layer->OnImGuiRender();
+			}
 			mImGuiLayer->End();
 
 			mWindow->OnUpdate();
@@ -93,6 +113,8 @@ namespace Zital
 
 	bool Application::OnWindowResized(WindowResizeEvent& e)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{
 			mMinimized = true;

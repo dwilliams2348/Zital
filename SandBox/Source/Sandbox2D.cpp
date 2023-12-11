@@ -10,6 +10,8 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
+	ZT_PROFILE_FUNCTION();
+
 	//mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
 	mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 }
@@ -23,28 +25,19 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 {
 	ZT_PROFILE_FUNCTION();
 	//Update
-	{
-		ZT_PROFILE_SCOPE("CameraController::OnUpdate");
-		mCameraController.OnUpdate(_deltaTime);
-	}
+	mCameraController.OnUpdate(_deltaTime);
 
 	//Render
-	{
-		ZT_PROFILE_SCOPE("Render Prep");
-		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
-		Zital::RenderCommand::Clear();
-	}
+	Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+	Zital::RenderCommand::Clear();
 
-	{
-		ZT_PROFILE_SCOPE("Render Draw");
-		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
+	Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-		Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, 50.f, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
-		Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, 0.f, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
-		Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, 0.f, { 10.f, 10.f }, mTexture);
+	Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, 50.f, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
+	Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, 0.f, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
+	Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, 0.f, { 10.f, 10.f }, mTexture);
 
-		Zital::Renderer2D::EndScene();
-	}
+	Zital::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()

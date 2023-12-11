@@ -10,8 +10,17 @@ namespace Zital
 
 	void Renderer::Init()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
+	}
+
+	void Renderer::Shutdown()
+	{
+		ZT_PROFILE_FUNCTION();
+
+		Renderer2D::Shutdown();
 	}
 
     void Renderer::OnWindowResize(uint32_t _width, uint32_t _height)

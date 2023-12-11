@@ -14,6 +14,8 @@ namespace Zital
 
 	void OrthographicCameraController::OnUpdate(Timestep _deltaTime)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		//camera movement + rotation
 		if (Input::IsKeyPressed(ZT_KEY_A))
 			mCameraPosition.x -= mCameraTranslationSpeed * _deltaTime;
@@ -42,6 +44,8 @@ namespace Zital
 
 	void OrthographicCameraController::OnEvent(Event& e)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(ZT_BIND_EVENT_FN(OrthographicCameraController::OnMouseScrolled));
 		dispatcher.Dispatch<WindowResizeEvent>(ZT_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
@@ -49,6 +53,8 @@ namespace Zital
 
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		mZoomLevel -= e.GetYOffset() * 0.25f;
 		mZoomLevel = std::max(mZoomLevel, 0.5f);
 
@@ -59,6 +65,8 @@ namespace Zital
 
 	bool OrthographicCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		mAspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
 		mCamera.SetProjection(-mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel);
 

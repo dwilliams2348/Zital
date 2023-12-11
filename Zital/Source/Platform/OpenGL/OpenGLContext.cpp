@@ -15,6 +15,8 @@ namespace Zital
 
 	void OpenGLContext::Init()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(mWindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		ZT_CORE_ASSERT(status, "Failed to initialize Glad.");
@@ -27,6 +29,8 @@ namespace Zital
 
 	void OpenGLContext::SwapBuffers()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(mWindowHandle);
 	}
 
