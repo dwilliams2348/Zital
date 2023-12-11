@@ -21,6 +21,7 @@ namespace Zital
 		virtual void Unbind() const override;
 
 		virtual void SetInt(const std::string& _name, int _value) override;
+		virtual void SetFloat(const std::string& _name, float _value) override;
 		virtual void SetFloat3(const std::string& _name, const glm::vec3& _value) override;
 		virtual void SetFloat4(const std::string& _name, const glm::vec4& _value) override;
 		virtual void SetMat4(const std::string& _name, const glm::mat4& _value) override;

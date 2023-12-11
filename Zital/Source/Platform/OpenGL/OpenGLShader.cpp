@@ -206,6 +206,13 @@ namespace Zital
 		UploadUniformInt(_name, _value);
 	}
 
+	void OpenGLShader::SetFloat(const std::string& _name, float _value)
+	{
+		ZT_PROFILE_FUNCTION();
+
+		UploadUniformFloat(_name, _value);
+	}
+
 	void OpenGLShader::SetFloat3(const std::string& _name, const glm::vec3& _value)
 	{
 		ZT_PROFILE_FUNCTION();
