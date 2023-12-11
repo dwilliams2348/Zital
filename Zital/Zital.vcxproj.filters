@@ -1414,6 +1414,7 @@
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Renderer2D.h" />
+    <ClInclude Include="Source\Zital\Debug\Instrumentation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">

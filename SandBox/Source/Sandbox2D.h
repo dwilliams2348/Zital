@@ -21,14 +21,6 @@ private:
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 	Zital::Ref<Zital::Shader> mShader;
 
-	struct ProfileResult
-	{
-		const char* Name;
-		float Time;
-	};
-
-	std::vector<ProfileResult> mProfileResults;
-
 	//Temp texture
 	Zital::Ref<Zital::Texture2D> mTexture;
 
