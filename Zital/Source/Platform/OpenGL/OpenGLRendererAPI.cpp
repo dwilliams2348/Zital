@@ -30,9 +30,11 @@ namespace Zital
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& _vertexArray)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& _vertexArray, uint32_t _indexCount)
 	{
-		glDrawElements(GL_TRIANGLES, _vertexArray->GetIndexBuffer()->GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+		uint32_t count = _indexCount ? _vertexArray->GetIndexBuffer()->GetIndexCount() : _indexCount;
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }

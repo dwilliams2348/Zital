@@ -127,7 +127,7 @@ namespace Zital
 
 }
 
-#define ZT_PROFILE 1
+#define ZT_PROFILE 0
 #if ZT_PROFILE
 	#define ZT_PROFILE_BEGIN_SESSION(name, filepath) ::Zital::Instrumentor::Get().BeginSession(name, filepath)
 	#define ZT_PROFILE_END_SESSION() ::Zital::Instrumentor::Get().EndSession()

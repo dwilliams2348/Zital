@@ -23,7 +23,7 @@ namespace Zital
 		virtual void SetClearColor(const glm::vec4& _color) = 0;
 		virtual void Clear() = 0;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& _vertexArray) = 0;
+		virtual void DrawIndexed(const Ref<VertexArray>& _vertexArray, uint32_t _indexCount = 0) = 0;
 
 		inline static API GetAPI() { return sAPI; }
 

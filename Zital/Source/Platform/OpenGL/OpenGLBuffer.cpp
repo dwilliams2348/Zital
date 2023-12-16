@@ -7,6 +7,15 @@ namespace Zital
 {
 	//////	VertexBuffer	////////////////////////////////////////////////
 
+	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t _size)
+	{
+		ZT_PROFILE_FUNCTION();
+
+		glCreateBuffers(1, &mRendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, mRendererID);
+		glBufferData(GL_ARRAY_BUFFER, _size, nullptr, GL_DYNAMIC_DRAW);
+	}
+
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* _vertices, uint32_t _size)
 	{
 		ZT_PROFILE_FUNCTION();
@@ -35,6 +44,12 @@ namespace Zital
 		ZT_PROFILE_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void OpenGLVertexBuffer::SetData(const void* _data, uint32_t _size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, mRendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, _size, _data);
 	}
 
 	//////	IndexBuffer		////////////////////////////////////////////////

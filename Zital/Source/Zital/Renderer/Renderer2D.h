@@ -15,6 +15,7 @@ namespace Zital
 
 		static void BeginScene(const OrthographicCamera& _camera);
 		static void EndScene();
+		static void Flush();
 
 		//Primitives
 		//Draws filled in quad using x, y position with a size and color
