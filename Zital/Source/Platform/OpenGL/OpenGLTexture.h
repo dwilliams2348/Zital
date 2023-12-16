@@ -21,6 +21,7 @@ namespace Zital
 
 		virtual void Bind(uint32_t _slot = 0) const override;
 
+		virtual bool operator==(const Texture& _other) const override { return mRendererID == ((OpenGLTexture2D&)_other).mRendererID; };
 	private:
 		std::string mFilepath;
 		uint32_t mWidth, mHeight;

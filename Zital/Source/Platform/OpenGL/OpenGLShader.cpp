@@ -206,6 +206,13 @@ namespace Zital
 		UploadUniformInt(_name, _value);
 	}
 
+	void OpenGLShader::SetIntArray(const std::string& _name, int* _values, uint32_t _count)
+	{
+		ZT_PROFILE_FUNCTION();
+
+		UploadUniformIntArray(_name, _values, _count);
+	}
+
 	void OpenGLShader::SetFloat(const std::string& _name, float _value)
 	{
 		ZT_PROFILE_FUNCTION();
@@ -238,6 +245,12 @@ namespace Zital
 	{
 		GLint location = glGetUniformLocation(mRendererID, _name.c_str());
 		glUniform1i(location, _value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(const std::string& _name, int* _values, uint32_t _count)
+	{
+		GLint location = glGetUniformLocation(mRendererID, _name.c_str());
+		glUniform1iv(location, _count, _values);
 	}
 
 	void OpenGLShader::UploadUniformFloat(const std::string& _name, float _value)

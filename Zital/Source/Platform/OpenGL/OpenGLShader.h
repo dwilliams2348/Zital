@@ -21,6 +21,7 @@ namespace Zital
 		virtual void Unbind() const override;
 
 		virtual void SetInt(const std::string& _name, int _value) override;
+		virtual void SetIntArray(const std::string& _name, int* _values, uint32_t _count) override;
 		virtual void SetFloat(const std::string& _name, float _value) override;
 		virtual void SetFloat3(const std::string& _name, const glm::vec3& _value) override;
 		virtual void SetFloat4(const std::string& _name, const glm::vec4& _value) override;
@@ -29,6 +30,7 @@ namespace Zital
 		virtual const std::string& GetName() const override { return mName; }
 
 		void UploadUniformInt(const std::string& _name, int _value);
+		void UploadUniformIntArray(const std::string& _name, int* _values, uint32_t _count);
 			   
 		void UploadUniformFloat(const std::string& _name, float _value);
 		void UploadUniformFloat2(const std::string& _name, const glm::vec2& _value);

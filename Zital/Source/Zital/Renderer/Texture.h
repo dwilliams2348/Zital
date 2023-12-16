@@ -17,6 +17,8 @@ namespace Zital
 		virtual void SetData(void* _data, uint32_t _size) = 0;
 
 		virtual void Bind(uint32_t _slot = 0) const = 0;
+
+		virtual bool operator==(const Texture& _other) const = 0;
 	};
 
 	class Texture2D : public Texture

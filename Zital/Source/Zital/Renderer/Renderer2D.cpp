@@ -15,14 +15,17 @@ namespace Zital
 		glm::vec3 Position;
 		glm::vec4 Color;
 		glm::vec2 TexCoord;
-		//add tex ID, mask ID? eventially
+		float TexIndex;
+		float TiliingFactor;
+		//mask ID? eventually
 	};
 
 	struct Renderer2DData
 	{
-		const uint32_t MaxQuads = 10000;
+		const uint32_t MaxQuads = 100000;
 		const uint32_t MaxVertices = MaxQuads * 4;
 		const uint32_t MaxIndices = MaxQuads * 6;
+		static const uint32_t MaxTexSlots = 32; //render capabilities
 
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
@@ -32,6 +35,9 @@ namespace Zital
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
+
+		std::array<Ref<Texture2D>, MaxTexSlots> TextureSlots;
+		uint32_t TextureSlotIndex = 1; //0, the first texture slot will always be set to the constant white texture for non textured rendering
 	};
 
 	static Renderer2DData sData;
@@ -47,7 +53,9 @@ namespace Zital
 		sData.QuadVertexBuffer->SetLayout({
 			{ShaderDataType::Float3, "aPosition"},
 			{ShaderDataType::Float4, "aColor"},
-			{ShaderDataType::Float2, "aTexCoord"}
+			{ShaderDataType::Float2, "aTexCoord"},
+			{ShaderDataType::Float, "aTexIndex"},
+			{ShaderDataType::Float, "aTilingFactor"}
 			});
 
 		sData.QuadVertexArray->AddVertexBuffer(sData.QuadVertexBuffer);
@@ -79,9 +87,15 @@ namespace Zital
 		uint32_t whiteTexData = 0xFFFFFFFF;
 		sData.WhiteTexture->SetData(&whiteTexData, sizeof(whiteTexData));
 
+		int32_t samplers[sData.MaxTexSlots];
+		for (uint32_t i = 0; i < sData.MaxTexSlots; i++)
+			samplers[i] = i;
+
 		sData.TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
 		sData.TextureShader->Bind();
-		sData.TextureShader->SetInt("uTexture", 0);
+		sData.TextureShader->SetIntArray("uTextures", samplers, sData.MaxTexSlots);
+
+		sData.TextureSlots[0] = sData.WhiteTexture;
 	}
 
 	void Renderer2D::Shutdown()
@@ -99,6 +113,8 @@ namespace Zital
 
 		sData.QuadIndexCount = 0;
 		sData.QuadVertexBufferPtr = sData.QuadVertexBufferBase;
+
+		sData.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::EndScene()
@@ -113,6 +129,10 @@ namespace Zital
 
 	void Renderer2D::Flush()
 	{
+		//bind textures
+		for (uint32_t i = 0; i < sData.TextureSlotIndex; i++)
+			sData.TextureSlots[i]->Bind(i);
+
 		RenderCommand::DrawIndexed(sData.QuadVertexArray, sData.QuadIndexCount);
 	}
 
@@ -125,24 +145,35 @@ namespace Zital
 	{
 		ZT_PROFILE_FUNCTION();
 
+		const float texIndex = 0.f; //white texture
+		const float tilingFactor = 1.f;
+
 		sData.QuadVertexBufferPtr->Position = _position;
 		sData.QuadVertexBufferPtr->Color = _color;
 		sData.QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
+		sData.QuadVertexBufferPtr->TexIndex = texIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = tilingFactor;
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadVertexBufferPtr->Position = { _position.x + _size.x, _position.y, _position.z };
 		sData.QuadVertexBufferPtr->Color = _color;
 		sData.QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
+		sData.QuadVertexBufferPtr->TexIndex = texIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = tilingFactor;
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadVertexBufferPtr->Position = { _position.x + _size.x, _position.y + _size.y, _position.z };
 		sData.QuadVertexBufferPtr->Color = _color;
 		sData.QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
+		sData.QuadVertexBufferPtr->TexIndex = texIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = tilingFactor;
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadVertexBufferPtr->Position = { _position.x , _position.y + _size.y, _position.z };
 		sData.QuadVertexBufferPtr->Color = _color;
 		sData.QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
+		sData.QuadVertexBufferPtr->TexIndex = texIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = tilingFactor;
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadIndexCount += 6;
@@ -160,27 +191,75 @@ namespace Zital
 		RenderCommand::DrawIndexed(sData.QuadVertexArray);*/
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const Ref<Texture>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		DrawQuad({ _position.x, _position.y, 0.f }, _size, _texture, _tilingFactor, _tintColor);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const Ref<Texture>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		ZT_PROFILE_FUNCTION();
 
-		sData.TextureShader->Bind();
+		float textureIndex = 0.f;
 
-		sData.TextureShader->SetFloat4("uColor", _tintColor);
-		sData.TextureShader->SetFloat("uTilingFactor", _tilingFactor);
-		_texture->Bind();
+		for (uint32_t i = 1; i < sData.TextureSlotIndex; i++)
+		{
+			if (*sData.TextureSlots[i].get() == *_texture.get())
+			{
+				textureIndex = (float)i;
+				break;
+			}
+		}
 
-		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * 
-			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
+		if (textureIndex == 0.f)
+		{
+			textureIndex = (float)sData.TextureSlotIndex;
+			sData.TextureSlots[sData.TextureSlotIndex] = _texture;
+			sData.TextureSlotIndex++;
+		}
 
-		sData.TextureShader->SetMat4("uTransform", transform);
+		sData.QuadVertexBufferPtr->Position = _position;
+		sData.QuadVertexBufferPtr->Color = _tintColor;
+		sData.QuadVertexBufferPtr->TexCoord = { 0.f, 0.f };
+		sData.QuadVertexBufferPtr->TexIndex = textureIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+		sData.QuadVertexBufferPtr++;
 
-		sData.QuadVertexArray->Bind();
+		sData.QuadVertexBufferPtr->Position = { _position.x + _size.x, _position.y, _position.z };
+		sData.QuadVertexBufferPtr->Color = _tintColor;
+		sData.QuadVertexBufferPtr->TexCoord = { 1.f, 0.f };
+		sData.QuadVertexBufferPtr->TexIndex = textureIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+		sData.QuadVertexBufferPtr++;
+
+		sData.QuadVertexBufferPtr->Position = { _position.x + _size.x, _position.y + _size.y, _position.z };
+		sData.QuadVertexBufferPtr->Color = _tintColor;
+		sData.QuadVertexBufferPtr->TexCoord = { 1.f, 1.f };
+		sData.QuadVertexBufferPtr->TexIndex = textureIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+		sData.QuadVertexBufferPtr++;
+
+		sData.QuadVertexBufferPtr->Position = { _position.x , _position.y + _size.y, _position.z };
+		sData.QuadVertexBufferPtr->Color = _tintColor;
+		sData.QuadVertexBufferPtr->TexCoord = { 0.f, 1.f };
+		sData.QuadVertexBufferPtr->TexIndex = textureIndex;
+		sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+		sData.QuadVertexBufferPtr++;
+
+		sData.QuadIndexCount += 6;
+
+		//sData.TextureShader->Bind();
+
+		//sData.TextureShader->SetFloat4("uColor", _tintColor);
+		//sData.TextureShader->SetFloat("uTilingFactor", _tilingFactor);
+		//_texture->Bind();
+
+		//glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) * 
+		//	glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
+
+		//sData.TextureShader->SetMat4("uTransform", transform);
+
+		//sData.QuadVertexArray->Bind();
 		//RenderCommand::DrawIndexed(sData.QuadVertexArray);
 	}
 
@@ -207,12 +286,12 @@ namespace Zital
 		//RenderCommand::DrawIndexed(sData.QuadVertexArray);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& _position, const glm::vec2& _size, float _radians, const Ref<Texture>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& _position, const glm::vec2& _size, float _radians, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		DrawRotatedQuad({ _position.x, _position.y, 0.f }, _size, _radians, _texture, _tilingFactor, _tintColor);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const Ref<Texture>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		ZT_PROFILE_FUNCTION();
 

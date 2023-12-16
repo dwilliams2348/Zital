@@ -36,7 +36,8 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 	//Zital::Renderer2D::DrawRotatedQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, glm::radians(60.f), { 0.8f, 0.2f, 0.3f, 1.f });
 	Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
 	Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
-	//Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 10.f, 10.f }, mTexture, 10.f);
+	Zital::Renderer2D::DrawQuad({ -5.f, -5.f, -0.1f }, { 10.f, 10.f }, mTexture, 10.f);
+	Zital::Renderer2D::DrawQuad({ -0.5f, -0.5f, 0.f }, { 1.f, 1.f }, mTexture, 20.f);
 
 	Zital::Renderer2D::EndScene();
 }
