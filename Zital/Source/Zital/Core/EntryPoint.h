@@ -7,13 +7,18 @@ extern Zital::Application* Zital::CreateApplication();
 int main(int argc, char* argv)
 {
 	Zital::Log::Init();
-	ZT_CORE_WARN("Initialized logger");
-	//int a = 5;
-	//ZT_INFO("Hello Var={0}", a);
-
+	
+	ZT_PROFILE_BEGIN_SESSION("Startup", "ZitalProfile-Startup.json");
 	auto app = Zital::CreateApplication();
+	ZT_PROFILE_END_SESSION();
+
+	ZT_PROFILE_BEGIN_SESSION("Runtime", "ZitalProfile-Runtime.json");
 	app->Run();
+	ZT_PROFILE_END_SESSION();
+
+	ZT_PROFILE_BEGIN_SESSION("Shutdown", "ZitalProfile-Shutdown.json");
 	delete app;
+	ZT_PROFILE_END_SESSION();
 }
 
 #else

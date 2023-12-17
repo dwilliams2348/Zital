@@ -21,5 +21,8 @@ private:
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 	Zital::Ref<Zital::Shader> mShader;
 
+	//Temp texture
+	Zital::Ref<Zital::Texture2D> mTexture;
+
 	glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f};
 };

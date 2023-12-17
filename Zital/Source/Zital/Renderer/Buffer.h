@@ -118,12 +118,16 @@ namespace Zital
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		virtual void SetData(const void* _data, uint32_t _size) = 0;
+
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& _layout) = 0;
 
+		static Ref<VertexBuffer> Create(uint32_t _size);
 		static Ref<VertexBuffer> Create(float* _vertices, uint32_t _size);
 	};
 
+	//onyl 32-bit index buffers are currently supported
 	class IndexBuffer
 	{
 	public:

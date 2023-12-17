@@ -2,8 +2,6 @@
 #include "imgui/imgui.h"
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Platform/OpenGL/OpenGLShader.h"
-
 Sandbox2D::Sandbox2D()
 	: Layer("Sandbox2D"), mCameraController(1280.f / 720.f)
 {
@@ -12,31 +10,10 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-	mSquareVA = (Zital::VertexArray::Create());
+	ZT_PROFILE_FUNCTION();
 
-	float squareVertices[3 * 4] =
-	{
-		-0.5f, -0.5f, 0.f,
-		 0.5f, -0.5f, 0.f,
-		 0.5f,  0.5f, 0.f,
-		-0.5f,  0.5f, 0.f
-	};
-
-	Zital::Ref<Zital::VertexBuffer> SquareVB;
-	SquareVB = Zital::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-
-	SquareVB->SetLayout({
-		{Zital::ShaderDataType::Float3, "aPosition"} });
-
-	mSquareVA->AddVertexBuffer(SquareVB);
-
-	uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-	Zital::Ref<Zital::IndexBuffer> squareIB;
-	squareIB = Zital::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-
-	mSquareVA->SetIndexBuffer(squareIB);
-
-	mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
+	//mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
+	mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -46,25 +23,65 @@ void Sandbox2D::OnDetach()
 
 void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 {
+	ZT_PROFILE_FUNCTION();
 	//Update
 	mCameraController.OnUpdate(_deltaTime);
 
 	//Render
-	Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
-	Zital::RenderCommand::Clear();
+	Zital::Renderer2D::ResetStats();
+	{
+		ZT_PROFILE_SCOPE("Render prep");
+		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
+		Zital::RenderCommand::Clear();
+	}
 
-	Zital::Renderer::BeginScene(mCameraController.GetCamera());
+	{
+		ZT_PROFILE_SCOPE("Render draw");
 
-	std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->Bind();
-	std::dynamic_pointer_cast<Zital::OpenGLShader>(mShader)->UpdateUniformFloat4("uColor", mSquareColor);
+		static float rotation = 0.f;
+		rotation += _deltaTime * 90.f;
 
-	Zital::Renderer::Submit(mShader, mSquareVA, glm::scale(glm::mat4(1.f), glm::vec3(1.5f)));
+		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
+
+		Zital::Renderer2D::DrawRotatedQuad({ 1.5f, -0.5f }, { 0.8f, 0.8f }, rotation, { 0.8f, 0.2f, 0.3f, 1.f });
+		Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
+		Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
+		Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 20.f, 20.f }, mTexture, 10.f);
+		Zital::Renderer2D::DrawRotatedQuad({ 0.f, 0.f, 0.f }, { 1.f, 1.f }, 45.f, mTexture, 5.f);
+
+		Zital::Renderer2D::EndScene();
+
+		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
+
+		for (float y = -5.f; y < 5.f; y += 0.1f)
+		{
+			for (float x = -5.f; x < 5.f; x += 0.1f)
+			{
+				glm::vec4 color = { (x + 5.f) / 10.f, 0.5f, (y + 5.f) / 10.f, 0.75f };
+				Zital::Renderer2D::DrawQuad({ x, y }, { 0.09f, 0.09f }, color);
+			}
+		}
+
+		Zital::Renderer2D::EndScene();
+	}
 }
 
 void Sandbox2D::OnImGuiRender()
 {
+	ZT_PROFILE_FUNCTION();
+
 	ImGui::Begin("Settings");
+
+	auto stats = Zital::Renderer2D::GetStats();
+
+	ImGui::Text("Renderer2D stats:");
+	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+	ImGui::Text("Quad Count: %d", stats.QuadCount);
+	ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
+	ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
+
 	ImGui::ColorEdit4("Square Color", glm::value_ptr(mSquareColor));
+
 	ImGui::End();
 }
 

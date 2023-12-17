@@ -14,7 +14,7 @@ namespace Zital
 		virtual void SetClearColor(const glm::vec4& _color) override;
 		virtual void Clear() override;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& _vertexArray) override;
+		virtual void DrawIndexed(const Ref<VertexArray>& _vertexArray, uint32_t _indexCount = 0) override;
 	};
 
 }

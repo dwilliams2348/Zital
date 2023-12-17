@@ -29,26 +29,36 @@ namespace Zital
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glCreateVertexArrays(1, &mRendererID);
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glDeleteVertexArrays(1, &mRendererID);
 	}
 
 	void OpenGLVertexArray::Bind() const
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glBindVertexArray(mRendererID);
 	}
 
 	void OpenGLVertexArray::Unbind() const
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& _buffer)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		ZT_CORE_ASSERT(_buffer->GetLayout().GetElements().size(), "Vertex buffer has no layout, cannot draw");
 		
 		glBindVertexArray(mRendererID);
@@ -73,6 +83,8 @@ namespace Zital
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& _buffer)
 	{
+		ZT_PROFILE_FUNCTION();
+
 		glBindVertexArray(mRendererID);
 		_buffer->Bind();
 

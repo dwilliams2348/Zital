@@ -17,6 +17,9 @@
 //logging
 #include "Zital/Core/Log.h"
 
+//Debug
+#include "Zital/Debug/Instrumentation.h"
+
 #ifdef ZT_PLATFORM_WINDOWS
 	#include <Windows.h>
 #endif

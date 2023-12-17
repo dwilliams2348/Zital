@@ -28,9 +28,9 @@ namespace Zital
 			sRendererAPI->Clear();
 		}
 
-		inline static void DrawIndexed(const Ref<VertexArray>& _vertexArray)
+		inline static void DrawIndexed(const Ref<VertexArray>& _vertexArray, uint32_t _indexCount = 0)
 		{
-			sRendererAPI->DrawIndexed(_vertexArray);
+			sRendererAPI->DrawIndexed(_vertexArray, _indexCount);
 		}
 
 	private:
