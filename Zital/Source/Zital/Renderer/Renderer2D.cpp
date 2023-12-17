@@ -22,9 +22,9 @@ namespace Zital
 
 	struct Renderer2DData
 	{
-		const uint32_t MaxQuads = 100000;
-		const uint32_t MaxVertices = MaxQuads * 4;
-		const uint32_t MaxIndices = MaxQuads * 6;
+		static const uint32_t MaxQuads = 100000;
+		static const uint32_t MaxVertices = MaxQuads * 4;
+		static const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTexSlots = 32; //render capabilities
 
 		Ref<VertexArray> QuadVertexArray;
@@ -40,6 +40,8 @@ namespace Zital
 		uint32_t TextureSlotIndex = 1; //0, the first texture slot will always be set to the constant white texture for non textured rendering
 
 		glm::vec4 QuadVertexPositions[4];
+
+		Renderer2D::Statistics Stats;
 	};
 
 	static Renderer2DData sData;
@@ -141,6 +143,18 @@ namespace Zital
 			sData.TextureSlots[i]->Bind(i);
 
 		RenderCommand::DrawIndexed(sData.QuadVertexArray, sData.QuadIndexCount);
+
+		sData.Stats.DrawCalls++;
+	}
+
+	void Renderer2D::FlushAndReset()
+	{
+		EndScene();
+
+		sData.QuadIndexCount = 0;
+		sData.QuadVertexBufferPtr = sData.QuadVertexBufferBase;
+
+		sData.TextureSlotIndex = 1;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const glm::vec4& _color)
@@ -151,6 +165,9 @@ namespace Zital
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const glm::vec4& _color)
 	{
 		ZT_PROFILE_FUNCTION();
+
+		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		const float texIndex = 0.f; //white texture
 		const float tilingFactor = 1.f;
@@ -187,6 +204,8 @@ namespace Zital
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadIndexCount += 6;
+
+		sData.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
@@ -197,6 +216,9 @@ namespace Zital
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		ZT_PROFILE_FUNCTION();
+
+		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		float textureIndex = 0.f;
 
@@ -248,6 +270,8 @@ namespace Zital
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadIndexCount += 6;
+
+		sData.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& _position, const glm::vec2& _size, float _degrees, const glm::vec4& _color)
@@ -258,6 +282,9 @@ namespace Zital
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _degrees, const glm::vec4& _color)
 	{
 		ZT_PROFILE_FUNCTION();
+
+		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		const float textureIndex = 0.f;
 		const float tilingFactor = 1.f;
@@ -295,6 +322,8 @@ namespace Zital
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadIndexCount += 6;
+
+		sData.Stats.QuadCount++;
 	}
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec2& _position, const glm::vec2& _size, float _degrees, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
@@ -305,6 +334,9 @@ namespace Zital
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _degrees, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
 		ZT_PROFILE_FUNCTION();
+
+		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
+			FlushAndReset();
 
 		float textureIndex = 0.f;
 
@@ -357,6 +389,17 @@ namespace Zital
 		sData.QuadVertexBufferPtr++;
 
 		sData.QuadIndexCount += 6;
+
+		sData.Stats.QuadCount++;
 	}
 
+	void Renderer2D::ResetStats()
+	{
+		memset(&sData.Stats, 0, sizeof(Statistics));
+	}
+
+	Renderer2D::Statistics& Renderer2D::GetStats()
+	{
+		return sData.Stats;
+	}
 }

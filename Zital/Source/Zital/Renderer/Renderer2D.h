@@ -36,7 +36,21 @@ namespace Zital
 		//Draws textured quad using x, y, z position with a size and rotatoin
 		static void DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _degrees, const Ref<Texture2D>& _texture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f));
 
+		//Stats
+		struct Statistics
+		{
+			uint32_t DrawCalls = 0;
+			uint32_t QuadCount = 0;
 
+			uint32_t GetTotalVertexCount() { return QuadCount * 4; }
+			uint32_t GetTotalIndexCount() { return QuadCount * 6; }
+		};
+
+		static void ResetStats();
+		static Statistics& GetStats();
+
+	private:
+		static void FlushAndReset();
 	};
 
 }
