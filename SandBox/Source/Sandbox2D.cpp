@@ -14,6 +14,9 @@ void Sandbox2D::OnAttach()
 
 	//mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
 	mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
+	mTextureMap = Zital::Texture2D::Create("TestGame/Textures/rpgTilemap.png");
+	mTextureCampfire = Zital::SubTexture2D::CreateFromCoords(mTextureMap, { 14.f, 22.f }, { 16.f, 16.f });
+	mTextureTree = Zital::SubTexture2D::CreateFromCoords(mTextureMap, { 17.f, 19.f }, { 16.f, 16.f }, { 1.f, 2.f });
 }
 
 void Sandbox2D::OnDetach()
@@ -35,6 +38,7 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 		Zital::RenderCommand::Clear();
 	}
 
+#if 0
 	{
 		ZT_PROFILE_SCOPE("Render draw");
 
@@ -43,7 +47,7 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 
 		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-		Zital::Renderer2D::DrawRotatedQuad({ 1.5f, -0.5f }, { 0.8f, 0.8f }, rotation, { 0.8f, 0.2f, 0.3f, 1.f });
+		Zital::Renderer2D::DrawRotatedQuad({ 1.5f, -0.5f }, { 0.8f, 0.8f }, glm::radians(rotation), { 0.8f, 0.2f, 0.3f, 1.f });
 		Zital::Renderer2D::DrawQuad({ -1.f, 0.f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.f });
 		Zital::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.75f, 0.4f }, { 0.3f, 0.2f, 0.8f, 1.f });
 		Zital::Renderer2D::DrawQuad({ 0.f, 0.f, -0.1f }, { 20.f, 20.f }, mTexture, 10.f);
@@ -63,7 +67,16 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 		}
 
 		Zital::Renderer2D::EndScene();
+
 	}
+#endif
+
+	Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
+	
+	Zital::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 1.f, 1.f }, mTextureCampfire);
+	Zital::Renderer2D::DrawQuad({ 1.f, 0.f, 0.f }, { 1.f, 2.f }, mTextureTree);
+	
+	Zital::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()

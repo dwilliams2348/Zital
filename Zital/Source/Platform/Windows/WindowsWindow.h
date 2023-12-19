@@ -32,7 +32,7 @@ namespace Zital
 
 	private:
 		GLFWwindow* mWindow;
-		GraphicsContext* mContext;
+		Scope<GraphicsContext> mContext;
 
 		struct SWindowData
 		{

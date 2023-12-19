@@ -12,7 +12,7 @@ namespace Zital
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported in the Zital engine."); return nullptr;
-			case RendererAPI::API::OpenGL:	return Ref<VertexBuffer>(new OpenGLVertexBuffer(_size));
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(_size);
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown renderer API.");
@@ -24,7 +24,7 @@ namespace Zital
 		switch (Renderer::GetAPI()) 
 		{
 			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported in the Zital engine."); return nullptr;
-			case RendererAPI::API::OpenGL:	return Ref<VertexBuffer>(new OpenGLVertexBuffer(_vertices, _size));
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLVertexBuffer>(_vertices, _size);
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown renderer API.");
@@ -36,7 +36,7 @@ namespace Zital
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported in the Zital engine."); return nullptr;
-			case RendererAPI::API::OpenGL:	return Ref<IndexBuffer>(new OpenGLIndexBuffer(_indices, _count));
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLIndexBuffer>(_indices, _count);
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown renderer API.");

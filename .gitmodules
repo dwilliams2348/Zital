@@ -4,9 +4,10 @@
 [submodule "Zital/Vendor/GLFW"]
 	path = Zital/Vendor/GLFW
 	url = https://github.com/TheCherno/GLFW
-[submodule "Zital/Vendor/imgui"]
-	path = Zital/Vendor/imgui
-	url = https://github.com/TheCherno/imgui
 [submodule "Zital/Vendor/glm"]
 	path = Zital/Vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "Zital/Vendor/imgui"]
+	path = Zital/Vendor/imgui
+	url = https://github.com/ocornut/imgui
+	branch = docking

@@ -19,6 +19,9 @@
     <Filter Include="Source\Zital\Core">
       <UniqueIdentifier>{E1D2C049-4DE9-BEDF-9660-4A0102B68F67}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Zital\Debug">
+      <UniqueIdentifier>{1F8AE781-0B6E-A8D7-74CE-A22A60D19259}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Zital\Events">
       <UniqueIdentifier>{AD2063C2-1982-40D0-A2EF-86820E50778F}</UniqueIdentifier>
     </Filter>
@@ -111,11 +114,14 @@
     <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Core\Timestep.h">
+    <ClInclude Include="Source\Zital\Core\TimeStep.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Core\Window.h">
       <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Debug\Instrumentation.h">
+      <Filter>Source\Zital\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h">
       <Filter>Source\Zital\Events</Filter>
@@ -148,6 +154,9 @@
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Renderer.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\Renderer2D.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\RendererAPI.h">
@@ -1413,8 +1422,9 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Renderer\Renderer2D.h" />
-    <ClInclude Include="Source\Zital\Debug\Instrumentation.h" />
+    <ClInclude Include="Source\Zital\Renderer\SubTexture2D.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1477,6 +1487,9 @@
     <ClCompile Include="Source\Zital\Renderer\Renderer.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\Renderer2D.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\RendererAPI.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
@@ -1492,6 +1505,8 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\SubTexture2D.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

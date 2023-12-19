@@ -151,8 +151,7 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="Source\Zital\Debug\Instrumentation.h" />
-    <ClInclude Include="Source\Zital\Renderer\Renderer2D.h" />
+    <ClInclude Include="Source\Zital\Renderer\SubTexture2D.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Core\Application.h" />
@@ -164,8 +163,9 @@
     <ClInclude Include="Source\Zital\Core\LayerStack.h" />
     <ClInclude Include="Source\Zital\Core\Log.h" />
     <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h" />
-    <ClInclude Include="Source\Zital\Core\Timestep.h" />
+    <ClInclude Include="Source\Zital\Core\TimeStep.h" />
     <ClInclude Include="Source\Zital\Core\Window.h" />
+    <ClInclude Include="Source\Zital\Debug\Instrumentation.h" />
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h" />
     <ClInclude Include="Source\Zital\Events\Event.h" />
     <ClInclude Include="Source\Zital\Events\KeyEvent.h" />
@@ -177,6 +177,7 @@
     <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
     <ClInclude Include="Source\Zital\Renderer\RenderCommand.h" />
     <ClInclude Include="Source\Zital\Renderer\Renderer.h" />
+    <ClInclude Include="Source\Zital\Renderer\Renderer2D.h" />
     <ClInclude Include="Source\Zital\Renderer\RendererAPI.h" />
     <ClInclude Include="Source\Zital\Renderer\Shader.h" />
     <ClInclude Include="Source\Zital\Renderer\Texture.h" />
@@ -608,7 +609,7 @@
     <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\Renderer2D.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -623,6 +624,7 @@
     <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Renderer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\Renderer2D.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RendererAPI.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Shader.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Texture.cpp" />

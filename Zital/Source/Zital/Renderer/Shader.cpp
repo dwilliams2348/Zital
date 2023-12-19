@@ -10,8 +10,8 @@ namespace Zital
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported.");	return nullptr;
-		case RendererAPI::API::OpenGL:	return Ref<Shader>(new OpenGLShader(_filepath));
+			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported.");	return nullptr;
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(_filepath);
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown RendererAPI.");
@@ -23,7 +23,7 @@ namespace Zital
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None:	ZT_CORE_ASSERT(false, "RendererAPI::None is currently not supported.");	return nullptr;
-			case RendererAPI::API::OpenGL:	return Ref<Shader>(new OpenGLShader(_name, _vertexSource, _fragmentSource));
+			case RendererAPI::API::OpenGL:	return CreateRef<OpenGLShader>(_name, _vertexSource, _fragmentSource);
 		}
 
 		ZT_CORE_ASSERT(false, "Unknown RendererAPI.");

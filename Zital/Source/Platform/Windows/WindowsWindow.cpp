@@ -55,7 +55,7 @@ namespace Zital
 
 		mWindow = glfwCreateWindow((int)_props.Width, (int)_props.Height, mData.Title.c_str(), nullptr, nullptr);
 
-		mContext = new OpenGLContext(mWindow);
+		mContext = CreateScope<OpenGLContext>(mWindow);
 		mContext->Init();
 
 		glfwSetWindowUserPointer(mWindow, &mData);

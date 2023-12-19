@@ -34,7 +34,7 @@ namespace Zital
 		}
 
 	private:
-		static RendererAPI* sRendererAPI;
+		static Scope<RendererAPI> sRendererAPI;
 	};
 
 }

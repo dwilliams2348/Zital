@@ -29,7 +29,7 @@ namespace Zital
 			glm::mat4 ViewProjectionMatrix;
 		};
 
-		static SceneData* mSceneData;
+		static Scope<SceneData> mSceneData;
 	};
 
 }
