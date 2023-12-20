@@ -16,6 +16,7 @@ namespace Zital
 
 		virtual uint32_t GetWidth() const override { return mWidth; }
 		virtual uint32_t GetHeight() const override { return mHeight; }
+		virtual uint32_t GetRendererID() const override { return mRendererID; }
 
 		virtual void SetData(void* _data, uint32_t _size) override;
 

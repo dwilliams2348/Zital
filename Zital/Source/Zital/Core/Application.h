@@ -28,7 +28,9 @@ namespace Zital
 		void PushOverlay(Layer* _overlay);
 
 		inline static Application& Get() { return *sInstance; }
-		inline Window& GetWindow() { return* mWindow; }
+		inline Window& GetWindow() { return *mWindow; }
+
+		void Close();
 
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);

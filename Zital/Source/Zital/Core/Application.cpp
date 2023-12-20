@@ -104,6 +104,11 @@ namespace Zital
 		}
 	}
 
+	void Application::Close()
+	{
+		mRunning = false;
+	}
+
 	bool Application::OnWindowClosed(WindowCloseEvent& e)
 	{
 		mRunning = false;

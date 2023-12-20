@@ -7,7 +7,7 @@
 namespace Zital
 {
 	OrthographicCameraController::OrthographicCameraController(float _aspectRatio, bool _rotation)
-		: mAspectRatio(_aspectRatio), mRotation(_rotation), mCamera(-mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel)
+		: mAspectRatio(_aspectRatio), mRotation(_rotation), mBounds({-mAspectRatio * mZoomLevel, mAspectRatio* mZoomLevel, -mZoomLevel, mZoomLevel}), mCamera(mBounds.Left, mBounds.Right, mBounds.Bottom, mBounds.Top)
 	{
 
 	}
@@ -51,6 +51,12 @@ namespace Zital
 		dispatcher.Dispatch<WindowResizeEvent>(ZT_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
+	void OrthographicCameraController::CalculateView()
+	{
+		mBounds = { -mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel };
+		mCamera.SetProjection(mBounds.Left, mBounds.Right, mBounds.Bottom, mBounds.Top);
+	}
+
 	bool OrthographicCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		ZT_PROFILE_FUNCTION();
@@ -58,7 +64,7 @@ namespace Zital
 		mZoomLevel -= e.GetYOffset() * 0.25f;
 		mZoomLevel = std::max(mZoomLevel, 0.5f);
 
-		mCamera.SetProjection(-mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel);
+		CalculateView();
 
 		return false;
 	}
@@ -68,7 +74,8 @@ namespace Zital
 		ZT_PROFILE_FUNCTION();
 
 		mAspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		mCamera.SetProjection(-mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel);
+		
+		CalculateView();
 
 		return false;
 	}
