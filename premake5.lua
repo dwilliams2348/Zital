@@ -25,9 +25,12 @@ IncludeDir["ImGui"] = "Zital/Vendor/imgui"
 IncludeDir["glm"] = "Zital/Vendor/glm"
 IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
 
-include "Zital/Vendor/GLFW"
-include "Zital/Vendor/Glad"
-include "Zital/Vendor/imgui"
+group "Dependencies"
+	include "Zital/Vendor/GLFW"
+	include "Zital/Vendor/Glad"
+	include "Zital/Vendor/imgui"
+
+group ""
 
 project "Zital"
 	location "Zital"
@@ -105,6 +108,59 @@ project "Zital"
 
 project "Sandbox"
 	location "Sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/Source/**.h",
+		"%{prj.name}/Source/**.cpp"
+	}
+
+	includedirs
+	{
+		"Zital/Vendor/spdlog/include",
+		"Zital/Source",
+		"Zital/Vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links 
+	{
+		"Zital"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"ZT_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "ZT_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "ZT_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "ZT_DIST"
+		runtime "Release"
+		optimize "on"
+
+
+project "Zital-Editor"
+	location "Zital-Editor"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"

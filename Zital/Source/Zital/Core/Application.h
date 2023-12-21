@@ -17,7 +17,7 @@ namespace Zital
 	class ZITAL_API Application
 	{
 	public:
-		Application();
+		Application(const std::string& _name = "Zital App");
 		virtual ~Application();
 
 		void Run();
