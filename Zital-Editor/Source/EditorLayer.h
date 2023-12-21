@@ -30,6 +30,7 @@ namespace Zital
 		Ref<Texture2D> mTextureSheet;
 		Ref<SubTexture2D> mTextureCampfire, mTextureTree;
 
+		bool mViewportFocused = false, mViewportHovered = false;
 		glm::vec2 mViewportSize = { 0.f, 0.f };
 
 		glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f };
