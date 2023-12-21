@@ -7,6 +7,11 @@ workspace "Zital"
 		"Release",
 		"Dist"
 	}
+	
+	flags
+	{
+		"MultiProcessorCompile"
+	}
 
 	startproject "Sandbox"
 

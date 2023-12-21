@@ -66,6 +66,12 @@ void Sandbox2D::OnAttach()
 	mTextureMap['S'] = Zital::SubTexture2D::CreateFromCoords(mTextureSheet, { 8.f, 30.f }, { 16.f, 16.f });
 	mTextureMap['G'] = Zital::SubTexture2D::CreateFromCoords(mTextureSheet, { 5.f, 30.f }, { 16.f, 16.f });
 
+	Zital::FramebufferProperties props;
+	props.Width = 1280;
+	props.Height = 720;
+
+	mFramebuffer = Zital::Framebuffer::Create(props);
+
 	mCameraController.SetZoomLevel(8.f);
 }
 
@@ -84,11 +90,12 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 	Zital::Renderer2D::ResetStats();
 	{
 		ZT_PROFILE_SCOPE("Render prep");
+		mFramebuffer->Bind();
 		Zital::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		Zital::RenderCommand::Clear();
 	}
 
-#if 0
+#if 1
 	{
 		ZT_PROFILE_SCOPE("Render draw");
 
@@ -107,12 +114,12 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 
 		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-		for (float y = -5.f; y < 5.f; y += 0.1f)
+		for (float y = -5.f; y < 5.f; y += 0.5f)
 		{
-			for (float x = -5.f; x < 5.f; x += 0.1f)
+			for (float x = -5.f; x < 5.f; x += 0.5f)
 			{
 				glm::vec4 color = { (x + 5.f) / 10.f, 0.5f, (y + 5.f) / 10.f, 0.75f };
-				Zital::Renderer2D::DrawQuad({ x, y }, { 0.09f, 0.09f }, color);
+				Zital::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
 		}
 
@@ -146,97 +153,103 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 	Zital::Renderer2D::EndScene();
 
 #endif
+
+	mFramebuffer->Unbind();
 }
 
 void Sandbox2D::OnImGuiRender()
 {
 	ZT_PROFILE_FUNCTION();
 
-	//example docking space using imgui 
-	static bool dockspaceOpen = true;
-    static bool opt_fullscreen = true;
-    static bool opt_padding = false;
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+	static bool dockingEnabled = true;
+	if(dockingEnabled)
+	{
+		//example docking space using imgui 
+		static bool dockspaceOpen = true;
+		static bool opt_fullscreen = true;
+		static bool opt_padding = false;
+		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
-    // We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
-    // because it would be confusing to have two docking targets within each others.
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-    if (opt_fullscreen)
-    {
-        const ImGuiViewport* viewport = ImGui::GetMainViewport();
-        ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(viewport->WorkSize);
-        ImGui::SetNextWindowViewport(viewport->ID);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-        window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-        window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-    }
-    else
-    {
-        dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
-    }
+		// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+		// because it would be confusing to have two docking targets within each others.
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		if (opt_fullscreen)
+		{
+			const ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->WorkPos);
+			ImGui::SetNextWindowSize(viewport->WorkSize);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		}
+		else
+		{
+			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+		}
 
-    // When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
-    // and handle the pass-thru hole, so we ask Begin() to not render a background.
-    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-        window_flags |= ImGuiWindowFlags_NoBackground;
+		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
+		// and handle the pass-thru hole, so we ask Begin() to not render a background.
+		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+			window_flags |= ImGuiWindowFlags_NoBackground;
 
-    // Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-    // This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-    // all active windows docked into it will lose their parent and become undocked.
-    // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-    // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-    if (!opt_padding)
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
-    if (!opt_padding)
-        ImGui::PopStyleVar();
+		// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
+		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
+		// all active windows docked into it will lose their parent and become undocked.
+		// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
+		// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
+		if (!opt_padding)
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+		if (!opt_padding)
+			ImGui::PopStyleVar();
 
-    if (opt_fullscreen)
-        ImGui::PopStyleVar(2);
+		if (opt_fullscreen)
+			ImGui::PopStyleVar(2);
 
-    // Submit the DockSpace
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-    {
-        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-    }
+		// Submit the DockSpace
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		{
+			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
 
-    if (ImGui::BeginMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            // Disabling fullscreen would allow the window to be moved to the front of other windows,
-            // which we can't undo at the moment without finer window depth/z control.
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				// Disabling fullscreen would allow the window to be moved to the front of other windows,
+				// which we can't undo at the moment without finer window depth/z control.
 
-			if (ImGui::MenuItem("Close")) Zital::Application::Get().Close();
-            ImGui::Separator();
+				if (ImGui::MenuItem("Close")) Zital::Application::Get().Close();
+				ImGui::Separator();
 
-            ImGui::EndMenu();
-        }
+				ImGui::EndMenu();
+			}
 
-        ImGui::EndMenuBar();
-    }
+			ImGui::EndMenuBar();
+		}
 
-	ImGui::Begin("Settings");
+		ImGui::Begin("Settings");
 
-	auto stats = Zital::Renderer2D::GetStats();
+		auto stats = Zital::Renderer2D::GetStats();
 
-	ImGui::Text("Renderer2D stats:");
-	ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-	ImGui::Text("Quad Count: %d", stats.QuadCount);
-	ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
-	ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
+		ImGui::Text("Renderer2D stats:");
+		ImGui::Text("Draw Calls: %d", stats.DrawCalls);
+		ImGui::Text("Quad Count: %d", stats.QuadCount);
+		ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
+		ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
 
-	ImGui::ColorEdit4("Square Color", glm::value_ptr(mSquareColor));
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(mSquareColor));
 
-	ImGui::Image((void*)mTexture->GetRendererID(), ImVec2{ 64.f, 64.f });
+		ImGui::Image((void*)mFramebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280, 720 });
 
-	ImGui::End();
+		ImGui::End();
 
-    ImGui::End();
+		ImGui::End();
+	}
 }
 
 void Sandbox2D::OnEvent(Zital::Event& e)

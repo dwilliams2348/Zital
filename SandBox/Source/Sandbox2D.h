@@ -20,6 +20,7 @@ private:
 	//Temporary, will delete, here for testing purpose
 	Zital::Ref<Zital::VertexArray> mSquareVA;
 	Zital::Ref<Zital::Shader> mShader;
+	Zital::Ref<Zital::Framebuffer> mFramebuffer;
 
 	//Temp texture
 	Zital::Ref<Zital::Texture2D> mTexture;
