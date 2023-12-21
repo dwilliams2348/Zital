@@ -6,7 +6,7 @@
 namespace Zital
 {
 
-	class ZITAL_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return mKeyCode; }
@@ -20,7 +20,7 @@ namespace Zital
 		int mKeyCode;
 	};
 
-	class ZITAL_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int _keycode, int _repeatCount)
@@ -41,7 +41,7 @@ namespace Zital
 		int mRepeatCount;
 	};
 
-	class ZITAL_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int _keycode)
@@ -57,7 +57,7 @@ namespace Zital
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class ZITAL_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int _keycode)

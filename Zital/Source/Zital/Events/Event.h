@@ -44,11 +44,13 @@ namespace Zital
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override {return category;}
 
-	class ZITAL_API Event
+	class Event
 	{
 		friend class EventDispatcher;
 
 	public:
+		virtual ~Event() = default;
+
 		bool Handled = false;
 
 		virtual EEventType GetEventType() const = 0;
