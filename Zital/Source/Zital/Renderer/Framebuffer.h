@@ -20,6 +20,8 @@ namespace Zital
 		virtual void Bind() = 0;
 		virtual void Unbind() = 0;
 
+		virtual void Resize(uint32_t _width, uint32_t _height) = 0;
+
 		virtual uint32_t GetColorAttachmentRendererID() const = 0;
 
 		//virtual FramebufferProperties& GetProperties() = 0;

@@ -13,7 +13,7 @@ workspace "Zital"
 		"MultiProcessorCompile"
 	}
 
-	startproject "Sandbox"
+	startproject "Zital-Editor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 

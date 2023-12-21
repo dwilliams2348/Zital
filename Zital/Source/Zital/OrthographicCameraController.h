@@ -26,6 +26,8 @@ namespace Zital
 		void OnUpdate(Timestep _deltaTime);
 		void OnEvent(Event& e);
 
+		void OnResize(float _width, float _height);
+
 		OrthographicCamera& GetCamera() { return mCamera; }
 		const OrthographicCamera& GetCamera() const { return mCamera; }
 

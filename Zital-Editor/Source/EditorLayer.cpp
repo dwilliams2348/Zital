@@ -247,9 +247,24 @@ namespace Zital
 
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(mSquareColor));
 
-			ImGui::Image((void*)mFramebuffer->GetColorAttachmentRendererID(), ImVec2{ 1280, 720 }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+			ImGui::End();
+
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
+			ImGui::Begin("Viewport");
+
+			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+			if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
+			{
+				mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+				mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+
+				mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
+			}
+			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
+			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 			ImGui::End();
+			ImGui::PopStyleVar();
 
 			ImGui::End();
 		}

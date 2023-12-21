@@ -51,6 +51,12 @@ namespace Zital
 		dispatcher.Dispatch<WindowResizeEvent>(ZT_BIND_EVENT_FN(OrthographicCameraController::OnWindowResized));
 	}
 
+	void OrthographicCameraController::OnResize(float _width, float _height)
+	{
+		mAspectRatio = _width / _height;
+		CalculateView();
+	}
+
 	void OrthographicCameraController::CalculateView()
 	{
 		mBounds = { -mAspectRatio * mZoomLevel, mAspectRatio * mZoomLevel, -mZoomLevel, mZoomLevel };
@@ -73,9 +79,7 @@ namespace Zital
 	{
 		ZT_PROFILE_FUNCTION();
 
-		mAspectRatio = (float)e.GetWidth() / (float)e.GetHeight();
-		
-		CalculateView();
+		OnResize((float)e.GetWidth(), (float)e.GetHeight());
 
 		return false;
 	}
