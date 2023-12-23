@@ -23,7 +23,7 @@ namespace Zital
 	};
 
 	//Interface representing a desktop system based Window
-	class ZITAL_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

@@ -6,6 +6,8 @@
 namespace Zital
 {
 
+	static const uint32_t sMaxFramebufferSize = 8192;
+
 	OpenGLFramebuffer::OpenGLFramebuffer(const FramebufferProperties& _props)
 		:mProperties(_props)
 	{
@@ -63,10 +65,14 @@ namespace Zital
 
 	void OpenGLFramebuffer::Resize(uint32_t _width, uint32_t _height)
 	{
-		mProperties.Width = _width;
-		mProperties.Height = _height;
-
-		Invalidate();
+		if (_width == 0 || _height == 0 || _width > sMaxFramebufferSize || _height > sMaxFramebufferSize)
+			ZT_CORE_WARN("Framebuffer is at an invalid size. Width: {0} Height: {1}", _width, _height);
+		else
+		{
+			mProperties.Width = _width;
+			mProperties.Height = _height;
+			Invalidate();
+		}
 	}
 
 }

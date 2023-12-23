@@ -24,6 +24,7 @@ IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Zital/Vendor/imgui"
 IncludeDir["glm"] = "Zital/Vendor/glm"
 IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
+IncludeDir["entt"] = "Zital/Vendor/entt/include"
 
 group "Dependencies"
 	include "Zital/Vendor/GLFW"
@@ -69,7 +70,8 @@ project "Zital"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -180,7 +182,8 @@ project "Zital-Editor"
 		"Zital/Vendor/spdlog/include",
 		"Zital/Source",
 		"Zital/Vendor",
-		"%{IncludeDir.glm}"
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links 

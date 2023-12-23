@@ -25,6 +25,10 @@ namespace Zital
 		Ref<Shader> mShader;
 		Ref<Framebuffer> mFramebuffer;
 
+		//Scene
+		Ref<Scene> mActiveScene;
+		entt::entity mSquareEntity;
+
 		//Temp texture
 		Ref<Texture2D> mTexture;
 		Ref<Texture2D> mTextureSheet;

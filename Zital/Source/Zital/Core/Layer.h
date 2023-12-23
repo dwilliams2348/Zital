@@ -7,7 +7,7 @@
 namespace Zital
 {
 
-	class ZITAL_API Layer
+	class Layer
 	{
 	public:
 		Layer(const std::string& _name = "Layer");

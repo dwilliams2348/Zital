@@ -56,7 +56,7 @@ namespace Zital
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class ZITAL_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}

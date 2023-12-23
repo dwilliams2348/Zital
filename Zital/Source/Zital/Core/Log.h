@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
@@ -8,7 +7,7 @@
 namespace Zital
 {
 
-	class ZITAL_API Log
+	class Log
 	{
 	public:
 		static void Init();

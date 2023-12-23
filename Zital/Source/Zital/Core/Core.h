@@ -2,18 +2,16 @@
 
 #include <memory>
 
-#ifdef ZT_PLATFORM_WINDOWS
-#if ZT_DYNAMIC_LINK
-	#ifdef ZT_BUILD_DLL
-		#define ZITAL_API __declspec(dllexport)
+//platform detection
+#ifdef _WIN32
+//windows x64/x86
+	#ifdef _WIN64
+		//windows x64
+		#define ZT_PLATFORM_WINDOWS
 	#else
-		#define ZITAL_API __declspec(dllimport)
+		//windows x86
+		#error "x86 builds are not supported."
 	#endif
-#else
-	#define ZITAL_API
-#endif
-#else
-	#error Zital only supports Windows as of now.
 #endif
 
 #ifdef ZT_ENABLE_ASSERTS

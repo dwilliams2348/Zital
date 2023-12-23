@@ -1,6 +1,7 @@
 #pragma once
 
 //For use in Zital applications
+//----------Core-----------------
 #include "Zital/Core/Application.h"
 #include "Zital/Core/Input.h"
 #include "Zital/Core/Layer.h"
@@ -14,6 +15,10 @@
 #include "Zital/OrthographicCameraController.h"
 
 #include "Zital/ImGui/ImGuiLayer.h"
+
+//----------Scene/Entity---------
+#include "Zital/Scene/Scene.h"
+#include "Zital/Scene/Components.h"
 
 //----------Rendering------------
 #include "Zital/Renderer/Renderer.h"

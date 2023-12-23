@@ -8,7 +8,7 @@
 namespace Zital
 {
 
-	class ZITAL_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack();
