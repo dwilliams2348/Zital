@@ -23,11 +23,12 @@ private:
 
 	//Temp texture
 	Zital::Ref<Zital::Texture2D> mTexture;
-	Zital::Ref<Zital::Texture2D> mTextureMap;
-	Zital::Ref<Zital::SubTexture2D> mTextureCampfire, mTextureTree;
 
 	//temp
 	Zital::Timestep ts;
 
 	glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f};
+
+	uint32_t mMapWidth, mMapHeight;
+	std::unordered_map<char, Zital::Ref<Zital::SubTexture2D>> mTextureMap;
 };

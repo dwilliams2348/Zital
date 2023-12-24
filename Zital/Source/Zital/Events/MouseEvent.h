@@ -6,7 +6,7 @@
 namespace Zital
 {
 
-	class ZITAL_API MouseMovedEvent : public Event
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float _x, float _y)
@@ -29,7 +29,7 @@ namespace Zital
 		float mMouseX, mMouseY;
 	};
 
-	class ZITAL_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float _xOffset, float _yOffset)
@@ -52,7 +52,7 @@ namespace Zital
 		float mXOffset, mYOffset;
 	};
 
-	class ZITAL_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return mButton; }
@@ -66,7 +66,7 @@ namespace Zital
 		int mButton;
 	};
 
-	class ZITAL_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int _button)
@@ -82,7 +82,7 @@ namespace Zital
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class ZITAL_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int _button)

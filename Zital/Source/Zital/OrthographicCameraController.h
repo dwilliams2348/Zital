@@ -9,6 +9,15 @@
 namespace Zital
 {
 
+	struct OrthoGraphicCameraBounds
+	{
+		float Left, Right;
+		float Bottom, Top;
+
+		float GetWidth() { return Right - Left; }
+		float GetHeight() { return Top - Bottom; }
+	};
+
 	class OrthographicCameraController
 	{
 	public:
@@ -17,16 +26,26 @@ namespace Zital
 		void OnUpdate(Timestep _deltaTime);
 		void OnEvent(Event& e);
 
+		void OnResize(float _width, float _height);
+
 		OrthographicCamera& GetCamera() { return mCamera; }
 		const OrthographicCamera& GetCamera() const { return mCamera; }
 
+		float GetZoomLevel() const { return mZoomLevel; }
+		void SetZoomLevel(float _level) { mZoomLevel = _level; CalculateView(); }
+
+		const OrthoGraphicCameraBounds& GetBounds() const { return mBounds; }
+
 	private:
+		void CalculateView();
+
 		bool OnMouseScrolled(MouseScrolledEvent& e);
 		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
 		float mAspectRatio;
 		float mZoomLevel = 1.f;
+		OrthoGraphicCameraBounds mBounds;
 		OrthographicCamera mCamera;
 
 		bool mRotation;

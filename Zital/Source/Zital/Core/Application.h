@@ -14,10 +14,10 @@
 namespace Zital 
 {
 
-	class ZITAL_API Application
+	class Application
 	{
 	public:
-		Application();
+		Application(const std::string& _name = "Zital App");
 		virtual ~Application();
 
 		void Run();
@@ -27,8 +27,12 @@ namespace Zital
 		void PushLayer(Layer* _layer);
 		void PushOverlay(Layer* _overlay);
 
+		ImGuiLayer* GetImGuiLayer() { return mImGuiLayer; }
+
 		inline static Application& Get() { return *sInstance; }
-		inline Window& GetWindow() { return* mWindow; }
+		inline Window& GetWindow() { return *mWindow; }
+
+		void Close();
 
 	private:
 		bool OnWindowClosed(WindowCloseEvent& e);

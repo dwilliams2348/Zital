@@ -16,14 +16,14 @@ namespace Zital
 
 	Application* Application::sInstance = nullptr;
 
-	Application::Application()
+	Application::Application(const std::string& _name)
 	{
 		ZT_PROFILE_FUNCTION();
 
 		ZT_CORE_ASSERT(!sInstance, "Application already exists.");
 		sInstance = this;
 
-		mWindow = Scope<Window>(Window::Create());
+		mWindow = Scope<Window>(Window::Create(SWindowProps(_name)));
 		mWindow->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
@@ -102,6 +102,11 @@ namespace Zital
 
 			mWindow->OnUpdate();
 		}
+	}
+
+	void Application::Close()
+	{
+		mRunning = false;
 	}
 
 	bool Application::OnWindowClosed(WindowCloseEvent& e)

@@ -6,7 +6,7 @@
 namespace Zital
 {
 
-	class ZITAL_API WindowResizeEvent : public Event
+	class WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned _width, unsigned _height)
@@ -29,7 +29,7 @@ namespace Zital
 		unsigned mWidth, mHeight;
 	};
 
-	class ZITAL_API WindowCloseEvent : public Event
+	class WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -38,7 +38,7 @@ namespace Zital
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class ZITAL_API AppTickEvent : public Event
+	class AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() {}
@@ -47,7 +47,7 @@ namespace Zital
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class ZITAL_API AppUpdateEvent : public Event
+	class AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() {}
@@ -56,7 +56,7 @@ namespace Zital
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class ZITAL_API AppRenderEvent : public Event
+	class AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() {}

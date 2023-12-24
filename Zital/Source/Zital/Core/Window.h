@@ -11,19 +11,19 @@ namespace Zital
 	struct SWindowProps
 	{
 		std::string Title;
-		unsigned Width;
-		unsigned Height;
+		uint32_t Width;
+		uint32_t Height;
 
 		SWindowProps(const std::string& _title = "Zital Engine",
-			unsigned _width = 1280,
-			unsigned _height = 720)
+			uint32_t _width = 1280,
+			uint32_t _height = 720)
 			: Title(_title), Width(_width), Height(_height) 
 		{
 		}
 	};
 
 	//Interface representing a desktop system based Window
-	class ZITAL_API Window
+	class Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
@@ -32,8 +32,8 @@ namespace Zital
 
 		virtual void OnUpdate() = 0;
 
-		virtual unsigned GetWidth() const = 0;
-		virtual unsigned GetHeight() const = 0;
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeight() const = 0;
 
 		//Window attributes
 		virtual void SetEventCallback(const EventCallbackFn& _callback) = 0;

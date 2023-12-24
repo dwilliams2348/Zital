@@ -2,6 +2,8 @@
 #include "imgui/imgui.h"
 #include <glm/gtc/type_ptr.hpp>
 
+
+
 Sandbox2D::Sandbox2D()
 	: Layer("Sandbox2D"), mCameraController(1280.f / 720.f)
 {
@@ -14,9 +16,8 @@ void Sandbox2D::OnAttach()
 
 	//mShader = Zital::Shader::Create("Assets/Shaders/FlatColor.glsl");
 	mTexture = Zital::Texture2D::Create("Assets/Textures/checkerboard.png");
-	mTextureMap = Zital::Texture2D::Create("TestGame/Textures/rpgTilemap.png");
-	mTextureCampfire = Zital::SubTexture2D::CreateFromCoords(mTextureMap, { 14.f, 22.f }, { 16.f, 16.f });
-	mTextureTree = Zital::SubTexture2D::CreateFromCoords(mTextureMap, { 17.f, 19.f }, { 16.f, 16.f }, { 1.f, 2.f });
+
+	mCameraController.SetZoomLevel(4.f);
 }
 
 void Sandbox2D::OnDetach()
@@ -38,7 +39,7 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 		Zital::RenderCommand::Clear();
 	}
 
-#if 0
+#if 1
 	{
 		ZT_PROFILE_SCOPE("Render draw");
 
@@ -57,12 +58,12 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 
 		Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
 
-		for (float y = -5.f; y < 5.f; y += 0.1f)
+		for (float y = -5.f; y < 5.f; y += 0.5f)
 		{
-			for (float x = -5.f; x < 5.f; x += 0.1f)
+			for (float x = -5.f; x < 5.f; x += 0.5f)
 			{
 				glm::vec4 color = { (x + 5.f) / 10.f, 0.5f, (y + 5.f) / 10.f, 0.75f };
-				Zital::Renderer2D::DrawQuad({ x, y }, { 0.09f, 0.09f }, color);
+				Zital::Renderer2D::DrawQuad({ x, y }, { 0.45f, 0.45f }, color);
 			}
 		}
 
@@ -71,12 +72,6 @@ void Sandbox2D::OnUpdate(Zital::Timestep _deltaTime)
 	}
 #endif
 
-	Zital::Renderer2D::BeginScene(mCameraController.GetCamera());
-	
-	Zital::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 1.f, 1.f }, mTextureCampfire);
-	Zital::Renderer2D::DrawQuad({ 1.f, 0.f, 0.f }, { 1.f, 2.f }, mTextureTree);
-	
-	Zital::Renderer2D::EndScene();
 }
 
 void Sandbox2D::OnImGuiRender()

@@ -17,6 +17,8 @@ namespace Zital
 		};
 
 	public:
+		virtual ~RendererAPI() = default;
+
 		virtual void Init() = 0;
 		virtual void SetViewport(uint32_t _x, uint32_t _y, uint32_t _width, uint32_t _height) = 0;
 

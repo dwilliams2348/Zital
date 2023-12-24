@@ -63,6 +63,9 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLContext.h">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLFramebuffer.h">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClInclude>
@@ -74,9 +77,6 @@
     </ClInclude>
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>Source\Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Platform\Windows\WindowsInput.h">
-      <Filter>Source\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h">
       <Filter>Source\Platform\Windows</Filter>
@@ -144,6 +144,9 @@
     <ClInclude Include="Source\Zital\Renderer\Buffer.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\Framebuffer.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
@@ -163,6 +166,9 @@
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Shader.h">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Renderer\SubTexture2D.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Texture.h">
@@ -1422,15 +1428,18 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Renderer\SubTexture2D.h">
-      <Filter>Source\Zital\Renderer</Filter>
-    </ClInclude>
+    <ClInclude Include="Source\Zital\Scene\Scene.h" />
+    <ClInclude Include="Source\Zital\Scene\Components.h" />
+    <ClInclude Include="Source\Zital\Scene\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>Source\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLFramebuffer.cpp">
       <Filter>Source\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLRendererAPI.cpp">
@@ -1478,6 +1487,9 @@
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\Framebuffer.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
@@ -1496,6 +1508,9 @@
     <ClCompile Include="Source\Zital\Renderer\Shader.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Zital\Renderer\SubTexture2D.cpp">
+      <Filter>Source\Zital\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\Texture.cpp">
       <Filter>Source\Zital\Renderer</Filter>
     </ClCompile>
@@ -1505,8 +1520,7 @@
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\Renderer\SubTexture2D.cpp">
-      <Filter>Source\Zital\Renderer</Filter>
-    </ClCompile>
+    <ClCompile Include="Source\Zital\Scene\Scene.cpp" />
+    <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
   </ItemGroup>
 </Project>

@@ -7,8 +7,13 @@ workspace "Zital"
 		"Release",
 		"Dist"
 	}
+	
+	flags
+	{
+		"MultiProcessorCompile"
+	}
 
-	startproject "Sandbox"
+	startproject "Zital-Editor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -19,10 +24,14 @@ IncludeDir["Glad"] = "Zital/Vendor/Glad/include"
 IncludeDir["ImGui"] = "Zital/Vendor/imgui"
 IncludeDir["glm"] = "Zital/Vendor/glm"
 IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
+IncludeDir["entt"] = "Zital/Vendor/entt/include"
 
-include "Zital/Vendor/GLFW"
-include "Zital/Vendor/Glad"
-include "Zital/Vendor/imgui"
+group "Dependencies"
+	include "Zital/Vendor/GLFW"
+	include "Zital/Vendor/Glad"
+	include "Zital/Vendor/imgui"
+
+group ""
 
 project "Zital"
 	location "Zital"
@@ -61,7 +70,8 @@ project "Zital"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}"
 	}
 
 	links
@@ -120,6 +130,60 @@ project "Sandbox"
 		"Zital/Source",
 		"Zital/Vendor",
 		"%{IncludeDir.glm}"
+	}
+
+	links 
+	{
+		"Zital"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+
+		defines
+		{
+			"ZT_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "ZT_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "ZT_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "ZT_DIST"
+		runtime "Release"
+		optimize "on"
+
+
+project "Zital-Editor"
+	location "Zital-Editor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/Source/**.h",
+		"%{prj.name}/Source/**.cpp"
+	}
+
+	includedirs
+	{
+		"Zital/Vendor/spdlog/include",
+		"Zital/Source",
+		"Zital/Vendor",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.entt}"
 	}
 
 	links 
