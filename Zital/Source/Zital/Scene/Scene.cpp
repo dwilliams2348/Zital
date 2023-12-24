@@ -4,6 +4,8 @@
 #include "Components.h"
 #include "Zital/Renderer/Renderer2D.h"
 
+#include "Entity.h"
+
 #include <glm/glm.hpp>
 
 namespace Zital
@@ -59,9 +61,13 @@ namespace Zital
 
 	}
 
-	entt::entity Scene::CreateEntity()
+	Entity Scene::CreateEntity(const std::string& _name)
 	{
-		return mRegistry.create();
+		Entity entity = { mRegistry.create(), this };
+		auto& tag = entity.AddComponent<TagComponent>(_name);
+		tag.Tag = _name.empty() ? "Entity" : _name;
+
+		return entity;
 	}
 
 	void Scene::OnUpdate(Timestep _deltaTime)

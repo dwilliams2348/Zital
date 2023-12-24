@@ -1430,6 +1430,7 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\Scene\Scene.h" />
     <ClInclude Include="Source\Zital\Scene\Components.h" />
+    <ClInclude Include="Source\Zital\Scene\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1520,5 +1521,6 @@
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="Source\Zital\Scene\Scene.cpp" />
+    <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
   </ItemGroup>
 </Project>

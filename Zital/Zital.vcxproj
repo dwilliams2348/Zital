@@ -156,6 +156,7 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="Source\Zital\Scene\Components.h" />
+    <ClInclude Include="Source\Zital\Scene\Entity.h" />
     <ClInclude Include="Source\Zital\Scene\Scene.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
@@ -617,6 +618,7 @@
     <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
     <ClCompile Include="Source\Zital\Scene\Scene.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

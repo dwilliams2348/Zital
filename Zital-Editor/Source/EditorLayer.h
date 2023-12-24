@@ -27,7 +27,7 @@ namespace Zital
 
 		//Scene
 		Ref<Scene> mActiveScene;
-		entt::entity mSquareEntity;
+		Entity mSquareEntity;
 
 		//Temp texture
 		Ref<Texture2D> mTexture;

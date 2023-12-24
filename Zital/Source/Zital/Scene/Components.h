@@ -5,6 +5,16 @@
 namespace Zital
 {
 
+	struct TagComponent
+	{
+		std::string Tag;
+
+		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
+		TagComponent(const std::string& _tag)
+			: Tag(_tag) {}
+	};
+
 	struct TransformComponent
 	{
 		glm::mat4 Transform = glm::mat4(1.f);

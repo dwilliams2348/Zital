@@ -25,10 +25,13 @@ namespace Zital
 
 		mActiveScene = CreateRef<Scene>();
 
-		mSquareEntity = mActiveScene->CreateEntity();
+		mSquareEntity = mActiveScene->CreateEntity("Square");
 
-		mActiveScene->Reg().emplace<TransformComponent>(mSquareEntity);
-		mActiveScene->Reg().emplace<SpriteRendererComponent>(mSquareEntity, glm::vec4{ 0.f, 1.f, 0.f, 1.f });
+		if(mSquareEntity)
+		{
+			mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+			mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
+		}
 
 		mCameraController.SetZoomLevel(4.f);
 	}
@@ -54,7 +57,6 @@ namespace Zital
 
 		//update scene
 		mActiveScene->OnUpdate(_deltaTime);
-
 
 		Renderer2D::EndScene();
 
@@ -134,7 +136,7 @@ namespace Zital
 			ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
 			ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
 
-			auto& color = mActiveScene->Reg().get<SpriteRendererComponent>(mSquareEntity).Color;
+			auto& color = mSquareEntity.GetComponent<SpriteRendererComponent>().Color;
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(color));
 
 			ImGui::End();
