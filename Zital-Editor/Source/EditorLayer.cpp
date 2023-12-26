@@ -26,12 +26,12 @@ namespace Zital
 		mActiveScene = CreateRef<Scene>();
 
 		mSquareEntity = mActiveScene->CreateEntity("Square");
+		mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
 
-		if(mSquareEntity)
-		{
-			mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
-			mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
-		}
+		mCameraEntity = mActiveScene->CreateEntity("Camera Entity");
+		mCameraEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mCameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.f, 16.f, -9.f, 9.f, -1.f, 1.f));
 
 		mCameraController.SetZoomLevel(4.f);
 	}
@@ -53,12 +53,8 @@ namespace Zital
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		RenderCommand::Clear();
 
-		Renderer2D::BeginScene(mCameraController.GetCamera());
-
 		//update scene
 		mActiveScene->OnUpdate(_deltaTime);
-
-		Renderer2D::EndScene();
 
 		mFramebuffer->Unbind();
 	}
@@ -138,6 +134,8 @@ namespace Zital
 
 			auto& color = mSquareEntity.GetComponent<SpriteRendererComponent>().Color;
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(color));
+
+			ImGui::DragFloat3("Camera Transform", glm::value_ptr(mCameraEntity.GetComponent<TransformComponent>().Transform[3]));
 
 			ImGui::End();
 

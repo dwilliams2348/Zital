@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Zital/Renderer/Camera.h"
+
 #include <glm/glm.hpp>
 
 namespace Zital
@@ -36,6 +38,17 @@ namespace Zital
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& _color)
 			: Color(_color) {}
+	};
+
+	struct CameraComponent
+	{
+		Zital::Camera Camera;
+		bool Primary = true; // move to scene at some point
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+		CameraComponent(const glm::mat4& _projection)
+			: Camera(_projection) {}
 	};
 
 }

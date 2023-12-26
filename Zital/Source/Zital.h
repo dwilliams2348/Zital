@@ -12,7 +12,7 @@
 #include "Zital/Core/KeyCodes.h"
 #include "Zital/Core/MouseButtonCodes.h"
 
-#include "Zital/OrthographicCameraController.h"
+#include "Zital/Systems/OrthographicCameraController.h"
 
 #include "Zital/ImGui/ImGuiLayer.h"
 

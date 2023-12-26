@@ -138,7 +138,7 @@
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h">
       <Filter>Source\Zital\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\OrthographicCameraController.h">
+    <ClInclude Include="Source\Zital\Systems\OrthographicCameraController.h">
       <Filter>Source\Zital</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Buffer.h">
@@ -1431,6 +1431,7 @@
     <ClInclude Include="Source\Zital\Scene\Scene.h" />
     <ClInclude Include="Source\Zital\Scene\Components.h" />
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
+    <ClInclude Include="Source\Zital\Renderer\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1481,7 +1482,7 @@
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp">
       <Filter>Source\Zital\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Zital\OrthographicCameraController.cpp">
+    <ClCompile Include="Source\Zital\Systems\OrthographicCameraController.cpp">
       <Filter>Source\Zital</Filter>
     </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">
