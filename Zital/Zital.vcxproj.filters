@@ -1432,6 +1432,7 @@
     <ClInclude Include="Source\Zital\Scene\Components.h" />
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
     <ClInclude Include="Source\Zital\Renderer\Camera.h" />
+    <ClInclude Include="Source\Zital\Scene\SceneCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1523,5 +1524,6 @@
     </ClCompile>
     <ClCompile Include="Source\Zital\Scene\Scene.cpp" />
     <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
+    <ClCompile Include="Source\Zital\Scene\SceneCamera.cpp" />
   </ItemGroup>
 </Project>

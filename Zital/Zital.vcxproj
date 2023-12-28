@@ -159,6 +159,7 @@
     <ClInclude Include="Source\Zital\Scene\Components.h" />
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
     <ClInclude Include="Source\Zital\Scene\Scene.h" />
+    <ClInclude Include="Source\Zital\Scene\SceneCamera.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Core\Application.h" />
@@ -621,6 +622,7 @@
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
     <ClCompile Include="Source\Zital\Scene\Scene.cpp" />
+    <ClCompile Include="Source\Zital\Scene\SceneCamera.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

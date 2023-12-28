@@ -76,10 +76,10 @@ namespace Zital
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 		{
-			auto group = mRegistry.group<CameraComponent>(entt::get<TransformComponent>);
-			for (auto entity : group)
+			auto view = mRegistry.view<CameraComponent, TransformComponent>();
+			for (auto entity : view)
 			{
-				auto& [camera, transform] = group.get<CameraComponent, TransformComponent>(entity);
+				auto& [camera, transform] = view.get<CameraComponent, TransformComponent>(entity);
 
 				if (camera.Primary)
 				{
@@ -104,6 +104,21 @@ namespace Zital
 			}
 
 			Renderer2D::EndScene();
+		}
+	}
+
+	void Scene::OnViewportResize(uint32_t _width, uint32_t _height)
+	{
+		mViewportWidth = _width;
+		mViewportHeight = _height;
+
+		//resize our non fixed aspect ratio cameras
+		auto view = mRegistry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			auto& cameraComponent = view.get<CameraComponent>(entity);
+			if (!cameraComponent.FixedAspectRatio)
+				cameraComponent.Camera.SetViewportSize(_width, _height);
 		}
 	}
 

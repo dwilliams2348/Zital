@@ -31,9 +31,9 @@ namespace Zital
 
 		mCameraEntity = mActiveScene->CreateEntity("Camera Entity");
 		mCameraEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
-		mCameraEntity.AddComponent<CameraComponent>(glm::ortho(-16.f, 16.f, -9.f, 9.f, -1.f, 1.f));
+		mCameraEntity.AddComponent<CameraComponent>();
 
-		mCameraController.SetZoomLevel(4.f);
+		//mCameraController.SetZoomLevel(4.f);
 	}
 
 	void EditorLayer::OnDetach()
@@ -43,6 +43,19 @@ namespace Zital
 
 	void EditorLayer::OnUpdate(Timestep _deltaTime)
 	{
+		ZT_PROFILE_FUNCTION();
+
+		//Resize
+		if (FramebufferProperties prop = mFramebuffer->GetProperties(); 
+			mViewportSize.x > 0.f && mViewportSize.y > 0.f && //zero sized is invalid
+			(prop.Width != mViewportSize.x || prop.Height != mViewportSize.y))
+		{
+			mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+			mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
+
+			mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+		}
+
 		//Update
 		if(mViewportFocused)
 			mCameraController.OnUpdate(_deltaTime);
@@ -147,13 +160,9 @@ namespace Zital
 			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused || !mViewportHovered);
 
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-			if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
-			{
-				mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-				mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 
-				mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
-			}
+			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 

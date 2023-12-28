@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Zital/Renderer/Camera.h"
+#include "Zital/Scene/SceneCamera.h"
 
 #include <glm/glm.hpp>
 
@@ -42,13 +42,12 @@ namespace Zital
 
 	struct CameraComponent
 	{
-		Zital::Camera Camera;
+		SceneCamera Camera;
 		bool Primary = true; // move to scene at some point
+		bool FixedAspectRatio = false;
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
-		CameraComponent(const glm::mat4& _projection)
-			: Camera(_projection) {}
 	};
 
 }
