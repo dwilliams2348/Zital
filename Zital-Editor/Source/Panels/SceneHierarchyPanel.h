@@ -19,6 +19,7 @@ namespace Zital
 
 	private:
 		void DrawEntityNode(Entity _entity);
+		void DrawComponents(Entity _entity);
 
 	private:
 		Ref<Scene> mContext;
