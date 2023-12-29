@@ -7,17 +7,17 @@
 namespace Zital
 {
 
-	bool Input::IsKeyPressed(int _keyCode)
+	bool Input::IsKeyPressed(KeyCode _keyCode)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, _keyCode);
+		auto state = glfwGetKey(window, static_cast<int32_t>(_keyCode));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool Input::IsMouseButtonPressed(int _button)
+	bool Input::IsMouseButtonPressed(MouseCode _button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetMouseButton(window, _button);
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(_button));
 		return state == GLFW_PRESS;
 	}
 

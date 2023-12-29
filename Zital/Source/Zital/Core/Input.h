@@ -10,9 +10,9 @@ namespace Zital
 	class Input
 	{
 	public:
-		static bool IsKeyPressed(int _keyCode);
+		static bool IsKeyPressed(KeyCode _keyCode);
 
-		static bool IsMouseButtonPressed(int _button);
+		static bool IsMouseButtonPressed(MouseCode _button);
 		static std::pair<float, float> GetMousePosition();
 		static float GetMouseX();
 		static float GetMouseY();

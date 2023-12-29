@@ -1,7 +1,7 @@
 #pragma once
 
-
-#include "Event.h"
+#include "Zital/Events/Event.h"
+#include "Zital/Core/Input.h"
 
 namespace Zital
 {
@@ -9,21 +9,21 @@ namespace Zital
 	class KeyEvent : public Event
 	{
 	public:
-		inline int GetKeyCode() const { return mKeyCode; }
+		inline KeyCode GetKeyCode() const { return mKeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
 	protected:
-		KeyEvent(int _keycode)
+		KeyEvent(KeyCode _keycode)
 			: mKeyCode(_keycode) {}
 
-		int mKeyCode;
+		KeyCode mKeyCode;
 	};
 
 	class KeyPressedEvent : public KeyEvent
 	{
 	public:
-		KeyPressedEvent(int _keycode, int _repeatCount)
+		KeyPressedEvent(KeyCode _keycode, int _repeatCount)
 			: KeyEvent(_keycode), mRepeatCount(_repeatCount) {}
 
 		inline int GetRepeatCount() { return mRepeatCount; }
@@ -44,7 +44,7 @@ namespace Zital
 	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
-		KeyReleasedEvent(int _keycode)
+		KeyReleasedEvent(KeyCode _keycode)
 			: KeyEvent(_keycode) {}
 
 		std::string ToString() const override
@@ -60,7 +60,7 @@ namespace Zital
 	class KeyTypedEvent : public KeyEvent
 	{
 	public:
-		KeyTypedEvent(int _keycode)
+		KeyTypedEvent(KeyCode _keycode)
 			: KeyEvent(_keycode) {}
 
 		std::string ToString() const override

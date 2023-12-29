@@ -1433,6 +1433,7 @@
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
     <ClInclude Include="Source\Zital\Renderer\Camera.h" />
     <ClInclude Include="Source\Zital\Scene\SceneCamera.h" />
+    <ClInclude Include="Source\Zital\Scene\ScriptableEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">

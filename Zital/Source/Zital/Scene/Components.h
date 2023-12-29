@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zital/Scene/SceneCamera.h"
+#include "Zital/Scene/ScriptableEntity.h"
 
 #include <glm/glm.hpp>
 
@@ -48,6 +49,29 @@ namespace Zital
 
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
+	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		std::function<void()> InstantiateFunction;
+		std::function<void()> DestroyInstanceFunction;
+
+		std::function<void(ScriptableEntity*)> OnCreateFunction;
+		std::function<void(ScriptableEntity*)> OnDestroyFunction;
+		std::function<void(ScriptableEntity*, Timestep)> OnUpdateFunction;
+
+		template <typename T>
+		void Bind()
+		{
+			InstantiateFunction = [&]() { Instance = new T(); };
+			DestroyInstanceFunction = [&]() { delete (T*)Instance; Instance = nullptr; };
+
+			OnCreateFunction = [](ScriptableEntity* _instance) { ((T*)_instance)->OnCreate(); };
+			OnDestroyFunction = [](ScriptableEntity* _instance) { ((T*)_instance)->OnDestroy(); };
+			OnUpdateFunction = [](ScriptableEntity* _instance, Timestep _deltaTime) { ((T*)_instance)->OnUpdate(_deltaTime); };
+		}
 	};
 
 }

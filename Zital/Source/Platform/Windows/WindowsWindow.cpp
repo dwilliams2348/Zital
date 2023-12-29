@@ -88,19 +88,19 @@ namespace Zital
 				{
 					case GLFW_PRESS:
 					{
-						KeyPressedEvent event(_key, 0);
+						KeyPressedEvent event(static_cast<KeyCode>(_key), 0);
 						data.EventCallback(event);
 						break;
 					}
 					case GLFW_RELEASE:
 					{
-						KeyReleasedEvent event(_key);
+						KeyReleasedEvent event(static_cast<KeyCode>(_key));
 						data.EventCallback(event);
 						break;
 					}
 					case GLFW_REPEAT:
 					{
-						KeyPressedEvent event(_key, 1);
+						KeyPressedEvent event(static_cast<KeyCode>(_key), 1);
 						data.EventCallback(event);
 						break;
 					}
@@ -111,7 +111,7 @@ namespace Zital
 			{
 				SWindowData& data = *(SWindowData*)glfwGetWindowUserPointer(_window);
 
-				KeyTypedEvent event(_keycode);
+				KeyTypedEvent event(static_cast<KeyCode>(_keycode));
 				data.EventCallback(event);
 			});
 
@@ -123,13 +123,13 @@ namespace Zital
 				{
 					case GLFW_PRESS:
 					{
-						MouseButtonPressedEvent event(_button);
+						MouseButtonPressedEvent event(static_cast<MouseCode>(_button));
 						data.EventCallback(event);
 						break;
 					}
 					case GLFW_RELEASE:
 					{
-						MouseButtonReleasedEvent event(_button);
+						MouseButtonReleasedEvent event(static_cast<MouseCode>(_button));
 						data.EventCallback(event);
 						break;
 					}

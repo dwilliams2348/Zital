@@ -72,6 +72,24 @@ namespace Zital
 
 	void Scene::OnUpdate(Timestep _deltaTime)
 	{
+		//update scripts
+		{
+			mRegistry.view<NativeScriptComponent>().each([&](auto _entity, auto& _script)
+				{
+					if (!_script.Instance)
+					{
+						_script.InstantiateFunction();
+						_script.Instance->mEntity = { _entity, this };
+
+						if(_script.OnCreateFunction)
+							_script.OnCreateFunction(_script.Instance);
+					}
+
+					if(_script.OnUpdateFunction)
+						_script.OnUpdateFunction(_script.Instance, _deltaTime);
+				});
+		}
+
 		//render 2D scene
 		Camera* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;

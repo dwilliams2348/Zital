@@ -19,6 +19,7 @@
 //----------Scene/Entity---------
 #include "Zital/Scene/Scene.h"
 #include "Zital/Scene/Entity.h"
+#include "Zital/Scene/ScriptableEntity.h"
 #include "Zital/Scene/Components.h"
 
 //----------Rendering------------

@@ -160,6 +160,7 @@
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
     <ClInclude Include="Source\Zital\Scene\Scene.h" />
     <ClInclude Include="Source\Zital\Scene\SceneCamera.h" />
+    <ClInclude Include="Source\Zital\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Core\Application.h" />

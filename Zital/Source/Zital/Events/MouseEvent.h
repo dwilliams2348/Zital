@@ -1,7 +1,7 @@
 #pragma once
 
-
-#include "Event.h"
+#include "Zital/Events/Event.h"
+#include "Zital/Core/Input.h"
 
 namespace Zital
 {
@@ -55,21 +55,21 @@ namespace Zital
 	class MouseButtonEvent : public Event
 	{
 	public:
-		inline int GetMouseButton() const { return mButton; }
+		inline MouseCode GetMouseButton() const { return mButton; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 	protected:
-		MouseButtonEvent(int _button)
+		MouseButtonEvent(MouseCode _button)
 			: mButton(_button) {}
 
-		int mButton;
+		MouseCode mButton;
 	};
 
 	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonPressedEvent(int _button)
+		MouseButtonPressedEvent(MouseCode _button)
 			: MouseButtonEvent(_button) {}
 
 		std::string ToString() const override
@@ -85,7 +85,7 @@ namespace Zital
 	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
-		MouseButtonReleasedEvent(int _button)
+		MouseButtonReleasedEvent(MouseCode _button)
 			: MouseButtonEvent(_button) {}
 
 		std::string ToString() const override
