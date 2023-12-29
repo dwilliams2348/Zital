@@ -26,14 +26,45 @@ namespace Zital
 		mActiveScene = CreateRef<Scene>();
 
 		mSquareEntity = mActiveScene->CreateEntity("Square");
+		mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
 
-		if(mSquareEntity)
+		mCameraEntity = mActiveScene->CreateEntity("Camera Entity");
+		mCameraEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mCameraEntity.AddComponent<CameraComponent>();
+
+		//mCameraController.SetZoomLevel(4.f);
+
+		class CameraController : public ScriptableEntity
 		{
-			mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
-			mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
-		}
+		public:
+			void OnCreate()
+			{
+				
+			}
 
-		mCameraController.SetZoomLevel(4.f);
+			void OnDestroy()
+			{
+
+			}
+
+			void OnUpdate(Timestep _deltaTime)
+			{
+				auto& transform = GetComponent<TransformComponent>().Transform;
+				float speed = 5.f;
+
+				if (Input::IsKeyPressed(KeyCode::A))
+					transform[3][0] -= speed * _deltaTime;
+				if (Input::IsKeyPressed(KeyCode::D))
+					transform[3][0] += speed * _deltaTime;
+				if (Input::IsKeyPressed(KeyCode::W))
+					transform[3][1] += speed * _deltaTime;
+				if (Input::IsKeyPressed(KeyCode::S))
+					transform[3][1] -= speed * _deltaTime;
+			}
+		};
+
+		mCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
 	}
 
 	void EditorLayer::OnDetach()
@@ -43,6 +74,19 @@ namespace Zital
 
 	void EditorLayer::OnUpdate(Timestep _deltaTime)
 	{
+		ZT_PROFILE_FUNCTION();
+
+		//Resize
+		if (FramebufferProperties prop = mFramebuffer->GetProperties(); 
+			mViewportSize.x > 0.f && mViewportSize.y > 0.f && //zero sized is invalid
+			(prop.Width != mViewportSize.x || prop.Height != mViewportSize.y))
+		{
+			mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+			mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
+
+			mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+		}
+
 		//Update
 		if(mViewportFocused)
 			mCameraController.OnUpdate(_deltaTime);
@@ -53,12 +97,8 @@ namespace Zital
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		RenderCommand::Clear();
 
-		Renderer2D::BeginScene(mCameraController.GetCamera());
-
 		//update scene
 		mActiveScene->OnUpdate(_deltaTime);
-
-		Renderer2D::EndScene();
 
 		mFramebuffer->Unbind();
 	}
@@ -139,6 +179,8 @@ namespace Zital
 			auto& color = mSquareEntity.GetComponent<SpriteRendererComponent>().Color;
 			ImGui::ColorEdit4("Square Color", glm::value_ptr(color));
 
+			ImGui::DragFloat3("Camera Transform", glm::value_ptr(mCameraEntity.GetComponent<TransformComponent>().Transform[3]));
+
 			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
@@ -149,13 +191,9 @@ namespace Zital
 			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused || !mViewportHovered);
 
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-			if (mViewportSize != *((glm::vec2*)&viewportPanelSize))
-			{
-				mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
-				mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 
-				mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
-			}
+			mViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
+
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 

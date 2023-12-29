@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Zital/Scene/SceneCamera.h"
+#include "Zital/Scene/ScriptableEntity.h"
+
 #include <glm/glm.hpp>
 
 namespace Zital
@@ -36,6 +39,31 @@ namespace Zital
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& _color)
 			: Color(_color) {}
+	};
+
+	struct CameraComponent
+	{
+		SceneCamera Camera;
+		bool Primary = true; // move to scene at some point
+		bool FixedAspectRatio = false;
+
+		CameraComponent() = default;
+		CameraComponent(const CameraComponent&) = default;
+	};
+
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr; 
+
+		ScriptableEntity*(*InstantiateScript)();
+		void(*DestroyScript)(NativeScriptComponent*);
+
+		template <typename T>
+		void Bind()
+		{
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* _script) { delete _script->Instance; _script->Instance = nullptr; };
+		}
 	};
 
 }

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "OrthographicCamera.h"
+#include "Zital/Renderer/OrthographicCamera.h"
+#include "Zital/Renderer/Camera.h"
 
-#include "Texture.h"
-#include "SubTexture2D.h"
+#include "Zital/Renderer/Texture.h"
+#include "Zital/Renderer/SubTexture2D.h"
 
 namespace Zital
 {
@@ -14,7 +15,8 @@ namespace Zital
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(const OrthographicCamera& _camera);
+		static void BeginScene(const Camera& _camera, const glm::mat4& _transform);
+		static void BeginScene(const OrthographicCamera& _camera);//remove at some point
 		static void EndScene();
 		static void Flush();
 

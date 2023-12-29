@@ -12,13 +12,14 @@
 #include "Zital/Core/KeyCodes.h"
 #include "Zital/Core/MouseButtonCodes.h"
 
-#include "Zital/OrthographicCameraController.h"
+#include "Zital/Systems/OrthographicCameraController.h"
 
 #include "Zital/ImGui/ImGuiLayer.h"
 
 //----------Scene/Entity---------
 #include "Zital/Scene/Scene.h"
 #include "Zital/Scene/Entity.h"
+#include "Zital/Scene/ScriptableEntity.h"
 #include "Zital/Scene/Components.h"
 
 //----------Rendering------------

@@ -113,6 +113,21 @@ namespace Zital
 
 	}
 
+	void Renderer2D::BeginScene(const Camera& _camera, const glm::mat4& _transform)
+	{
+		ZT_PROFILE_FUNCTION();
+
+		glm::mat4 viewProj = _camera.GetProjection() * glm::inverse(_transform);
+
+		sData.TextureShader->Bind();
+		sData.TextureShader->SetMat4("uViewProjection", viewProj);
+
+		sData.QuadIndexCount = 0;
+		sData.QuadVertexBufferPtr = sData.QuadVertexBufferBase;
+
+		sData.TextureSlotIndex = 1;
+	}
+
 	void Renderer2D::BeginScene(const OrthographicCamera& _camera)
 	{
 		ZT_PROFILE_FUNCTION();

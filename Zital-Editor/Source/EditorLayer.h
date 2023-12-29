@@ -28,6 +28,7 @@ namespace Zital
 		//Scene
 		Ref<Scene> mActiveScene;
 		Entity mSquareEntity;
+		Entity mCameraEntity;
 
 		//Temp texture
 		Ref<Texture2D> mTexture;
