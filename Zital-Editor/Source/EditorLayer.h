@@ -2,6 +2,8 @@
 
 #include "Zital.h"
 
+#include "Panels/SceneHierarchyPanel.h"
+
 namespace Zital
 {
 
@@ -39,6 +41,9 @@ namespace Zital
 		glm::vec2 mViewportSize = { 0.f, 0.f };
 
 		glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f };
+
+		//panels
+		SceneHierarchyPanel mSceneHierarchyPanel;
 	};
 
 }

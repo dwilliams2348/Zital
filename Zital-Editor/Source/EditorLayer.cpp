@@ -65,6 +65,8 @@ namespace Zital
 		};
 
 		mCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+
+		mSceneHierarchyPanel.SetContext(mActiveScene);
 	}
 
 	void EditorLayer::OnDetach()
@@ -165,6 +167,8 @@ namespace Zital
 
 				ImGui::EndMenuBar();
 			}
+
+			mSceneHierarchyPanel.OnImGuiRender();
 
 			ImGui::Begin("Settings");
 
