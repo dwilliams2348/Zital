@@ -26,11 +26,11 @@ namespace Zital
 		mActiveScene = CreateRef<Scene>();
 
 		mSquareEntity = mActiveScene->CreateEntity("Square");
-		mSquareEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mSquareEntity.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
 		mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
 
 		mCameraEntity = mActiveScene->CreateEntity("Camera Entity");
-		mCameraEntity.AddComponent<TransformComponent>(glm::mat4(1.f));
+		mCameraEntity.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
 		mCameraEntity.AddComponent<CameraComponent>();
 
 		//mCameraController.SetZoomLevel(4.f);
@@ -50,17 +50,17 @@ namespace Zital
 
 			void OnUpdate(Timestep _deltaTime)
 			{
-				auto& transform = GetComponent<TransformComponent>().Transform;
+				auto& translation = GetComponent<TransformComponent>().Translation;
 				float speed = 5.f;
 
 				if (Input::IsKeyPressed(KeyCode::A))
-					transform[3][0] -= speed * _deltaTime;
+					translation.x -= speed * _deltaTime;
 				if (Input::IsKeyPressed(KeyCode::D))
-					transform[3][0] += speed * _deltaTime;
+					translation.x += speed * _deltaTime;
 				if (Input::IsKeyPressed(KeyCode::W))
-					transform[3][1] += speed * _deltaTime;
+					translation.y += speed * _deltaTime;
 				if (Input::IsKeyPressed(KeyCode::S))
-					transform[3][1] -= speed * _deltaTime;
+					translation.y -= speed * _deltaTime;
 			}
 		};
 
