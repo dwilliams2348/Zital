@@ -158,6 +158,17 @@ namespace Zital
 
 			}
 		}
+
+		if (_entity.HasComponent<SpriteRendererComponent>())
+		{
+			if (ImGui::TreeNodeEx((void*)typeid(SpriteRendererComponent).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Sprite Renderer"))
+			{
+				auto& sprite = _entity.GetComponent<SpriteRendererComponent>();
+				ImGui::ColorEdit4("Color", glm::value_ptr(sprite.Color));
+
+				ImGui::TreePop();
+			}
+		}
 	}
 
 }

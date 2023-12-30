@@ -170,7 +170,7 @@ namespace Zital
 
 			mSceneHierarchyPanel.OnImGuiRender();
 
-			ImGui::Begin("Settings");
+			ImGui::Begin("Stats");
 
 			auto stats = Renderer2D::GetStats();
 
@@ -179,11 +179,6 @@ namespace Zital
 			ImGui::Text("Quad Count: %d", stats.QuadCount);
 			ImGui::Text("Vertex Count: %d", stats.GetTotalVertexCount());
 			ImGui::Text("Index Count: %d", stats.GetTotalIndexCount());
-
-			auto& color = mSquareEntity.GetComponent<SpriteRendererComponent>().Color;
-			ImGui::ColorEdit4("Square Color", glm::value_ptr(color));
-
-			ImGui::DragFloat3("Camera Transform", glm::value_ptr(mCameraEntity.GetComponent<TransformComponent>().Transform[3]));
 
 			ImGui::End();
 
