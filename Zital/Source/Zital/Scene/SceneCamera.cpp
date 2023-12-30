@@ -11,8 +11,19 @@ namespace Zital
 		RecalculateProjection();
 	}
 
+	void SceneCamera::SetPerspective(float _verticalFov, float _nearClip, float _farClip)
+	{
+		mProjectionType = ProjectionType::Perspective;
+		mPerspectiveFOV = _verticalFov;
+		mPerspectiveNear = _nearClip;
+		mPerspectiveFar = _farClip;
+
+		RecalculateProjection();
+	}
+
 	void SceneCamera::SetOrthographic(float _size, float _nearClip, float _farClip)
 	{
+		mProjectionType = ProjectionType::Orthographic;
 		mOrthographicSize = _size;
 		mOrthographicNear = _nearClip;
 		mOrthographicFar = _farClip;
@@ -29,13 +40,23 @@ namespace Zital
 
 	void SceneCamera::RecalculateProjection()
 	{
-		float orthoLeft = -mOrthographicSize * mAspectRatio * 0.5f;
-		float orthoRight = mOrthographicSize * mAspectRatio * 0.5f;
-		float orthoBottom = -mOrthographicSize * 0.5f;
-		float orthoTop = mOrthographicSize * 0.5f;
+		switch (mProjectionType)
+		{
+		case ProjectionType::Perspective:
+			mProjection = glm::perspective(mPerspectiveFOV, mAspectRatio, mPerspectiveNear, mPerspectiveFar);
 
-		mProjection = glm::ortho(orthoLeft, orthoRight,
-			orthoBottom, orthoTop, mOrthographicNear, mOrthographicFar);
+			break;
+		case ProjectionType::Orthographic:
+			float orthoLeft = -mOrthographicSize * mAspectRatio * 0.5f;
+			float orthoRight = mOrthographicSize * mAspectRatio * 0.5f;
+			float orthoBottom = -mOrthographicSize * 0.5f;
+			float orthoTop = mOrthographicSize * 0.5f;
+
+			mProjection = glm::ortho(orthoLeft, orthoRight,
+				orthoBottom, orthoTop, mOrthographicNear, mOrthographicFar);
+
+			break;
+		}
 	}
 
 }
