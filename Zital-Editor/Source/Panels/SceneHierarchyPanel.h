@@ -32,14 +32,41 @@ namespace Zital
 	template<typename T>
 	inline void SceneHierarchyPanel::DrawUIComp(const char* _name, Entity _entity, void(*_func)(Entity))
 	{
+		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap;
+
 		if (_entity.HasComponent<T>())
 		{
-			if (ImGui::TreeNodeEx((void*)typeid(T).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, _name))
+			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4, 4 });
+			bool opened = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, _name);
+
+			if (_entity.GetComponent<T>().Removeable)
+			{
+				ImGui::SameLine(ImGui::GetWindowWidth() - 50.f);
+
+				if (ImGui::Button("...", ImVec2{ 27.5f, 20 }))
+					ImGui::OpenPopup("ComponentSettings");
+			}
+
+			ImGui::PopStyleVar();
+
+			bool removeComponent = false;
+			if (ImGui::BeginPopup("ComponentSettings"))
+			{
+				if (ImGui::MenuItem("Remove Component"))
+					removeComponent = true;
+
+				ImGui::EndPopup();
+			}
+
+			if (opened)
 			{
 				_func(_entity);
 				
 				ImGui::TreePop();
 			}
+
+			if (removeComponent)
+				_entity.RemoveComponent<T>();
 		}
 	}
 

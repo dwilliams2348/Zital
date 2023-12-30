@@ -34,12 +34,56 @@ namespace Zital
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			mSelectionContext = {};
 
+		//right click on blank space
+		ImGuiPopupFlags flags = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems;
+		if (ImGui::BeginPopupContextWindow(0, flags))
+		{
+			if (ImGui::MenuItem("Create Empty Entity"))
+				mContext->CreateEntity("Empty Entity");
+
+			ImGui::EndPopup();
+		}
+
 		ImGui::End();
 
 		ImGui::Begin("Properties");
 
 		if (mSelectionContext)
+		{
 			DrawComponents(mSelectionContext);
+
+			if (ImGui::Button("Add Component"))
+				ImGui::OpenPopup("AddComponent");
+
+			if (ImGui::BeginPopup("AddComponent"))
+			{
+				if (ImGui::MenuItem("Transform"))
+				{
+					if(!mSelectionContext.HasComponent<TransformComponent>())
+						mSelectionContext.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
+
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (ImGui::MenuItem("Camera"))
+				{
+					if (!mSelectionContext.HasComponent<CameraComponent>())
+						mSelectionContext.AddComponent<CameraComponent>();
+
+					ImGui::CloseCurrentPopup();
+				}
+
+				if (ImGui::MenuItem("Sprite Renderer"))
+				{
+					if(!mSelectionContext.HasComponent<SpriteRendererComponent>())
+						mSelectionContext.AddComponent<SpriteRendererComponent>();
+
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::EndPopup();
+			}
+		}
 
 		ImGui::End();
 	}
@@ -55,6 +99,15 @@ namespace Zital
 			mSelectionContext = _entity;
 		}
 
+		bool entityDeleted = false;
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Delete Entity"))
+				entityDeleted = true;
+
+			ImGui::EndPopup();
+		}
+
 		if (opened)
 		{
 			//temp demo
@@ -64,6 +117,14 @@ namespace Zital
 				ImGui::TreePop();
 
 			ImGui::TreePop();
+		}
+
+		if (entityDeleted)
+		{
+			if (mSelectionContext == _entity)
+				mSelectionContext = {};
+
+			mContext->DestroyEntity(_entity);
 		}
 	}
 

@@ -30,6 +30,11 @@ namespace Zital
 		return entity;
 	}
 
+	void Scene::DestroyEntity(Entity _entity)
+	{
+		mRegistry.destroy(_entity);
+	}
+
 	void Scene::OnUpdate(Timestep _deltaTime)
 	{
 		//update scripts
@@ -99,6 +104,38 @@ namespace Zital
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(_width, _height);
 		}
+	}
+
+	template<typename T>
+	void Scene::OnComponentAdded(Entity _entity, T& _component)
+	{
+		static_assert(false);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TagComponent>(Entity _entity, TagComponent& _component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TransformComponent>(Entity _entity, TransformComponent& _component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<CameraComponent>(Entity _entity, CameraComponent& _component)
+	{
+		_component.Camera.SetViewportSize(mViewportWidth, mViewportHeight);
+	}
+
+	template<>
+	void Scene::OnComponentAdded<SpriteRendererComponent>(Entity _entity, SpriteRendererComponent& _component)
+	{
+	}
+
+	template<>
+	void Scene::OnComponentAdded<NativeScriptComponent>(Entity _entity, NativeScriptComponent& _component)
+	{
 	}
 
 }

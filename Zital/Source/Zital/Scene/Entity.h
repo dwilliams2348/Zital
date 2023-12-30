@@ -18,7 +18,9 @@ namespace Zital
 		T& AddComponent(Args&&...args)
 		{
 			ZT_CORE_ASSERT(!HasComponent<T>(), "Component already exists on this entity.");
-			return mScene->mRegistry.emplace<T>(mEntityHandle, std::forward<Args>(args)...);
+			T& component = mScene->mRegistry.emplace<T>(mEntityHandle, std::forward<Args>(args)...);
+			mScene->OnComponentAdded<T>(*this, component);
+			return component;
 		}
 
 		template<typename T>
@@ -40,6 +42,7 @@ namespace Zital
 
 		operator bool() const { return mEntityHandle != entt::null; }
 		operator uint32_t() const { return (uint32_t)mEntityHandle; }
+		operator entt::entity() const { return mEntityHandle; }
 
 		bool operator==(const Entity& _other) const { return mEntityHandle == _other.mEntityHandle && mScene == _other.mScene; }
 		bool operator!=(const Entity& _other) const { return !(*this == _other); }

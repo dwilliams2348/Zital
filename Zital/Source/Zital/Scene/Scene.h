@@ -16,9 +16,14 @@ namespace Zital
 		~Scene();
 
 		Entity CreateEntity(const std::string& _name = std::string());
+		void DestroyEntity(Entity _entity);
 
 		void OnUpdate(Timestep _deltaTime);
 		void OnViewportResize(uint32_t _width, uint32_t _height);
+
+	private:
+		template<typename T>
+		void OnComponentAdded(Entity _entity, T& _component);
 
 	private:
 		entt::registry mRegistry;
