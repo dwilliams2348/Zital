@@ -24,6 +24,8 @@ namespace Zital
 
 		void SetBlockEvents(bool _block) { mBlockEvents = _block; }
 
+		void SetDarkThemeColors();
+
 	private:
 		bool mBlockEvents = true;
 		float mTime = 0.f;
