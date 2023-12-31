@@ -5,6 +5,8 @@
 
 #include "Zital/Scene/SceneSerializer.h"
 
+#include "Zital/Utils/PlatformUtils.h"
+
 namespace Zital
 {
 
@@ -169,20 +171,18 @@ namespace Zital
 			{
 				if (ImGui::BeginMenu("File"))
 				{
-					if (ImGui::MenuItem("Serialize"))
-					{
-						SceneSerializer serializer(mActiveScene);
-						serializer.Serialize("Assets/Scenes/Example.zital");
-					}
+					if (ImGui::MenuItem("New", "Ctrl+N"))
+						NewScene();
 
-					if (ImGui::MenuItem("Deserialize"))
-					{
-						SceneSerializer serializer(mActiveScene);
-						serializer.Deserialize("Assets/Scenes/Example.zital");
-					}
+					if (ImGui::MenuItem("Open...", "Ctrl+O"))
+						OpenScene();
+
+					if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+						SaveSceneAs();
+
+					ImGui::Separator();
 
 					if (ImGui::MenuItem("Close")) Application::Get().Close();
-					ImGui::Separator();
 
 					ImGui::EndMenu();
 				}
@@ -228,6 +228,67 @@ namespace Zital
 	void EditorLayer::OnEvent(Event& e)
 	{
 		mCameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+
+		dispatcher.Dispatch<KeyPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		//Shortcuts
+		if (e.GetRepeatCount() > 0)
+			return false;
+
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift= Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode())
+		{
+			case Key::N:
+				if (control)
+					NewScene();
+
+				break;
+			case Key::O:
+				if (control)
+					OpenScene();
+
+				break;
+			case Key::S:
+				if (control && shift)
+					SaveSceneAs();
+
+				break;
+		}
+	}
+
+	void EditorLayer::NewScene()
+	{
+		mActiveScene = CreateRef<Scene>();
+		mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+		mSceneHierarchyPanel.SetContext(mActiveScene);
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("Zital Scene (*.zital)\0*.zital\0");
+		if (!filepath.empty())
+		{
+			NewScene();
+
+			SceneSerializer serializer(mActiveScene);
+			serializer.Deserialize(filepath);
+		}
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Zital Scene (*.zital)\0*.zital\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(mActiveScene);
+			serializer.Serialize(filepath);
+		}
 	}
 
 }

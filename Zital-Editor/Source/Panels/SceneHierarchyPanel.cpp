@@ -18,6 +18,7 @@ namespace Zital
 	void SceneHierarchyPanel::SetContext(const Ref<Scene>& _context)
 	{
 		mContext = _context;
+		mSelectionContext = {};
 	}
 
 	void SceneHierarchyPanel::OnImGuiRender()
