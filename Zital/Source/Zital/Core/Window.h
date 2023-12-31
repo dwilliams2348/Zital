@@ -15,8 +15,8 @@ namespace Zital
 		uint32_t Height;
 
 		SWindowProps(const std::string& _title = "Zital Engine",
-			uint32_t _width = 1280,
-			uint32_t _height = 720)
+			uint32_t _width = 1600,
+			uint32_t _height = 900)
 			: Title(_title), Width(_width), Height(_height) 
 		{
 		}

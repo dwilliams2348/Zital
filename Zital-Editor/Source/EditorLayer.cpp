@@ -1,6 +1,11 @@
 #include "EditorLayer.h"
-#include "imgui/imgui.h"
+#include <imgui/imgui.h>
+
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Zital/Scene/SceneSerializer.h"
+
+#include "Zital/Utils/PlatformUtils.h"
 
 namespace Zital
 {
@@ -25,6 +30,7 @@ namespace Zital
 
 		mActiveScene = CreateRef<Scene>();
 
+#if 0
 		mSquareEntity = mActiveScene->CreateEntity("Square");
 		mSquareEntity.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
 		mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
@@ -65,6 +71,7 @@ namespace Zital
 		};
 
 		mCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		mSceneHierarchyPanel.SetContext(mActiveScene);
 	}
@@ -149,18 +156,33 @@ namespace Zital
 
 			// Submit the DockSpace
 			ImGuiIO& io = ImGui::GetIO();
+			ImGuiStyle& style = ImGui::GetStyle();
+			float minWinSize = style.WindowMinSize.x;
+			style.WindowMinSize.x = 370.f;
 			if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 			{
 				ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 				ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 			}
 
+			style.WindowMinSize.x = minWinSize;
+
 			if (ImGui::BeginMenuBar())
 			{
 				if (ImGui::BeginMenu("File"))
 				{
-					if (ImGui::MenuItem("Close")) Application::Get().Close();
+					if (ImGui::MenuItem("New", "Ctrl+N"))
+						NewScene();
+
+					if (ImGui::MenuItem("Open...", "Ctrl+O"))
+						OpenScene();
+
+					if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+						SaveSceneAs();
+
 					ImGui::Separator();
+
+					if (ImGui::MenuItem("Close")) Application::Get().Close();
 
 					ImGui::EndMenu();
 				}
@@ -206,6 +228,67 @@ namespace Zital
 	void EditorLayer::OnEvent(Event& e)
 	{
 		mCameraController.OnEvent(e);
+
+		EventDispatcher dispatcher(e);
+
+		dispatcher.Dispatch<KeyPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+	}
+
+	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
+	{
+		//Shortcuts
+		if (e.GetRepeatCount() > 0)
+			return false;
+
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift= Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		switch (e.GetKeyCode())
+		{
+			case Key::N:
+				if (control)
+					NewScene();
+
+				break;
+			case Key::O:
+				if (control)
+					OpenScene();
+
+				break;
+			case Key::S:
+				if (control && shift)
+					SaveSceneAs();
+
+				break;
+		}
+	}
+
+	void EditorLayer::NewScene()
+	{
+		mActiveScene = CreateRef<Scene>();
+		mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+		mSceneHierarchyPanel.SetContext(mActiveScene);
+	}
+
+	void EditorLayer::OpenScene()
+	{
+		std::string filepath = FileDialogs::OpenFile("Zital Scene (*.zital)\0*.zital\0");
+		if (!filepath.empty())
+		{
+			NewScene();
+
+			SceneSerializer serializer(mActiveScene);
+			serializer.Deserialize(filepath);
+		}
+	}
+
+	void EditorLayer::SaveSceneAs()
+	{
+		std::string filepath = FileDialogs::SaveFile("Zital Scene (*.zital)\0*.zital\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(mActiveScene);
+			serializer.Serialize(filepath);
+		}
 	}
 
 }

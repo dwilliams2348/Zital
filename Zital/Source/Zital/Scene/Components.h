@@ -13,6 +13,8 @@ namespace Zital
 	{
 		std::string Tag;
 
+		bool Removeable = false;
+
 		TagComponent() = default;
 		TagComponent(const TagComponent&) = default;
 		TagComponent(const std::string& _tag)
@@ -25,7 +27,7 @@ namespace Zital
 		glm::vec3 Rotation = { 0.f, 0.f, 0.f };
 		glm::vec3 Scale = { 1.f, 1.f, 1.f };
 
-		//glm::mat4 Transform{ 1.f };
+		bool Removeable = false;
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
@@ -48,6 +50,8 @@ namespace Zital
 	{
 		glm::vec4 Color{ 1.f, 1.f, 1.f, 1.f };
 
+		bool Removeable = true;
+
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const SpriteRendererComponent&) = default;
 		SpriteRendererComponent(const glm::vec4& _color)
@@ -60,6 +64,8 @@ namespace Zital
 		bool Primary = true; // move to scene at some point
 		bool FixedAspectRatio = false;
 
+		bool Removeable = true;
+
 		CameraComponent() = default;
 		CameraComponent(const CameraComponent&) = default;
 	};
@@ -67,6 +73,8 @@ namespace Zital
 	struct NativeScriptComponent
 	{
 		ScriptableEntity* Instance = nullptr; 
+
+		bool Removeable = true;
 
 		ScriptableEntity*(*InstantiateScript)();
 		void(*DestroyScript)(NativeScriptComponent*);
