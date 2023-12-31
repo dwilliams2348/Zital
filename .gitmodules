@@ -11,3 +11,6 @@
 	path = Zital/Vendor/imgui
 	url = https://github.com/ocornut/imgui
 	branch = docking
+[submodule "Zital/Vendor/yaml-cpp"]
+	path = Zital/Vendor/yaml-cpp
+	url = https://github.com/dwilliams2348/yaml-cpp

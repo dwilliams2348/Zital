@@ -25,11 +25,13 @@ IncludeDir["ImGui"] = "Zital/Vendor/imgui"
 IncludeDir["glm"] = "Zital/Vendor/glm"
 IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
 IncludeDir["entt"] = "Zital/Vendor/entt/include"
+IncludeDir["yaml_cpp"] = "Zital/Vendor/yaml-cpp/include"
 
 group "Dependencies"
 	include "Zital/Vendor/GLFW"
 	include "Zital/Vendor/Glad"
 	include "Zital/Vendor/imgui"
+	include "Zital/Vendor/yaml-cpp"
 
 group ""
 
@@ -71,7 +73,8 @@ project "Zital"
 		"%{IncludeDir.ImGui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}"
 	}
 
 	links
@@ -79,6 +82,7 @@ project "Zital"
 		"GLFW",
 		"Glad",
 		"ImGui",
+		"yaml-cpp",
 		"opengl32.lib"
 	}
 

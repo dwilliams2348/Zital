@@ -1,6 +1,9 @@
 #include "EditorLayer.h"
-#include "imgui/imgui.h"
+#include <imgui/imgui.h>
+
 #include <glm/gtc/type_ptr.hpp>
+
+#include "Zital/Scene/SceneSerializer.h"
 
 namespace Zital
 {
@@ -25,6 +28,7 @@ namespace Zital
 
 		mActiveScene = CreateRef<Scene>();
 
+#if 0
 		mSquareEntity = mActiveScene->CreateEntity("Square");
 		mSquareEntity.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
 		mSquareEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.f, 0.f, 1.f, 1.f });
@@ -65,6 +69,7 @@ namespace Zital
 		};
 
 		mCameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
 
 		mSceneHierarchyPanel.SetContext(mActiveScene);
 	}
@@ -164,6 +169,18 @@ namespace Zital
 			{
 				if (ImGui::BeginMenu("File"))
 				{
+					if (ImGui::MenuItem("Serialize"))
+					{
+						SceneSerializer serializer(mActiveScene);
+						serializer.Serialize("Assets/Scenes/Example.zital");
+					}
+
+					if (ImGui::MenuItem("Deserialize"))
+					{
+						SceneSerializer serializer(mActiveScene);
+						serializer.Deserialize("Assets/Scenes/Example.zital");
+					}
+
 					if (ImGui::MenuItem("Close")) Application::Get().Close();
 					ImGui::Separator();
 
