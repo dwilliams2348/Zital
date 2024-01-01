@@ -22,6 +22,7 @@ namespace Zital
 
 	private:
 		bool OnKeyPressed(KeyPressedEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 		void NewScene();
 		void OpenScene();
@@ -39,6 +40,7 @@ namespace Zital
 		Ref<Scene> mActiveScene;
 		Entity mSquareEntity;
 		Entity mCameraEntity;
+		Entity mHoveredEntity;
 
 		EditorCamera mEditorCamera;
 
@@ -49,6 +51,7 @@ namespace Zital
 
 		bool mViewportFocused = false, mViewportHovered = false;
 		glm::vec2 mViewportSize = { 0.f, 0.f };
+		glm::vec2 mViewportBounds[2];
 
 		glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f };
 

@@ -29,7 +29,7 @@ namespace Zital
 		mTexture = Texture2D::Create("Assets/Textures/checkerboard.png");
 
 		FramebufferProperties props;
-		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		props.Width = 1280;
 		props.Height = 720;
 
@@ -115,9 +115,25 @@ namespace Zital
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		RenderCommand::Clear();
 
+		//clear entityID attachment to -1
+		mFramebuffer->ClearAttachment(1, -1);
+
 		//update scene
 		mActiveScene->OnUpdateEditor(_deltaTime, mEditorCamera);
-		//mActiveScene->OnUpdateRuntime(_deltaTime);
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= mViewportBounds[0].x;
+		my -= mViewportBounds[0].y;
+		my = mViewportSize.y - my;
+
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)mViewportSize.x && mouseY < (int)mViewportSize.y)
+		{
+			int pixelData = mFramebuffer->ReadPixel(1, mouseX, mouseY);
+			mHoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, mActiveScene.get());
+		}
 
 		mFramebuffer->Unbind();
 	}
@@ -204,6 +220,9 @@ namespace Zital
 
 			ImGui::Begin("Stats");
 
+			const char* name = mHoveredEntity ? mHoveredEntity.GetComponent<TagComponent>().Tag.c_str() : "none";
+			ImGui::Text("Hovered Entity: %s", name);
+
 			auto stats = Renderer2D::GetStats();
 
 			ImGui::Text("Renderer2D stats:");
@@ -216,6 +235,11 @@ namespace Zital
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 			ImGui::Begin("Viewport");
+			auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+			auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+			auto viewportOffset = ImGui::GetWindowPos();
+			mViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+			mViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 			mViewportFocused = ImGui::IsWindowFocused();
 			mViewportHovered = ImGui::IsWindowHovered();
@@ -235,9 +259,7 @@ namespace Zital
 				ImGuizmo::SetOrthographic(false);
 				ImGuizmo::SetDrawlist();
 
-				float windowWidth = (float)ImGui::GetWindowWidth();
-				float windowHeight = (float)ImGui::GetWindowHeight();
-				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+				ImGuizmo::SetRect(mViewportBounds[0].x, mViewportBounds[0].y, mViewportBounds[1].x - mViewportBounds[0].x, mViewportBounds[1].y - mViewportBounds[0].y);
 
 				//camera
 				//runtime camera from entity
@@ -294,6 +316,7 @@ namespace Zital
 		EventDispatcher dispatcher(e);
 
 		dispatcher.Dispatch<KeyPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -341,6 +364,15 @@ namespace Zital
 				break;
 
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == MouseCode::ButtonLeft)
+			if (mViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				mSceneHierarchyPanel.SetSelectedEntity(mHoveredEntity);
+
+		return false;
 	}
 
 	void EditorLayer::NewScene()

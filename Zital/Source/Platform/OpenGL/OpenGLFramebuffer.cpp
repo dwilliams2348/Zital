@@ -26,16 +26,16 @@ namespace Zital
 			glBindTexture(TextureTarget(_multisampled), _id);
 		}
 
-		static void AttachColorTexture(uint32_t _id, int _samples, GLenum _format, uint32_t _width, uint32_t _height, int _index)
+		static void AttachColorTexture(uint32_t _id, int _samples, GLenum _internalFormat, GLenum _format, uint32_t _width, uint32_t _height, int _index)
 		{
 			bool multisampled = _samples > 1;
 			if (multisampled)
 			{
-				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _samples, _format, _width, _height, GL_FALSE);
+				glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, _samples, _internalFormat, _width, _height, GL_FALSE);
 			}
 			else
 			{
-				glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+				glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, _width, _height, 0, _format, GL_UNSIGNED_BYTE, nullptr);
 				
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -77,6 +77,27 @@ namespace Zital
 
 			return false;
 		}
+
+		static GLenum ZitalTextureFormatToGL(FramebufferTextureFormat _format)
+		{
+			switch (_format)
+			{
+				case FramebufferTextureFormat::RGBA8:		return GL_RGBA8;
+				case FramebufferTextureFormat::RED_INTEGER: return GL_RED_INTEGER;
+			}
+
+			ZT_CORE_ASSERT(false, "Invalid texture format.");
+			return 0;
+		}
+
+		/*static GLenum GLDataType(FramebufferTextureFormat _format)
+		{
+			switch (_format)
+			{
+				case FramebufferTextureFormat::RGBA8:		return GL_FLOAT;
+				case FramebufferTextureFormat::RED_INTEGER: return GL_INT;
+			}
+		}*/
 
 	}
 
@@ -130,8 +151,12 @@ namespace Zital
 				switch (mColorAttachmentSpecifications[i].TextureFormat)
 				{
 					case FramebufferTextureFormat::RGBA8:
-						Utils::AttachColorTexture(mColorAttachments[i], mProperties.Samples, GL_RGBA8, mProperties.Width, mProperties.Height, i);
+						Utils::AttachColorTexture(mColorAttachments[i], mProperties.Samples, GL_RGBA8, GL_RGBA, mProperties.Width, mProperties.Height, i);
 						break;
+					case FramebufferTextureFormat::RED_INTEGER:
+						Utils::AttachColorTexture(mColorAttachments[i], mProperties.Samples, GL_R32I, GL_RED_INTEGER, mProperties.Width, mProperties.Height, i);
+						break;
+
 				}
 			}
 		}
@@ -198,6 +223,27 @@ namespace Zital
 		mProperties.Height = _height;
 
 		Invalidate();
+	}
+
+	int OpenGLFramebuffer::ReadPixel(uint32_t _attachmentIndex, int x, int y)
+	{
+		ZT_CORE_ASSERT(_attachmentIndex < mColorAttachments.size(), "Attachment index is out of ranage");
+
+		glReadBuffer(GL_COLOR_ATTACHMENT0 + _attachmentIndex);
+		int pixelData;
+		glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
+
+		return pixelData;
+	}
+
+	void OpenGLFramebuffer::ClearAttachment(uint32_t _attachmentIndex, int _value)
+	{
+		ZT_CORE_ASSERT(_attachmentIndex < mColorAttachments.size(), "Attachment index is out of ranage");
+
+		auto& spec = mColorAttachmentSpecifications[_attachmentIndex];
+
+		glClearTexImage(mColorAttachments[_attachmentIndex], 0, 
+			Utils::ZitalTextureFormatToGL(spec.TextureFormat), GL_INT, &_value);
 	}
 
 }

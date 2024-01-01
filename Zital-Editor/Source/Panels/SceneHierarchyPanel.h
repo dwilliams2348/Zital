@@ -20,6 +20,7 @@ namespace Zital
 		void OnImGuiRender();
 
 		Entity GetSelectedEntity() const { return mSelectionContext; }
+		void SetSelectedEntity(Entity _entity);
 
 	private:
 		void DrawEntityNode(Entity _entity);
