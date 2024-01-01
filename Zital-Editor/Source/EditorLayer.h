@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Zital.h"
-
 #include "Panels/SceneHierarchyPanel.h"
+
+#include "Zital/Renderer/EditorCamera.h"
 
 namespace Zital
 {
@@ -38,6 +39,8 @@ namespace Zital
 		Ref<Scene> mActiveScene;
 		Entity mSquareEntity;
 		Entity mCameraEntity;
+
+		EditorCamera mEditorCamera;
 
 		//Temp texture
 		Ref<Texture2D> mTexture;

@@ -36,6 +36,8 @@ namespace Zital
 
 		mActiveScene = CreateRef<Scene>();
 
+		mEditorCamera = EditorCamera(45.f, 1.778f, 0.1f, 1000.f);
+
 #if 0
 		mSquareEntity = mActiveScene->CreateEntity("Square");
 		mSquareEntity.AddComponent<TransformComponent>(glm::vec3{ 0.f, 0.f, 0.f });
@@ -98,13 +100,13 @@ namespace Zital
 		{
 			mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 			mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
-
+			mEditorCamera.SetViewportSize(mViewportSize.x, mViewportSize.y);
 			mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		}
 
 		//Update
-		if(mViewportFocused)
-			mCameraController.OnUpdate(_deltaTime);
+		//if (mViewportFocused)
+			mEditorCamera.OnUpdate(_deltaTime);
 
 		//Render
 		Renderer2D::ResetStats();
@@ -113,7 +115,8 @@ namespace Zital
 		RenderCommand::Clear();
 
 		//update scene
-		mActiveScene->OnUpdate(_deltaTime);
+		mActiveScene->OnUpdateEditor(_deltaTime, mEditorCamera);
+		//mActiveScene->OnUpdateRuntime(_deltaTime);
 
 		mFramebuffer->Unbind();
 	}
@@ -236,10 +239,15 @@ namespace Zital
 				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
 
 				//camera
-				auto cameraEntity = mActiveScene->GetPrimaryCameraEntity();
-				const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-				const glm::mat4& cameraProjection = camera.GetProjection();
-				glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+				//runtime camera from entity
+				//auto cameraEntity = mActiveScene->GetPrimaryCameraEntity();
+				//const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+				//const glm::mat4& cameraProjection = camera.GetProjection();
+				//glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+				//editor camera
+				const glm::mat4& cameraProjection = mEditorCamera.GetProjection();
+				glm::mat4 cameraView = mEditorCamera.GetViewMatrix();
 
 				//entity transform
 				auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
@@ -280,6 +288,7 @@ namespace Zital
 	void EditorLayer::OnEvent(Event& e)
 	{
 		mCameraController.OnEvent(e);
+		mEditorCamera.OnEvent(e);
 
 		EventDispatcher dispatcher(e);
 

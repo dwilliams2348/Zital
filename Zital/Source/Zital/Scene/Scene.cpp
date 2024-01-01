@@ -35,7 +35,7 @@ namespace Zital
 		mRegistry.destroy(_entity);
 	}
 
-	void Scene::OnUpdate(Timestep _deltaTime)
+	void Scene::OnUpdateRuntime(Timestep _deltaTime)
 	{
 		//update scripts
 		{
@@ -89,6 +89,21 @@ namespace Zital
 
 			Renderer2D::EndScene();
 		}
+	}
+
+	void Scene::OnUpdateEditor(Timestep _deltaTime, EditorCamera& _camera)
+	{
+		Renderer2D::BeginScene(_camera);
+
+		auto group = mRegistry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+		}
+
+		Renderer2D::EndScene();
 	}
 
 	void Scene::OnViewportResize(uint32_t _width, uint32_t _height)
