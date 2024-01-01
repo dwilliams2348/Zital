@@ -29,6 +29,7 @@ namespace Zital
 		mTexture = Texture2D::Create("Assets/Textures/checkerboard.png");
 
 		FramebufferProperties props;
+		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		props.Width = 1280;
 		props.Height = 720;
 
@@ -229,7 +230,7 @@ namespace Zital
 
 			//gizmos
 			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();
-			if (selectedEntity && mGizmoType != -1)
+			if (selectedEntity && mGizmoType != -1 && selectedEntity.HasComponent<TransformComponent>())
 			{
 				ImGuizmo::SetOrthographic(false);
 				ImGuizmo::SetDrawlist();
