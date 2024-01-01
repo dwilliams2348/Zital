@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -100,7 +100,7 @@
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -126,7 +126,7 @@
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,7 +155,7 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLTexture.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="Source\Zital\Utils\PlatformUtils.h" />
+    <ClInclude Include="Source\Zital\Renderer\EditorCamera.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Core\Application.h" />
@@ -175,6 +175,7 @@
     <ClInclude Include="Source\Zital\Events\KeyEvent.h" />
     <ClInclude Include="Source\Zital\Events\MouseEvent.h" />
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="Source\Zital\Math\Math.h" />
     <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
     <ClInclude Include="Source\Zital\Renderer\Camera.h" />
     <ClInclude Include="Source\Zital\Renderer\Framebuffer.h" />
@@ -195,6 +196,8 @@
     <ClInclude Include="Source\Zital\Scene\SceneSerializer.h" />
     <ClInclude Include="Source\Zital\Scene\ScriptableEntity.h" />
     <ClInclude Include="Source\Zital\Systems\OrthographicCameraController.h" />
+    <ClInclude Include="Source\Zital\Utils\PlatformUtils.h" />
+    <ClInclude Include="Vendor\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Vendor\glm\glm\common.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_features.hpp" />
     <ClInclude Include="Vendor\glm\glm\detail\_fixes.hpp" />
@@ -624,6 +627,7 @@
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\EditorCamera.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -633,6 +637,7 @@
     <ClCompile Include="Source\Zital\Core\Log.cpp" />
     <ClCompile Include="Source\Zital\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="Source\Zital\Math\Math.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Framebuffer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
@@ -649,6 +654,9 @@
     <ClCompile Include="Source\Zital\Scene\SceneCamera.cpp" />
     <ClCompile Include="Source\Zital\Scene\SceneSerializer.cpp" />
     <ClCompile Include="Source\Zital\Systems\OrthographicCameraController.cpp" />
+    <ClCompile Include="Vendor\ImGuizmo\ImGuizmo.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

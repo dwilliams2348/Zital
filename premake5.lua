@@ -26,6 +26,7 @@ IncludeDir["glm"] = "Zital/Vendor/glm"
 IncludeDir["stb_image"] = "Zital/Vendor/stb_image"
 IncludeDir["entt"] = "Zital/Vendor/entt/include"
 IncludeDir["yaml_cpp"] = "Zital/Vendor/yaml-cpp/include"
+IncludeDir["ImGuizmo"] = "Zital/Vendor/ImGuizmo"
 
 group "Dependencies"
 	include "Zital/Vendor/GLFW"
@@ -55,7 +56,9 @@ project "Zital"
 		"%{prj.name}/Vendor/stb_image/**.h",
 		"%{prj.name}/Vendor/stb_image/**.cpp",
 		"%{prj.name}/Vendor/glm/**.hpp",
-		"%{prj.name}/Vendor/glm/**.inl"
+		"%{prj.name}/Vendor/glm/**.inl",
+		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.h",
+		"%{prj.name}/Vendor/ImGuizmo/ImGuizmo.cpp"
 	}
 
 	defines
@@ -74,7 +77,8 @@ project "Zital"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
-		"%{IncludeDir.yaml_cpp}"
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links
@@ -85,6 +89,9 @@ project "Zital"
 		"yaml-cpp",
 		"opengl32.lib"
 	}
+
+	filter "files:Zital/Vendor/ImGuizmo/**.cpp"
+		flags {"NoPCH"}
 
 	filter "system:windows"
 		systemversion "latest"
@@ -187,7 +194,8 @@ project "Zital-Editor"
 		"Zital/Source",
 		"Zital/Vendor",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.entt}"
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.ImGuizmo}"
 	}
 
 	links 

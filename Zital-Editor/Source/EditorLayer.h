@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Zital.h"
-
 #include "Panels/SceneHierarchyPanel.h"
+
+#include "Zital/Renderer/EditorCamera.h"
 
 namespace Zital
 {
@@ -39,6 +40,8 @@ namespace Zital
 		Entity mSquareEntity;
 		Entity mCameraEntity;
 
+		EditorCamera mEditorCamera;
+
 		//Temp texture
 		Ref<Texture2D> mTexture;
 		Ref<Texture2D> mTextureSheet;
@@ -48,6 +51,8 @@ namespace Zital
 		glm::vec2 mViewportSize = { 0.f, 0.f };
 
 		glm::vec4 mSquareColor = { 0.2f, 0.3f, 0.8f , 1.f };
+
+		int mGizmoType = -1;
 
 		//panels
 		SceneHierarchyPanel mSceneHierarchyPanel;

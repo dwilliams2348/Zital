@@ -28,6 +28,9 @@
     <Filter Include="Source\Zital\ImGui">
       <UniqueIdentifier>{D3F44582-BFD8-06D8-2839-012B143CF159}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Zital\Math">
+      <UniqueIdentifier>{6213C649-CE29-C4DF-17A1-4F0183F69467}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source\Zital\Renderer">
       <UniqueIdentifier>{AF0EA9DE-1B7B-64D9-E46E-FC36509A8641}</UniqueIdentifier>
     </Filter>
@@ -37,8 +40,14 @@
     <Filter Include="Source\Zital\Systems">
       <UniqueIdentifier>{F063764C-DCF2-FF15-8511-1411717F10BC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Zital\Utils">
+      <UniqueIdentifier>{09812383-F564-E4D8-5EC5-DE2B4AC8CE5A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Vendor">
       <UniqueIdentifier>{935FDCD7-7F01-07AE-68BC-1A0254FD8DFE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vendor\ImGuizmo">
+      <UniqueIdentifier>{530792E3-BF92-FFA7-C8A3-829C34AE5BA8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Vendor\glm">
       <UniqueIdentifier>{627B7327-4E33-B574-B73A-8ED0A3115065}</UniqueIdentifier>
@@ -144,6 +153,9 @@
     <ClInclude Include="Source\Zital\ImGui\ImGuiLayer.h">
       <Filter>Source\Zital\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Math\Math.h">
+      <Filter>Source\Zital\Math</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Zital\Renderer\Buffer.h">
       <Filter>Source\Zital\Renderer</Filter>
     </ClInclude>
@@ -203,6 +215,12 @@
     </ClInclude>
     <ClInclude Include="Source\Zital\Systems\OrthographicCameraController.h">
       <Filter>Source\Zital\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Utils\PlatformUtils.h">
+      <Filter>Source\Zital\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\ImGuizmo\ImGuizmo.h">
+      <Filter>Vendor\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\glm\glm\common.hpp">
       <Filter>Vendor\glm\glm</Filter>
@@ -1455,7 +1473,7 @@
     <ClInclude Include="Vendor\stb_image\stb_image.h">
       <Filter>Vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Zital\Utils\PlatformUtils.h" />
+    <ClInclude Include="Source\Zital\Renderer\EditorCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Platform\OpenGL\OpenGLBuffer.cpp">
@@ -1482,6 +1500,9 @@
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp">
       <Filter>Source\Platform\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp">
+      <Filter>Source\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp">
       <Filter>Source\Platform\Windows</Filter>
     </ClCompile>
@@ -1505,6 +1526,9 @@
     </ClCompile>
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp">
       <Filter>Source\Zital\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Zital\Math\Math.cpp">
+      <Filter>Source\Zital\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp">
       <Filter>Source\Zital\Renderer</Filter>
@@ -1554,9 +1578,12 @@
     <ClCompile Include="Source\Zital\Systems\OrthographicCameraController.cpp">
       <Filter>Source\Zital\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Vendor\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Vendor\ImGuizmo</Filter>
+    </ClCompile>
     <ClCompile Include="Vendor\stb_image\stb_image.cpp">
       <Filter>Vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\EditorCamera.cpp" />
   </ItemGroup>
 </Project>

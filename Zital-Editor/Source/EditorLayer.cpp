@@ -2,10 +2,16 @@
 #include <imgui/imgui.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/matrix_decompose.hpp>
 
 #include "Zital/Scene/SceneSerializer.h"
 
 #include "Zital/Utils/PlatformUtils.h"
+
+#include "ImGuizmo.h"
+
+#include "Zital/Math/Math.h"
 
 namespace Zital
 {
@@ -23,12 +29,15 @@ namespace Zital
 		mTexture = Texture2D::Create("Assets/Textures/checkerboard.png");
 
 		FramebufferProperties props;
+		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
 		props.Width = 1280;
 		props.Height = 720;
 
 		mFramebuffer = Framebuffer::Create(props);
 
 		mActiveScene = CreateRef<Scene>();
+
+		mEditorCamera = EditorCamera(45.f, 1.778f, 0.1f, 1000.f);
 
 #if 0
 		mSquareEntity = mActiveScene->CreateEntity("Square");
@@ -92,13 +101,13 @@ namespace Zital
 		{
 			mFramebuffer->Resize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 			mCameraController.OnResize(mViewportSize.x, mViewportSize.y);
-
+			mEditorCamera.SetViewportSize(mViewportSize.x, mViewportSize.y);
 			mActiveScene->OnViewportResize((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		}
 
 		//Update
-		if(mViewportFocused)
-			mCameraController.OnUpdate(_deltaTime);
+		//if (mViewportFocused)
+			mEditorCamera.OnUpdate(_deltaTime);
 
 		//Render
 		Renderer2D::ResetStats();
@@ -107,7 +116,8 @@ namespace Zital
 		RenderCommand::Clear();
 
 		//update scene
-		mActiveScene->OnUpdate(_deltaTime);
+		mActiveScene->OnUpdateEditor(_deltaTime, mEditorCamera);
+		//mActiveScene->OnUpdateRuntime(_deltaTime);
 
 		mFramebuffer->Unbind();
 	}
@@ -209,7 +219,7 @@ namespace Zital
 
 			mViewportFocused = ImGui::IsWindowFocused();
 			mViewportHovered = ImGui::IsWindowHovered();
-			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused || !mViewportHovered);
+			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused && !mViewportHovered);
 
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
@@ -217,6 +227,57 @@ namespace Zital
 
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			//gizmos
+			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();
+			if (selectedEntity && mGizmoType != -1 && selectedEntity.HasComponent<TransformComponent>())
+			{
+				ImGuizmo::SetOrthographic(false);
+				ImGuizmo::SetDrawlist();
+
+				float windowWidth = (float)ImGui::GetWindowWidth();
+				float windowHeight = (float)ImGui::GetWindowHeight();
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+				//camera
+				//runtime camera from entity
+				//auto cameraEntity = mActiveScene->GetPrimaryCameraEntity();
+				//const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+				//const glm::mat4& cameraProjection = camera.GetProjection();
+				//glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+				//editor camera
+				const glm::mat4& cameraProjection = mEditorCamera.GetProjection();
+				glm::mat4 cameraView = mEditorCamera.GetViewMatrix();
+
+				//entity transform
+				auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
+				glm::mat4 transform = transformComponent.GetTransform();
+
+				//snapping this is currently only local snapping
+				bool snap = Input::IsKeyPressed(Key::LeftControl);
+				float snapValue = 0.5f; //snap to 0.5f units for translation/scale
+				//snap to 45.f for rotation gizmo
+				if (mGizmoType == ImGuizmo::OPERATION::ROTATE)
+					snapValue = 45.f;
+
+				float snapValues[3] = { snapValue, snapValue, snapValue };
+
+				ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+					(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+					nullptr, snap ? snapValues : nullptr);
+
+				if (ImGuizmo::IsUsing())
+				{
+					glm::vec3 translation, rotation, scale;
+					Math::DecomposeTransform(transform, translation, rotation, scale);
+
+					glm::vec3 deltaRotation = rotation - transformComponent.Rotation;
+					transformComponent.Translation = translation;
+					transformComponent.Rotation += deltaRotation;
+					transformComponent.Scale = scale;
+				}
+			}
 
 			ImGui::End();
 			ImGui::PopStyleVar();
@@ -228,6 +289,7 @@ namespace Zital
 	void EditorLayer::OnEvent(Event& e)
 	{
 		mCameraController.OnEvent(e);
+		mEditorCamera.OnEvent(e);
 
 		EventDispatcher dispatcher(e);
 
@@ -241,24 +303,43 @@ namespace Zital
 			return false;
 
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift= Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode())
 		{
 			case Key::N:
-				if (control)
+				if (control && !ImGuizmo::IsUsing())
 					NewScene();
 
 				break;
 			case Key::O:
-				if (control)
+				if (control && !ImGuizmo::IsUsing())
 					OpenScene();
 
 				break;
 			case Key::S:
-				if (control && shift)
+				if (control && shift && !ImGuizmo::IsUsing())
 					SaveSceneAs();
 
 				break;
+
+				//gizmo shortcuts
+			case Key::Q:
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = -1;
+				break;
+			case Key::W:
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case Key::E:
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case Key::R:
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
+
 		}
 	}
 

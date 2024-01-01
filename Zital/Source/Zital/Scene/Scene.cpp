@@ -35,7 +35,7 @@ namespace Zital
 		mRegistry.destroy(_entity);
 	}
 
-	void Scene::OnUpdate(Timestep _deltaTime)
+	void Scene::OnUpdateRuntime(Timestep _deltaTime)
 	{
 		//update scripts
 		{
@@ -91,6 +91,21 @@ namespace Zital
 		}
 	}
 
+	void Scene::OnUpdateEditor(Timestep _deltaTime, EditorCamera& _camera)
+	{
+		Renderer2D::BeginScene(_camera);
+
+		auto group = mRegistry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
+		for (auto entity : group)
+		{
+			auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
+
+			Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+		}
+
+		Renderer2D::EndScene();
+	}
+
 	void Scene::OnViewportResize(uint32_t _width, uint32_t _height)
 	{
 		mViewportWidth = _width;
@@ -104,6 +119,19 @@ namespace Zital
 			if (!cameraComponent.FixedAspectRatio)
 				cameraComponent.Camera.SetViewportSize(_width, _height);
 		}
+	}
+
+	Entity Scene::GetPrimaryCameraEntity()
+	{
+		auto view = mRegistry.view<CameraComponent>();
+		for (auto entity : view)
+		{
+			const auto& camera = view.get<CameraComponent>(entity);
+			if (camera.Primary)
+				return Entity{ entity, this };
+		}
+
+		return Entity{};
 	}
 
 	template<typename T>

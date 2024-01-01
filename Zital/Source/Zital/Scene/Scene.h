@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Zital/Core/TimeStep.h"
+#include "Zital/Renderer/EditorCamera.h"
 
 #include "entt.hpp"
 
@@ -18,8 +19,11 @@ namespace Zital
 		Entity CreateEntity(const std::string& _name = std::string());
 		void DestroyEntity(Entity _entity);
 
-		void OnUpdate(Timestep _deltaTime);
+		void OnUpdateRuntime(Timestep _deltaTime);
+		void OnUpdateEditor(Timestep _deltaTime, EditorCamera& _camera);
 		void OnViewportResize(uint32_t _width, uint32_t _height);
+
+		Entity GetPrimaryCameraEntity();
 
 	private:
 		template<typename T>

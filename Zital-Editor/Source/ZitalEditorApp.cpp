@@ -18,7 +18,6 @@ namespace Zital
 			: Application("Zital Editor")
 		{
 			PushLayer(new EditorLayer());
-
 		}
 
 		~ZitalEditor()

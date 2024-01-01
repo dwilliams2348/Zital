@@ -14,3 +14,6 @@
 [submodule "Zital/Vendor/yaml-cpp"]
 	path = Zital/Vendor/yaml-cpp
 	url = https://github.com/dwilliams2348/yaml-cpp
+[submodule "Zital/Vendor/ImGuizmo"]
+	path = Zital/Vendor/ImGuizmo
+	url = https://github.com/dwilliams2348/ImGuizmo

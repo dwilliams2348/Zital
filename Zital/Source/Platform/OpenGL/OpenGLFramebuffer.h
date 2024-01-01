@@ -18,14 +18,19 @@ namespace Zital
 
 		virtual void Resize(uint32_t _width, uint32_t _height) override;
 
-		virtual uint32_t GetColorAttachmentRendererID() const override { return mColorAttachment; }
+		virtual uint32_t GetColorAttachmentRendererID(uint32_t _index = 0) const override { ZT_CORE_ASSERT(_index < mColorAttachments.size(), "Index is too large."); return mColorAttachments[_index]; }
 
 		virtual const FramebufferProperties& GetProperties() const override { return mProperties; }
 
 	private:
 		uint32_t mRendererID = 0;
-		uint32_t mColorAttachment = 0, mDepthAttachment = 0;
 		FramebufferProperties mProperties;
+
+		std::vector<FramebufferTextureSpecification> mColorAttachmentSpecifications;
+		FramebufferTextureSpecification mDepthAttachmentSpecification = FramebufferTextureFormat::None;
+
+		std::vector<uint32_t> mColorAttachments;
+		uint32_t mDepthAttachment = 0;
 	};
 
 }

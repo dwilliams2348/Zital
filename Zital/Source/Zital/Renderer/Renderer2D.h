@@ -2,6 +2,7 @@
 
 #include "Zital/Renderer/OrthographicCamera.h"
 #include "Zital/Renderer/Camera.h"
+#include "Zital/Renderer/EditorCamera.h"
 
 #include "Zital/Renderer/Texture.h"
 #include "Zital/Renderer/SubTexture2D.h"
@@ -16,9 +17,11 @@ namespace Zital
 		static void Shutdown();
 
 		static void BeginScene(const Camera& _camera, const glm::mat4& _transform);
+		static void BeginScene(const EditorCamera& _camera);
 		static void BeginScene(const OrthographicCamera& _camera);//remove at some point
 		static void EndScene();
 		static void Flush();
+		
 
 		//Primitives
 		//Draws filled in quad using a 4x4 transform amtrix
@@ -68,7 +71,8 @@ namespace Zital
 		static Statistics& GetStats();
 
 	private:
-		static void FlushAndReset();
+		static void StartBatch();
+		static void NextBatch();
 	};
 
 }
