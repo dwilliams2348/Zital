@@ -28,7 +28,7 @@ void main()
 #version 330 core
 
 layout(location = 0) out vec4 color;
-layout(location = 1) out vec4 color2;
+layout(location = 1) out int color2;
 
 in vec4 vColor;
 in vec2 vTexCoord;
@@ -43,16 +43,16 @@ void main()
 	
 	switch(int(vTexIndex))
 	{
-		case 0: texColor *= texture(uTextures[0], vTexCoord * vTilingFactor); break;
-		case 1: texColor *= texture(uTextures[1], vTexCoord * vTilingFactor); break;
-		case 2: texColor *= texture(uTextures[2], vTexCoord * vTilingFactor); break;
-		case 3: texColor *= texture(uTextures[3], vTexCoord * vTilingFactor); break;
-		case 4: texColor *= texture(uTextures[4], vTexCoord * vTilingFactor); break;
-		case 5: texColor *= texture(uTextures[5], vTexCoord * vTilingFactor); break;
-		case 6: texColor *= texture(uTextures[6], vTexCoord * vTilingFactor); break;
-		case 7: texColor *= texture(uTextures[7], vTexCoord * vTilingFactor); break;
-		case 8: texColor *= texture(uTextures[8], vTexCoord * vTilingFactor); break;
-		case 9: texColor *= texture(uTextures[9], vTexCoord * vTilingFactor); break;
+		case 0:  texColor *= texture(uTextures[ 0], vTexCoord * vTilingFactor); break;
+		case 1:  texColor *= texture(uTextures[ 1], vTexCoord * vTilingFactor); break;
+		case 2:  texColor *= texture(uTextures[ 2], vTexCoord * vTilingFactor); break;
+		case 3:  texColor *= texture(uTextures[ 3], vTexCoord * vTilingFactor); break;
+		case 4:  texColor *= texture(uTextures[ 4], vTexCoord * vTilingFactor); break;
+		case 5:  texColor *= texture(uTextures[ 5], vTexCoord * vTilingFactor); break;
+		case 6:  texColor *= texture(uTextures[ 6], vTexCoord * vTilingFactor); break;
+		case 7:  texColor *= texture(uTextures[ 7], vTexCoord * vTilingFactor); break;
+		case 8:  texColor *= texture(uTextures[ 8], vTexCoord * vTilingFactor); break;
+		case 9:  texColor *= texture(uTextures[ 9], vTexCoord * vTilingFactor); break;
 		case 10: texColor *= texture(uTextures[10], vTexCoord * vTilingFactor); break;
 		case 11: texColor *= texture(uTextures[11], vTexCoord * vTilingFactor); break;
 		case 12: texColor *= texture(uTextures[12], vTexCoord * vTilingFactor); break;
@@ -78,5 +78,5 @@ void main()
 	}
 
 	color = texColor;
-	color2 = vec4(0.8, 0.2, 0.3, 1.0);
+	color2 = 50; //placeholder for entity ID
 }

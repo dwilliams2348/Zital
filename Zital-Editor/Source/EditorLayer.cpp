@@ -29,7 +29,7 @@ namespace Zital
 		mTexture = Texture2D::Create("Assets/Textures/checkerboard.png");
 
 		FramebufferProperties props;
-		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+		props.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RED_INTEGER, FramebufferTextureFormat::Depth };
 		props.Width = 1280;
 		props.Height = 720;
 
@@ -115,9 +115,25 @@ namespace Zital
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.f });
 		RenderCommand::Clear();
 
+		//clear entityID attachment to -1
+		mFramebuffer->ClearAttachment(1, -1);
+
 		//update scene
 		mActiveScene->OnUpdateEditor(_deltaTime, mEditorCamera);
-		//mActiveScene->OnUpdateRuntime(_deltaTime);
+
+		auto [mx, my] = ImGui::GetMousePos();
+		mx -= mViewportBounds[0].x;
+		my -= mViewportBounds[0].y;
+		my = mViewportSize.y - my;
+
+		int mouseX = (int)mx;
+		int mouseY = (int)my;
+
+		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)mViewportSize.x && mouseY < (int)mViewportSize.y)
+		{
+			int pixelData = mFramebuffer->ReadPixel(1, mouseX, mouseY);
+			ZT_CORE_INFO("Pixel data = {0}", pixelData);
+		}
 
 		mFramebuffer->Unbind();
 	}
@@ -216,6 +232,7 @@ namespace Zital
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 			ImGui::Begin("Viewport");
+			auto viewportOffset = ImGui::GetCursorPos(); //includes tab bar at top of window
 
 			mViewportFocused = ImGui::IsWindowFocused();
 			mViewportHovered = ImGui::IsWindowHovered();
@@ -227,6 +244,15 @@ namespace Zital
 
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			auto windowSize = ImGui::GetWindowSize();
+			ImVec2 minBound = ImGui::GetWindowPos();
+			minBound.x += viewportOffset.x;
+			minBound.y += viewportOffset.y;
+
+			ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
+			mViewportBounds[0] = { minBound.x, minBound.y };
+			mViewportBounds[1] = { maxBound.x, maxBound.y };
 
 			//gizmos
 			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();

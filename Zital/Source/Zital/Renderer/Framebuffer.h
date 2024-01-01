@@ -11,6 +11,7 @@ namespace Zital
 
 		//color
 		RGBA8,
+		RED_INTEGER,
 
 		//depth/stencli
 		DEPTH24STENCIL8,
@@ -56,6 +57,9 @@ namespace Zital
 		virtual void Unbind() = 0;
 
 		virtual void Resize(uint32_t _width, uint32_t _height) = 0;
+		virtual int ReadPixel(uint32_t _attachmentIndex, int x, int y) = 0;
+
+		virtual void ClearAttachment(uint32_t _attachmentIndex, int _value) = 0;
 
 		virtual uint32_t GetColorAttachmentRendererID(uint32_t _index = 0) const = 0;
 
