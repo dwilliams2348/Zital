@@ -235,7 +235,11 @@ namespace Zital
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.f, 0.f });
 			ImGui::Begin("Viewport");
-			auto viewportOffset = ImGui::GetCursorPos(); //includes tab bar at top of window
+			auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+			auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+			auto viewportOffset = ImGui::GetWindowPos();
+			mViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+			mViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 
 			mViewportFocused = ImGui::IsWindowFocused();
 			mViewportHovered = ImGui::IsWindowHovered();
@@ -248,15 +252,6 @@ namespace Zital
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-			auto windowSize = ImGui::GetWindowSize();
-			ImVec2 minBound = ImGui::GetWindowPos();
-			minBound.x += viewportOffset.x;
-			minBound.y += viewportOffset.y;
-
-			ImVec2 maxBound = { minBound.x + windowSize.x, minBound.y + windowSize.y };
-			mViewportBounds[0] = { minBound.x, minBound.y };
-			mViewportBounds[1] = { maxBound.x, maxBound.y };
-
 			//gizmos
 			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();
 			if (selectedEntity && mGizmoType != -1 && selectedEntity.HasComponent<TransformComponent>())
@@ -264,9 +259,7 @@ namespace Zital
 				ImGuizmo::SetOrthographic(false);
 				ImGuizmo::SetDrawlist();
 
-				float windowWidth = (float)ImGui::GetWindowWidth();
-				float windowHeight = (float)ImGui::GetWindowHeight();
-				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+				ImGuizmo::SetRect(mViewportBounds[0].x, mViewportBounds[0].y, mViewportBounds[1].x - mViewportBounds[0].x, mViewportBounds[1].y - mViewportBounds[0].y);
 
 				//camera
 				//runtime camera from entity
@@ -323,6 +316,7 @@ namespace Zital
 		EventDispatcher dispatcher(e);
 
 		dispatcher.Dispatch<KeyPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(ZT_BIND_EVENT_FN(EditorLayer::OnMouseButtonPressed));
 	}
 
 	bool EditorLayer::OnKeyPressed(KeyPressedEvent& e)
@@ -370,6 +364,15 @@ namespace Zital
 				break;
 
 		}
+	}
+
+	bool EditorLayer::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		if (e.GetMouseButton() == MouseCode::ButtonLeft)
+			if (mViewportHovered && !ImGuizmo::IsOver() && !Input::IsKeyPressed(Key::LeftAlt))
+				mSceneHierarchyPanel.SetSelectedEntity(mHoveredEntity);
+
+		return false;
 	}
 
 	void EditorLayer::NewScene()

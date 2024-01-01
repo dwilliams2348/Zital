@@ -57,6 +57,11 @@ namespace Zital
 		ImGui::End();
 	}
 
+	void SceneHierarchyPanel::SetSelectedEntity(Entity _entity)
+	{
+		mSelectionContext = _entity;
+	}
+
 	void SceneHierarchyPanel::DrawEntityNode(Entity _entity)
 	{
 		auto& tag = _entity.GetComponent<TagComponent>().Tag;
