@@ -64,18 +64,61 @@ namespace Zital
 		glBindVertexArray(mRendererID);
 		_buffer->Bind();
 
-		uint32_t index = 0;
 		const auto& layout = _buffer->GetLayout();
 		for (const auto& element : layout)
 		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				layout.GetStride(),
-				(const void*)element.Offset);
-			index++;
+			switch (element.Type)
+			{
+				case ShaderDataType::Float:
+				case ShaderDataType::Float2:
+				case ShaderDataType::Float3:
+				case ShaderDataType::Float4:
+				{
+					glEnableVertexAttribArray(mVertexBufferIndex);
+					glVertexAttribPointer(mVertexBufferIndex,
+						element.GetComponentCount(),
+						ShaderDataTypeToOpenGLBaseType(element.Type),
+						element.Normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)element.Offset);
+					mVertexBufferIndex++;
+					break;
+				}
+				case ShaderDataType::Int:
+				case ShaderDataType::Int2:
+				case ShaderDataType::Int3:
+				case ShaderDataType::Int4:
+				case ShaderDataType::Bool:
+				{
+					glEnableVertexAttribArray(mVertexBufferIndex);
+					glVertexAttribIPointer(mVertexBufferIndex,
+						element.GetComponentCount(),
+						ShaderDataTypeToOpenGLBaseType(element.Type),
+						layout.GetStride(),
+						(const void*)element.Offset);
+					mVertexBufferIndex++;
+					break;
+				}
+				case ShaderDataType::Mat3:
+				case ShaderDataType::Mat4:
+				{
+					uint8_t count = element.GetComponentCount();
+					for (uint8_t i = 0; i < count; i++)
+					{
+						glEnableVertexAttribArray(mVertexBufferIndex);
+						glVertexAttribPointer(mVertexBufferIndex,
+							count,
+							ShaderDataTypeToOpenGLBaseType(element.Type),
+							element.Normalized ? GL_TRUE : GL_FALSE,
+							layout.GetStride(),
+							(const void*)(element.Offset + sizeof(float) * count * i));
+						glVertexAttribDivisor(mVertexBufferIndex, 1);
+						mVertexBufferIndex++;
+					}
+					break;
+				}
+				default: ZT_CORE_ASSERT(false, "Unknown ShaderDataType.");
+			}
 		}
 
 		mVertexBuffers.push_back(_buffer);

@@ -7,6 +7,8 @@
 #include "Zital/Renderer/Texture.h"
 #include "Zital/Renderer/SubTexture2D.h"
 
+#include "Zital/Scene/Components.h"
+
 namespace Zital
 {
 
@@ -25,11 +27,11 @@ namespace Zital
 
 		//Primitives
 		//Draws filled in quad using a 4x4 transform amtrix
-		static void DrawQuad(const glm::mat4& _transform, const glm::vec4 _color);
+		static void DrawQuad(const glm::mat4& _transform, const glm::vec4 _color, int _entityID = -1);
 		//Draws textured quad using a 4x4 transform matrix
-		static void DrawQuad(const glm::mat4& _transform, const Ref<Texture2D>& _texture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f));
+		static void DrawQuad(const glm::mat4& _transform, const Ref<Texture2D>& _texture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f), int _entityID = -1);
 		//Draws textured quad using a 4x4 transform matrix and subtexture
-		static void DrawQuad(const glm::mat4& _transform, const Ref<SubTexture2D>& _subTexture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f));
+		static void DrawQuad(const glm::mat4& _transform, const Ref<SubTexture2D>& _subTexture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f), int _entityID = -1);
 
 		//Draws filled in quad using x, y position with a size and color
 		static void DrawQuad(const glm::vec2& _position, const glm::vec2& _size, const glm::vec4& _color);
@@ -56,6 +58,9 @@ namespace Zital
 		static void DrawRotatedQuad(const glm::vec2& _position, const glm::vec2& _size, float _radians, const Ref<SubTexture2D>& _subTexture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f));
 		//Draws textured quad using x, y, z position with a size, a rotation and subtexture
 		static void DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const Ref<SubTexture2D>& _subTexture, float _tilingFactor = 1.f, const glm::vec4& _tintColor = glm::vec4(1.f));
+
+		//Draws a sprite with transform and sprite component
+		static void DrawSprite(const glm::mat4& _transform, SpriteRendererComponent& _sprite, int _entityID);
 
 		//Stats
 		struct Statistics

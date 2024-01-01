@@ -1,18 +1,20 @@
 #type vertex
-#version 330 core
+#version 450
 
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec4 aColor;
 layout(location = 2) in vec2 aTexCoord;
 layout(location = 3) in float aTexIndex;
 layout(location = 4) in float aTilingFactor;
+layout(location = 5) in int aEntityID;
 
 uniform mat4 uViewProjection;
 
 out vec4 vColor;
 out vec2 vTexCoord;
-out float vTexIndex;
+out flat float vTexIndex;
 out float vTilingFactor;
+out flat int vEntityID;
 
 void main()
 {
@@ -20,20 +22,23 @@ void main()
 	vTexCoord = aTexCoord;
 	vTexIndex = aTexIndex;
 	vTilingFactor = aTilingFactor;
+	vEntityID = aEntityID;
 	gl_Position = uViewProjection * vec4(aPosition, 1.0);
 }
 
 
 #type fragment
-#version 330 core
+#version 450
 
 layout(location = 0) out vec4 color;
 layout(location = 1) out int color2;
 
 in vec4 vColor;
 in vec2 vTexCoord;
-in float vTexIndex;
+in flat float vTexIndex;
 in float vTilingFactor;
+in flat int vEntityID;
+
 
 uniform sampler2D uTextures[32];
 
@@ -78,5 +83,5 @@ void main()
 	}
 
 	color = texColor;
-	color2 = 50; //placeholder for entity ID
+	color2 = vEntityID;
 }

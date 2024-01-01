@@ -132,7 +132,7 @@ namespace Zital
 		if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)mViewportSize.x && mouseY < (int)mViewportSize.y)
 		{
 			int pixelData = mFramebuffer->ReadPixel(1, mouseX, mouseY);
-			ZT_CORE_INFO("Pixel data = {0}", pixelData);
+			mHoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, mActiveScene.get());
 		}
 
 		mFramebuffer->Unbind();
@@ -219,6 +219,9 @@ namespace Zital
 			mSceneHierarchyPanel.OnImGuiRender();
 
 			ImGui::Begin("Stats");
+
+			const char* name = mHoveredEntity ? mHoveredEntity.GetComponent<TagComponent>().Tag.c_str() : "none";
+			ImGui::Text("Hovered Entity: %s", name);
 
 			auto stats = Renderer2D::GetStats();
 

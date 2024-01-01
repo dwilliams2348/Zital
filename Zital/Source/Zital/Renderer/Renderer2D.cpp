@@ -18,6 +18,9 @@ namespace Zital
 		float TexIndex;
 		float TiliingFactor;
 		//mask ID? eventually
+
+		//Editor only attribs
+		int EntityID;
 	};
 
 	struct Renderer2DData
@@ -55,11 +58,12 @@ namespace Zital
 		sData.QuadVertexBuffer = VertexBuffer::Create(sData.MaxVertices * sizeof(QuadVertex));
 
 		sData.QuadVertexBuffer->SetLayout({
-			{ShaderDataType::Float3, "aPosition"},
-			{ShaderDataType::Float4, "aColor"},
-			{ShaderDataType::Float2, "aTexCoord"},
-			{ShaderDataType::Float, "aTexIndex"},
-			{ShaderDataType::Float, "aTilingFactor"}
+			{ShaderDataType::Float3, "aPosition"     },
+			{ShaderDataType::Float4, "aColor"        },
+			{ShaderDataType::Float2, "aTexCoord"     },
+			{ShaderDataType::Float,  "aTexIndex"     },
+			{ShaderDataType::Float,  "aTilingFactor" },
+			{ShaderDataType::Int,    "aEntityID"     }
 			});
 
 		sData.QuadVertexArray->AddVertexBuffer(sData.QuadVertexBuffer);
@@ -185,7 +189,7 @@ namespace Zital
 		StartBatch();
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& _transform, const glm::vec4 _color)
+	void Renderer2D::DrawQuad(const glm::mat4& _transform, const glm::vec4 _color, int _entityID)
 	{
 		ZT_PROFILE_FUNCTION();
 
@@ -197,11 +201,11 @@ namespace Zital
 			{ 0.f, 1.f }
 		};
 
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		constexpr float textureIndex = 0.f; //white texture
 		constexpr float tilingFactor = 1.f;
+
+		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
+			NextBatch();
 
 		for (int i = 0; i < quadVertexCount; i++)
 		{
@@ -210,6 +214,7 @@ namespace Zital
 			sData.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			sData.QuadVertexBufferPtr->TexIndex = textureIndex;
 			sData.QuadVertexBufferPtr->TiliingFactor = tilingFactor;
+			sData.QuadVertexBufferPtr->EntityID = _entityID;
 			sData.QuadVertexBufferPtr++;
 		}
 
@@ -218,7 +223,7 @@ namespace Zital
 		sData.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& _transform, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& _transform, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor, int _entityID)
 	{
 		ZT_PROFILE_FUNCTION();
 
@@ -230,10 +235,10 @@ namespace Zital
 			{ 0.f, 1.f }
 		};
 
+		float textureIndex = 0.f;
+
 		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
 			NextBatch();
-
-		float textureIndex = 0.f;
 
 		for (uint32_t i = 1; i < sData.TextureSlotIndex; i++)
 		{
@@ -258,6 +263,7 @@ namespace Zital
 			sData.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			sData.QuadVertexBufferPtr->TexIndex = textureIndex;
 			sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+			sData.QuadVertexBufferPtr->EntityID = _entityID;
 			sData.QuadVertexBufferPtr++;
 		}
 
@@ -266,17 +272,17 @@ namespace Zital
 		sData.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& _transform, const Ref<SubTexture2D>& _subTexture, float _tilingFactor, const glm::vec4& _tintColor)
+	void Renderer2D::DrawQuad(const glm::mat4& _transform, const Ref<SubTexture2D>& _subTexture, float _tilingFactor, const glm::vec4& _tintColor, int _entityID)
 	{
 		ZT_PROFILE_FUNCTION();
 
 		constexpr size_t quadVertexCount = 4;
 		const glm::vec2* texCoords = _subTexture->GetTexCoords();
 
+		float textureIndex = 0.f;
+
 		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
 			NextBatch();
-
-		float textureIndex = 0.f;
 
 		for (uint32_t i = 1; i < sData.TextureSlotIndex; i++)
 		{
@@ -301,6 +307,7 @@ namespace Zital
 			sData.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			sData.QuadVertexBufferPtr->TexIndex = textureIndex;
 			sData.QuadVertexBufferPtr->TiliingFactor = _tilingFactor;
+			sData.QuadVertexBufferPtr->EntityID = _entityID;
 			sData.QuadVertexBufferPtr++;
 		}
 
@@ -316,9 +323,6 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const glm::vec4& _color)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
 
@@ -332,9 +336,6 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
 
@@ -348,9 +349,6 @@ namespace Zital
 
 	void Renderer2D::DrawQuad(const glm::vec3& _position, const glm::vec2& _size, const Ref<SubTexture2D>& _subTexture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
 
@@ -364,9 +362,6 @@ namespace Zital
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const glm::vec4& _color)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::rotate(glm::mat4(1.f), _radians, { 0.f, 0.f, 1.f }) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
@@ -381,9 +376,6 @@ namespace Zital
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const Ref<Texture2D>& _texture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::rotate(glm::mat4(1.f), _radians, { 0.f, 0.f, 1.f }) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
@@ -398,14 +390,16 @@ namespace Zital
 
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& _position, const glm::vec2& _size, float _radians, const Ref<SubTexture2D>& _subTexture, float _tilingFactor, const glm::vec4& _tintColor)
 	{
-		if (sData.QuadIndexCount >= Renderer2DData::MaxIndices)
-			NextBatch();
-
 		glm::mat4 transform = glm::translate(glm::mat4(1.f), _position) *
 			glm::rotate(glm::mat4(1.f), _radians, { 0.f, 0.f, 1.f }) *
 			glm::scale(glm::mat4(1.f), { _size.x, _size.y, 1.f });
 
 		DrawQuad(transform, _subTexture, _tilingFactor, _tintColor);
+	}
+
+	void Renderer2D::DrawSprite(const glm::mat4& _transform, SpriteRendererComponent& _sprite, int _entityID)
+	{
+		DrawQuad(_transform, _sprite.Color, _entityID);
 	}
 
 	void Renderer2D::ResetStats()

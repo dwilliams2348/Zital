@@ -39,6 +39,7 @@ namespace Zital
 		Ref<Scene> mActiveScene;
 		Entity mSquareEntity;
 		Entity mCameraEntity;
+		Entity mHoveredEntity;
 
 		EditorCamera mEditorCamera;
 
