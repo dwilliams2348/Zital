@@ -245,8 +245,18 @@ namespace Zital
 				auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
 				glm::mat4 transform = transformComponent.GetTransform();
 
+				//snapping this is currently only local snapping
+				bool snap = Input::IsKeyPressed(Key::LeftControl);
+				float snapValue = 0.5f; //snap to 0.5f units for translation/scale
+				//snap to 45.f for rotation gizmo
+				if (mGizmoType == ImGuizmo::OPERATION::ROTATE)
+					snapValue = 45.f;
+
+				float snapValues[3] = { snapValue, snapValue, snapValue };
+
 				ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-					(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+					(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+					nullptr, snap ? snapValues : nullptr);
 
 				if (ImGuizmo::IsUsing())
 				{
@@ -283,37 +293,41 @@ namespace Zital
 			return false;
 
 		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-		bool shift= Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (e.GetKeyCode())
 		{
 			case Key::N:
-				if (control)
+				if (control && !ImGuizmo::IsUsing())
 					NewScene();
 
 				break;
 			case Key::O:
-				if (control)
+				if (control && !ImGuizmo::IsUsing())
 					OpenScene();
 
 				break;
 			case Key::S:
-				if (control && shift)
+				if (control && shift && !ImGuizmo::IsUsing())
 					SaveSceneAs();
 
 				break;
 
 				//gizmo shortcuts
 			case Key::Q:
-				mGizmoType = -1;
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = -1;
 				break;
 			case Key::W:
-				mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 				break;
 			case Key::E:
-				mGizmoType = ImGuizmo::OPERATION::ROTATE;
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::ROTATE;
 				break;
 			case Key::R:
-				mGizmoType = ImGuizmo::OPERATION::SCALE;
+				if (!ImGuizmo::IsUsing())
+					mGizmoType = ImGuizmo::OPERATION::SCALE;
 				break;
 
 		}
