@@ -2,10 +2,16 @@
 #include <imgui/imgui.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/matrix_decompose.hpp>
 
 #include "Zital/Scene/SceneSerializer.h"
 
 #include "Zital/Utils/PlatformUtils.h"
+
+#include "ImGuizmo.h"
+
+#include "Zital/Math/Math.h"
 
 namespace Zital
 {
@@ -209,7 +215,7 @@ namespace Zital
 
 			mViewportFocused = ImGui::IsWindowFocused();
 			mViewportHovered = ImGui::IsWindowHovered();
-			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused || !mViewportHovered);
+			Application::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused && !mViewportHovered);
 
 			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 
@@ -217,6 +223,42 @@ namespace Zital
 
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+			//gizmos
+			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();
+			if (selectedEntity && mGizmoType != -1)
+			{
+				ImGuizmo::SetOrthographic(false);
+				ImGuizmo::SetDrawlist();
+
+				float windowWidth = (float)ImGui::GetWindowWidth();
+				float windowHeight = (float)ImGui::GetWindowHeight();
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+				//camera
+				auto cameraEntity = mActiveScene->GetPrimaryCameraEntity();
+				const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
+				const glm::mat4& cameraProjection = camera.GetProjection();
+				glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());
+
+				//entity transform
+				auto& transformComponent = selectedEntity.GetComponent<TransformComponent>();
+				glm::mat4 transform = transformComponent.GetTransform();
+
+				ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+					(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+
+				if (ImGuizmo::IsUsing())
+				{
+					glm::vec3 translation, rotation, scale;
+					Math::DecomposeTransform(transform, translation, rotation, scale);
+
+					glm::vec3 deltaRotation = rotation = transformComponent.Rotation;
+					transformComponent.Translation = translation;
+					transformComponent.Rotation += rotation;
+					transformComponent.Scale = scale;
+				}
+			}
 
 			ImGui::End();
 			ImGui::PopStyleVar();
@@ -259,6 +301,21 @@ namespace Zital
 					SaveSceneAs();
 
 				break;
+
+				//gizmo shortcuts
+			case Key::Q:
+				mGizmoType = -1;
+				break;
+			case Key::W:
+				mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
+				break;
+			case Key::E:
+				mGizmoType = ImGuizmo::OPERATION::ROTATE;
+				break;
+			case Key::R:
+				mGizmoType = ImGuizmo::OPERATION::SCALE;
+				break;
+
 		}
 	}
 

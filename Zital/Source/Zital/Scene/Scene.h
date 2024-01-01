@@ -21,6 +21,8 @@ namespace Zital
 		void OnUpdate(Timestep _deltaTime);
 		void OnViewportResize(uint32_t _width, uint32_t _height);
 
+		Entity GetPrimaryCameraEntity();
+
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity _entity, T& _component);
