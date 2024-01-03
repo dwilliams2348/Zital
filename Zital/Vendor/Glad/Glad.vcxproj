@@ -54,20 +54,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>bin\Debug-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Debug-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Debug-windows-\Glad\</OutDir>
+    <IntDir>bin-int\Debug-windows-\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>bin\Release-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Release-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Release-windows-\Glad\</OutDir>
+    <IntDir>bin-int\Release-windows-\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <OutDir>bin\Dist-windows-x86_64\Glad\</OutDir>
-    <IntDir>bin-int\Dist-windows-x86_64\Glad\</IntDir>
+    <OutDir>bin\Dist-windows-\Glad\</OutDir>
+    <IntDir>bin-int\Dist-windows-\Glad\</IntDir>
     <TargetName>Glad</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
@@ -81,7 +81,6 @@
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,7 +99,6 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,7 +119,6 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

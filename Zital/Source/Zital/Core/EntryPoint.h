@@ -1,15 +1,18 @@
 #pragma once
 
+#include "Zital/Core/Core.h"
+#include "Zital/Core/Application.h"
+
 #ifdef ZT_PLATFORM_WINDOWS
 
-extern Zital::Application* Zital::CreateApplication();
+extern Zital::Application* Zital::CreateApplication(ApplicationCommandLineArgs _args);
 
-int main(int argc, char* argv)
+int main(int argc, char** argv)
 {
 	Zital::Log::Init();
 	
 	ZT_PROFILE_BEGIN_SESSION("Startup", "ZitalProfile-Startup.json");
-	auto app = Zital::CreateApplication();
+	auto app = Zital::CreateApplication({ argc, argv });
 	ZT_PROFILE_END_SESSION();
 
 	ZT_PROFILE_BEGIN_SESSION("Runtime", "ZitalProfile-Runtime.json");

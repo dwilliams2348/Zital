@@ -1,11 +1,13 @@
 #include "ZTpch.h"
 #include "Renderer2D.h"
 
-#include "VertexArray.h"
-#include "Shader.h"
-#include "RenderCommand.h"
+#include "Zital/Renderer/VertexArray.h"
+#include "Zital/Renderer/Shader.h"
+#include "Zital/Renderer/UniformBuffer.h"
+#include "Zital/Renderer/RenderCommand.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Zital
 {
@@ -45,6 +47,13 @@ namespace Zital
 		glm::vec4 QuadVertexPositions[4];
 
 		Renderer2D::Statistics Stats;
+
+		struct CameraData
+		{
+			glm::mat4 ViewProjection;
+		};
+		CameraData CameraBuffer;
+		Ref<UniformBuffer> CameraUniformBuffer;
 	};
 
 	static Renderer2DData sData;
@@ -100,8 +109,6 @@ namespace Zital
 			samplers[i] = i;
 
 		sData.TextureShader = Shader::Create("Assets/Shaders/Texture.glsl");
-		sData.TextureShader->Bind();
-		sData.TextureShader->SetIntArray("uTextures", samplers, sData.MaxTexSlots);
 
 		sData.TextureSlots[0] = sData.WhiteTexture;
 
@@ -109,22 +116,23 @@ namespace Zital
 		sData.QuadVertexPositions[1] = {  0.5, -0.5, 0.f, 1.f };
 		sData.QuadVertexPositions[2] = {  0.5,  0.5, 0.f, 1.f };
 		sData.QuadVertexPositions[3] = { -0.5,  0.5, 0.f, 1.f };
+
+		sData.CameraUniformBuffer = UniformBuffer::Create(sizeof(Renderer2DData::CameraData), 0);
 	}
 
 	void Renderer2D::Shutdown()
 	{
 		ZT_PROFILE_FUNCTION();
 
+		delete[] sData.QuadVertexBufferBase;
 	}
 
 	void Renderer2D::BeginScene(const Camera& _camera, const glm::mat4& _transform)
 	{
 		ZT_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = _camera.GetProjection() * glm::inverse(_transform);
-
-		sData.TextureShader->Bind();
-		sData.TextureShader->SetMat4("uViewProjection", viewProj);
+		sData.CameraBuffer.ViewProjection = _camera.GetProjection() * glm::inverse(_transform);
+		sData.CameraUniformBuffer->SetData(&sData.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -133,10 +141,8 @@ namespace Zital
 	{
 		ZT_PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = _camera.GetViewProjection();
-
-		sData.TextureShader->Bind();
-		sData.TextureShader->SetMat4("uViewProjection", viewProj);
+		sData.CameraBuffer.ViewProjection = _camera.GetViewProjection();
+		sData.CameraUniformBuffer->SetData(&sData.CameraBuffer, sizeof(Renderer2DData::CameraData));
 
 		StartBatch();
 	}
@@ -178,6 +184,7 @@ namespace Zital
 		for (uint32_t i = 0; i < sData.TextureSlotIndex; i++)
 			sData.TextureSlots[i]->Bind(i);
 
+		sData.TextureShader->Bind();
 		RenderCommand::DrawIndexed(sData.QuadVertexArray, sData.QuadIndexCount);
 
 		sData.Stats.DrawCalls++;

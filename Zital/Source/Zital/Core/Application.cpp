@@ -16,7 +16,8 @@ namespace Zital
 
 	Application* Application::sInstance = nullptr;
 
-	Application::Application(const std::string& _name)
+	Application::Application(const std::string& _name, ApplicationCommandLineArgs _args)
+		: mCommandLineArgs(_args)
 	{
 		ZT_PROFILE_FUNCTION();
 

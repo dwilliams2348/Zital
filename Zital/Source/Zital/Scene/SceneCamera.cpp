@@ -33,6 +33,8 @@ namespace Zital
 
 	void SceneCamera::SetViewportSize(uint32_t _width, uint32_t _height)
 	{
+		ZT_CORE_ASSERT(_width > 0 && _height > 0, "Invalid viewport width and height");
+
 		mAspectRatio = (float)_width / (float)_height;
 
 		RecalculateProjection();

@@ -14,8 +14,8 @@ namespace Zital
 	class ZitalEditor : public Application
 	{
 	public:
-		ZitalEditor()
-			: Application("Zital Editor")
+		ZitalEditor(ApplicationCommandLineArgs _args)
+			: Application("Zital Editor", _args)
 		{
 			PushLayer(new EditorLayer());
 		}
@@ -26,9 +26,9 @@ namespace Zital
 		}
 	};
 
-	Application* CreateApplication()
+	Application* CreateApplication(ApplicationCommandLineArgs _args)
 	{
-		return new ZitalEditor();
+		return new ZitalEditor(_args);
 	}
 
 }

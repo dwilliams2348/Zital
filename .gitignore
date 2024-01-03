@@ -1,9 +1,17 @@
-# Directories
-.vs/
+# Binaries
 bin/
+!vendor/premake/bin
 bin-int/
 
-# Files
-*.user
-*.json
-*.zital
+# Zital files
+*.log
+
+# VS Files
+.vs/
+**.vcxproj.filters
+**.vcxproj.user
+
+#Directories
+Zital/vendor/VulkanSDK
+Zital-Editor/assets/cache
+scripts/__pycache__

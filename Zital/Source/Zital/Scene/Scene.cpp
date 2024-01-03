@@ -153,7 +153,8 @@ namespace Zital
 	template<>
 	void Scene::OnComponentAdded<CameraComponent>(Entity _entity, CameraComponent& _component)
 	{
-		_component.Camera.SetViewportSize(mViewportWidth, mViewportHeight);
+		if(mViewportWidth > 0 && mViewportHeight > 0)
+			_component.Camera.SetViewportSize(mViewportWidth, mViewportHeight);
 	}
 
 	template<>

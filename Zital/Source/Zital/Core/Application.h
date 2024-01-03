@@ -14,10 +14,22 @@
 namespace Zital 
 {
 
+	struct ApplicationCommandLineArgs
+	{
+		int Count = 0;
+		char** Args = nullptr;
+
+		const char* operator[](int _index) const
+		{
+			ZT_CORE_ASSERT(_index < count, "Invalid index");
+			return Args[_index];
+		}
+	};
+
 	class Application
 	{
 	public:
-		Application(const std::string& _name = "Zital App");
+		Application(const std::string& _name = "Zital App", ApplicationCommandLineArgs _args = ApplicationCommandLineArgs());
 		virtual ~Application();
 
 		void Run();
@@ -32,6 +44,8 @@ namespace Zital
 		inline static Application& Get() { return *sInstance; }
 		inline Window& GetWindow() { return *mWindow; }
 
+		ApplicationCommandLineArgs GetCommandLineArgs() const { return mCommandLineArgs; }
+
 		void Close();
 
 	private:
@@ -39,6 +53,7 @@ namespace Zital
 		bool OnWindowResized(WindowResizeEvent& e);
 
 	private:
+		ApplicationCommandLineArgs mCommandLineArgs;
 		Scope<Window> mWindow;
 		ImGuiLayer* mImGuiLayer;
 		bool mRunning = true;
@@ -52,6 +67,6 @@ namespace Zital
 	};
 
 	//to be defined in client
-	Application* CreateApplication();
+	Application* CreateApplication(ApplicationCommandLineArgs _args);
 
 }

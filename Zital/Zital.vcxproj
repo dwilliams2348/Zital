@@ -54,20 +54,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\bin\Debug-windows-x86_64\Zital\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86_64\Zital\</IntDir>
+    <OutDir>..\bin\Debug-windows-\Zital\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-\Zital\</IntDir>
     <TargetName>Zital</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\bin\Release-windows-x86_64\Zital\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86_64\Zital\</IntDir>
+    <OutDir>..\bin\Release-windows-\Zital\</OutDir>
+    <IntDir>..\bin-int\Release-windows-\Zital\</IntDir>
     <TargetName>Zital</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <OutDir>..\bin\Dist-windows-x86_64\Zital\</OutDir>
-    <IntDir>..\bin-int\Dist-windows-x86_64\Zital\</IntDir>
+    <OutDir>..\bin\Dist-windows-\Zital\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-\Zital\</IntDir>
     <TargetName>Zital</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
@@ -76,22 +76,21 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;ZT_PLATFORM_WINDOWS;ZT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;C:\VulkanSDK\1.3.268.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;Vendor\VulkanSDK\Lib\shaderc_sharedd.lib;Vendor\VulkanSDK\Lib\spirv-cross-cored.lib;Vendor\VulkanSDK\Lib\spirv-cross-glsld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,17 +98,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;ZT_PLATFORM_WINDOWS;ZT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;C:\VulkanSDK\1.3.268.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -117,7 +115,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;C:\VulkanSDK\1.3.268.0\Lib\shaderc_shared.lib;%{Library.SPIRV_Cross_Release.lib;C:\VulkanSDK\1.3.268.0\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -125,17 +123,16 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>ZTpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZT_ENABLE_ASSERTS;ZT_PLATFORM_WINDOWS;ZT_BUILD_DLL;GLFW_INCLUDE_NONE;_WINDLL;ZT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;ZT_PLATFORM_WINDOWS;ZT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;Vendor\spdlog\include;Vendor\GLFW\include;Vendor\Glad\include;Vendor\imgui;Vendor\glm;Vendor\stb_image;Vendor\entt\include;Vendor\yaml-cpp\include;Vendor\ImGuizmo;C:\VulkanSDK\1.3.268.0\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,7 +140,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;C:\VulkanSDK\1.3.268.0\Lib\shaderc_shared.lib;%{Library.SPIRV_Cross_Release.lib;C:\VulkanSDK\1.3.268.0\Lib\spirv-cross-glsl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -153,9 +150,9 @@
     <ClInclude Include="Source\Platform\OpenGL\OpenGLRendererAPI.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLShader.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLTexture.h" />
+    <ClInclude Include="Source\Platform\OpenGL\OpenGLUniformBuffer.h" />
     <ClInclude Include="Source\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="Source\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="Source\Zital\Renderer\EditorCamera.h" />
     <ClInclude Include="Source\ZTpch.h" />
     <ClInclude Include="Source\Zital.h" />
     <ClInclude Include="Source\Zital\Core\Application.h" />
@@ -168,6 +165,7 @@
     <ClInclude Include="Source\Zital\Core\Log.h" />
     <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h" />
     <ClInclude Include="Source\Zital\Core\TimeStep.h" />
+    <ClInclude Include="Source\Zital\Core\Timer.h" />
     <ClInclude Include="Source\Zital\Core\Window.h" />
     <ClInclude Include="Source\Zital\Debug\Instrumentation.h" />
     <ClInclude Include="Source\Zital\Events\ApplicationEvent.h" />
@@ -178,6 +176,7 @@
     <ClInclude Include="Source\Zital\Math\Math.h" />
     <ClInclude Include="Source\Zital\Renderer\Buffer.h" />
     <ClInclude Include="Source\Zital\Renderer\Camera.h" />
+    <ClInclude Include="Source\Zital\Renderer\EditorCamera.h" />
     <ClInclude Include="Source\Zital\Renderer\Framebuffer.h" />
     <ClInclude Include="Source\Zital\Renderer\GraphicsContext.h" />
     <ClInclude Include="Source\Zital\Renderer\OrthographicCamera.h" />
@@ -188,6 +187,7 @@
     <ClInclude Include="Source\Zital\Renderer\Shader.h" />
     <ClInclude Include="Source\Zital\Renderer\SubTexture2D.h" />
     <ClInclude Include="Source\Zital\Renderer\Texture.h" />
+    <ClInclude Include="Source\Zital\Renderer\UniformBuffer.h" />
     <ClInclude Include="Source\Zital\Renderer\VertexArray.h" />
     <ClInclude Include="Source\Zital\Scene\Components.h" />
     <ClInclude Include="Source\Zital\Scene\Entity.h" />
@@ -623,11 +623,11 @@
     <ClCompile Include="Source\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLShader.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLTexture.cpp" />
+    <ClCompile Include="Source\Platform\OpenGL\OpenGLUniformBuffer.cpp" />
     <ClCompile Include="Source\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="Source\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="Source\Zital\Renderer\EditorCamera.cpp" />
     <ClCompile Include="Source\ZTpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -639,6 +639,7 @@
     <ClCompile Include="Source\Zital\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="Source\Zital\Math\Math.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Buffer.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\EditorCamera.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Framebuffer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\OrthographicCamera.cpp" />
     <ClCompile Include="Source\Zital\Renderer\RenderCommand.cpp" />
@@ -648,6 +649,7 @@
     <ClCompile Include="Source\Zital\Renderer\Shader.cpp" />
     <ClCompile Include="Source\Zital\Renderer\SubTexture2D.cpp" />
     <ClCompile Include="Source\Zital\Renderer\Texture.cpp" />
+    <ClCompile Include="Source\Zital\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="Source\Zital\Renderer\VertexArray.cpp" />
     <ClCompile Include="Source\Zital\Scene\Entity.cpp" />
     <ClCompile Include="Source\Zital\Scene\Scene.cpp" />

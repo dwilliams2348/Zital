@@ -37,6 +37,14 @@ namespace Zital
 
 		mActiveScene = CreateRef<Scene>();
 
+		auto commandLineArgs = Application::Get().GetCommandLineArgs();
+		if (commandLineArgs.Count > 1)
+		{
+			auto sceneFilePath = commandLineArgs[1];
+			SceneSerializer serializer(mActiveScene);
+			serializer.Deserialize(sceneFilePath);
+		}
+
 		mEditorCamera = EditorCamera(45.f, 1.778f, 0.1f, 1000.f);
 
 #if 0
