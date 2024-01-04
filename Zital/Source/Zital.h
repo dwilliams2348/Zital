@@ -3,12 +3,13 @@
 //For use in Zital applications
 //----------Core-----------------
 #include "Zital/Core/Application.h"
-#include "Zital/Core/Input.h"
 #include "Zital/Core/Layer.h"
 #include "Zital/Core/Log.h"
+#include "Zital/Core/Assert.h"
 
 #include "Zital/Core/TimeStep.h"
 
+#include "Zital/Core/Input.h"
 #include "Zital/Core/KeyCodes.h"
 #include "Zital/Core/MouseButtonCodes.h"
 

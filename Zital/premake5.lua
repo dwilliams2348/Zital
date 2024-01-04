@@ -61,7 +61,6 @@ project "Zital"
 
         defines
         {
-            "ZT_PLATFORM_WINDOWS"
         }
 
     filter "configurations:Debug"

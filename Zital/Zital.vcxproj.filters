@@ -108,6 +108,9 @@
     <ClInclude Include="Source\Zital\Core\Application.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Zital\Core\Assert.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Zital\Core\Core.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
@@ -130,6 +133,9 @@
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Core\MouseButtonCodes.h">
+      <Filter>Source\Zital\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Zital\Core\PlatformDetection.h">
       <Filter>Source\Zital\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\Zital\Core\TimeStep.h">

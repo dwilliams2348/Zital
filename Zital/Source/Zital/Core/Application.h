@@ -21,7 +21,7 @@ namespace Zital
 
 		const char* operator[](int _index) const
 		{
-			ZT_CORE_ASSERT(_index < count, "Invalid index");
+			ZT_CORE_ASSERT(_index < Count, "Invalid index");
 			return Args[_index];
 		}
 	};

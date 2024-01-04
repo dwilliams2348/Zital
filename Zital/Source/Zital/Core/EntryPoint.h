@@ -25,5 +25,5 @@ int main(int argc, char** argv)
 }
 
 #else
-#error Zital only supports Windows as of now.
+#	error Zital only supports Windows as of now.
 #endif

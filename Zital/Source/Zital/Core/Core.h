@@ -2,25 +2,22 @@
 
 #include <memory>
 
-//platform detection
-#ifdef _WIN32
-//windows x64/x86
-	#ifdef _WIN64
-		//windows x64
-		#define ZT_PLATFORM_WINDOWS
-	#else
-		//windows x86
-		#error "x86 builds are not supported."
-	#endif
+#include "Zital/Core/PlatformDetection.h"
+
+#ifdef ZT_DEBUG
+#	if defined(ZT_PLATFORM_WINDOWS)
+#		define ZT_DEBUGBREAK() __debugbreak()
+#	elif defined ZT_PLATFORM_LINUX
+#		include <signal.h>
+#		define ZT_DEBUGBREAK() raise(SIGTRAP)
+#endif
+#	define ZT_ENABLE_ASSERTS
+#else
+#	define ZT_DEBUGBREAK()
 #endif
 
-#ifdef ZT_ENABLE_ASSERTS
-	#define ZT_ASSERT(x, ...) {if(!(x)) { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define ZT_CORE_ASSERT(x, ...) {if(!(x)) { ZT_ERROR("Assertion failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#else
-	#define ZT_ASSERT(x, ...)
-	#define ZT_CORE_ASSERT(x, ...)
-#endif
+#define ZT_EXPAND_MACRO(x) x
+#define ZT_STRINGIFY_MACRO(x) #x
 
 #define BIT(x)(1 << x)
 
@@ -46,3 +43,6 @@ namespace Zital
 	}
 
 }
+
+#include "Zital/Core/Log.h"
+#include "Zital/Core/Assert.h"
