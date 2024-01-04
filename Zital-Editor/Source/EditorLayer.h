@@ -2,6 +2,7 @@
 
 #include "Zital.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 
 #include "Zital/Renderer/EditorCamera.h"
 
@@ -59,6 +60,7 @@ namespace Zital
 
 		//panels
 		SceneHierarchyPanel mSceneHierarchyPanel;
+		ContentBrowserPanel mContentBrowserPanel;
 	};
 
 }

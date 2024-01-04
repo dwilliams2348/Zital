@@ -225,6 +225,7 @@ namespace Zital
 			}
 
 			mSceneHierarchyPanel.OnImGuiRender();
+			mContentBrowserPanel.OnImGuiRender();
 
 			ImGui::Begin("Stats");
 
