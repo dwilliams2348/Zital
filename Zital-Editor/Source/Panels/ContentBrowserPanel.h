@@ -1,5 +1,9 @@
 #pragma once
 
+#include <filesystem>
+
+#include "Zital/Renderer/Texture.h"
+
 namespace Zital
 {
 
@@ -12,6 +16,9 @@ namespace Zital
 
 	private:
 		std::filesystem::path mCurrentDirectory;
+
+		Ref<Texture2D> mFolderIcon;
+		Ref<Texture2D> mFileIcon;
 	};
 
 }

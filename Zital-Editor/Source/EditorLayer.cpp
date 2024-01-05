@@ -16,6 +16,8 @@
 namespace Zital
 {
 
+	extern const std::filesystem::path gAssetsPath;
+
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), mCameraController(1280.f / 720.f)
 	{
@@ -261,6 +263,18 @@ namespace Zital
 			uint32_t textureID = mFramebuffer->GetColorAttachmentRendererID();
 			ImGui::Image((void*)textureID, ImVec2{ mViewportSize.x, mViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+
+					OpenScene(gAssetsPath / path);
+				}
+
+				ImGui::EndDragDropTarget();
+			}
+
 			//gizmos
 			Entity selectedEntity = mSceneHierarchyPanel.GetSelectedEntity();
 			if (selectedEntity && mGizmoType != -1 && selectedEntity.HasComponent<TransformComponent>())
@@ -396,11 +410,16 @@ namespace Zital
 		std::string filepath = FileDialogs::OpenFile("Zital Scene (*.zital)\0*.zital\0");
 		if (!filepath.empty())
 		{
-			NewScene();
-
-			SceneSerializer serializer(mActiveScene);
-			serializer.Deserialize(filepath);
+			OpenScene(filepath);
 		}
+	}
+
+	void EditorLayer::OpenScene(const std::filesystem::path& _path)
+	{
+		NewScene();
+
+		SceneSerializer serializer(mActiveScene);
+		serializer.Deserialize(_path.string());
 	}
 
 	void EditorLayer::SaveSceneAs()

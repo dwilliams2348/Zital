@@ -27,6 +27,7 @@ namespace Zital
 
 		void NewScene();
 		void OpenScene();
+		void OpenScene(const std::filesystem::path& _path);
 		void SaveSceneAs();
 
 	private:
